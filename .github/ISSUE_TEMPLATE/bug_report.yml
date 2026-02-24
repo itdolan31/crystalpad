@@ -1,0 +1,21 @@
+---
+name: Bug report
+description: 'Create a bug report'
+title: '[BUG] '
+labels: ['bug']
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+        label: Your problem
+    validations:
+        required: true
+
+  - type: input
+    id: version
+    attributes:
+        label: Your version of android
+    validations:
+        required: true
+---
