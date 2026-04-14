@@ -1,0 +1,20 @@
+{
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "delete_confirmation_title": "Are you sure?",
+    "delete_confirmation_message": "The note will be deleted without the possibility of recovery.",
+    "title": "Title",
+    "note": "Note",
+    "system": "System",
+    "dark": "Dark",
+    "light": "Light",
+    "language": "Language",
+    "theme": "Theme",
+    "settings": "Settings",
+    "source_code": "Source code",
+    "sort_title": "Sort by",
+    "sort_date_desc": "Newest first",
+    "sort_date_asc": "Oldest first",
+    "sort_title_asc": "Title (A-Z)",
+    "sort_title_desc": "Title (Z-A)"
+}

@@ -1,0 +1,20 @@
+{
+    "delete": "削除",
+    "cancel": "キャンセル",
+    "delete_confirmation_title": "よろしいですか？",
+    "delete_confirmation_message": "ノートは削除され、復元できません。",
+    "title": "タイトル",
+    "note": "ノート",
+    "system": "システム",
+    "dark": "ダーク",
+    "light": "ライト",
+    "language": "言語",
+    "theme": "テーマ",
+    "settings": "設定",
+    "source_code": "ソースコード",
+    "sort_title": "並べ替え",
+    "sort_date_desc": "新しい順",
+    "sort_date_asc": "古い順",
+    "sort_title_asc": "タイトル (A-Z)",
+    "sort_title_desc": "タイトル (Z-A)"
+}

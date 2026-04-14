@@ -1,0 +1,20 @@
+{
+    "delete": "Удалить",
+    "cancel": "Отмена",
+    "delete_confirmation_title": "Вы уверены?",
+    "delete_confirmation_message": "Заметка будет удалена без возможности восстановления.",
+    "title": "Заголовок",
+    "note": "Заметка",
+    "system": "Система",
+    "dark": "Тёмная",
+    "light": "Светлая",
+    "language": "Язык",
+    "theme": "Тема",
+    "settings": "Настройки",
+    "source_code": "Исходный код",
+    "sort_title": "Сортировка",
+    "sort_date_desc": "Сначала новые",
+    "sort_date_asc": "Сначала старые",
+    "sort_title_asc": "От А до Я",
+    "sort_title_desc": "От Я до А"
+}

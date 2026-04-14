@@ -1,0 +1,9 @@
+CrystalPad ist ein minimalistischer Open-Source-Notizblock für Android. Konzentrieren Sie sich ohne Ablenkung auf Ihre Gedanken. Erstellt mit Jetpack Compose und Material 3 für ein modernes Erlebnis.
+
+Hauptmerkmale:
+• Privatsphäre an erster Stelle: Keine Datenerfassung, kein Tracking und keine Internetberechtigung erforderlich.
+• Lokale Speicherung: Alle Ihre Notizen werden sicher auf Ihrem Gerät gespeichert.
+• Material You: Unterstützt dynamische Farben und den Dunkelmodus.
+• Leichtgewicht: Schneller Start und geringer Ressourcenverbrauch.
+
+Ein sauberer und einfacher Notizblock, der Ihre Privatsphäre respektiert.

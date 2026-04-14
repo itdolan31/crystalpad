@@ -1,0 +1,10 @@
+CrystalPad es un bloc de notas minimalista y de código abierto para Android. Concéntrate en tus pensamientos sin distracciones. Creado con Jetpack Compose y Material 3 para una experiencia moderna.
+
+Características principales:
+
+• Privacidad primero: Sin recopilación de datos, sin rastreo y sin necesidad de permisos de Internet.
+• Almacenamiento local: Todas sus notas se almacenan de forma segura en su dispositivo.
+• Material You: Soporta colores dinámicos y modo oscuro.
+• Ligero: Inicio rápido y bajo consumo de recursos.
+
+Un bloc de notas limpio y sencillo que respeta tu privacidad.

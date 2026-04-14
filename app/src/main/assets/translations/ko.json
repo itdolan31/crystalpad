@@ -1,0 +1,20 @@
+{
+    "delete": "삭제",
+    "cancel": "취소",
+    "delete_confirmation_title": "확실합니까?",
+    "delete_confirmation_message": "노트가 삭제되며 복구할 수 없습니다.",
+    "title": "제목",
+    "note": "노트",
+    "system": "시스템",
+    "dark": "다크",
+    "light": "라이트",
+    "language": "언어",
+    "theme": "테마",
+    "settings": "설정",
+    "source_code": "소스 코드",
+    "sort_title": "정렬 기준",
+    "sort_date_desc": "최신순",
+    "sort_date_asc": "о래된순",
+    "sort_title_asc": "제목 (A-Z)",
+    "sort_title_desc": "제목 (Z-A)"
+}

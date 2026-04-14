@@ -1,0 +1,20 @@
+{
+    "delete": "Löschen",
+    "cancel": "Abbrechen",
+    "delete_confirmation_title": "Sind Sie sicher?",
+    "delete_confirmation_message": "Die Notiz wird unwiderruflich gelöscht.",
+    "title": "Titel",
+    "note": "Notiz",
+    "system": "System",
+    "dark": "Dunkel",
+    "light": "Hell",
+    "language": "Sprache",
+    "theme": "Thema",
+    "settings": "Einstellungen",
+    "source_code": "Quellcode",
+    "sort_title": "Sortierung",
+    "sort_date_desc": "Zuerst neue",
+    "sort_date_asc": "Zuerst alte",
+    "sort_title_asc": "Von A bis Z",
+    "sort_title_desc": "Von Z bis A"
+}

@@ -1,0 +1,20 @@
+{
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "delete_confirmation_title": "Êtes-vous sûr ?",
+    "delete_confirmation_message": "La note sera supprimée sans possibilité de récupération.",
+    "title": "Titre",
+    "note": "Note",
+    "system": "Système",
+    "dark": "Sombre",
+    "light": "Clair",
+    "language": "Langue",
+    "theme": "Thème",
+    "settings": "Paramètres",
+    "source_code": "Code source",
+    "sort_title": "Trier par",
+    "sort_date_desc": "Plus récents d'abord",
+    "sort_date_asc": "Plus anciens d'abord",
+    "sort_title_asc": "Titre (A-Z)",
+    "sort_title_desc": "Titre (Z-A)"
+}
