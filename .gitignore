@@ -17,3 +17,5 @@ render.experimental.xml
 *.keystore
 google-services.json
 *.hprof
+.kotlin/
+release/
