@@ -16,5 +16,7 @@
     "sort_date_desc": "최신순",
     "sort_date_asc": "о래된순",
     "sort_title_asc": "제목 (A-Z)",
-    "sort_title_desc": "제목 (Z-A)"
+    "sort_title_desc": "제목 (Z-A)",
+    "appearance": "화면 설정",
+    "about": "정보"
 }

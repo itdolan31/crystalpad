@@ -1,0 +1,30 @@
+<svg height="512" viewBox="0 0 100 100" width="512" xmlns="http://www.w3.org/2000/svg">
+    <rect fill="#f8fafc" height="80" rx="1" stroke="#cbd5e1" stroke-width="0.5" width="58" x="22"
+        y="11" />
+    <rect fill="#3b82f6" height="80" rx="1" stroke="#1e3a8a" stroke-width="1" width="56" x="24"
+        y="10" />
+    <g stroke="#94a3b8" stroke-linecap="round" stroke-width="1.5">
+        <path d="M21 18 L27 18" />
+        <path d="M21 28 L27 28" />
+        <path d="M21 38 L27 38" />
+        <path d="M21 48 L27 48" />
+        <path d="M21 58 L27 58" />
+        <path d="M21 68 L27 68" />
+        <path d="M21 78 L27 78" />
+        <path d="M21 88 L27 88" />
+    </g>
+    <g transform="translate(30.5, 27.5) scale(0.45)">
+        <polygon fill="#3b82f6" points="50,5 85,25 85,75 50,95 15,75 15,25" stroke="#1e3a8a"
+            stroke-width="1.2" />
+        <polygon fill="#7aa2f7" points="50,5 67,20 50,35 33,20" stroke="#1e40af"
+            stroke-width="0.8" />
+        <polygon fill="#2563eb" points="33,20 15,25 33,50 50,35" stroke="#1e40af"
+            stroke-width="0.8" />
+        <polygon fill="#1d4ed8" points="67,20 85,25 67,50 50,35" stroke="#1e40af"
+            stroke-width="0.8" />
+        <polygon fill="#1e3a8a" points="50,95 67,75 67,50 50,65" stroke="#0f172a"
+            stroke-width="0.8" />
+        <polygon fill="#2563eb" points="50,95 33,75 33,50 50,65" stroke="#0f172a"
+            stroke-width="0.8" />
+    </g>
+</svg>

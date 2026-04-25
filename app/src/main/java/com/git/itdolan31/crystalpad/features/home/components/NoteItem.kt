@@ -112,7 +112,7 @@ fun NoteItem(note: NoteEntity, onClick: () -> Unit, onDeleteClick: () -> Unit) {
                 DropdownMenu(
                     expanded = showMenu, onDismissRequest = { showMenu = false }) {
                     DropdownMenuItem(text = {
-                        Row {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_delete),
                                 contentDescription = null,

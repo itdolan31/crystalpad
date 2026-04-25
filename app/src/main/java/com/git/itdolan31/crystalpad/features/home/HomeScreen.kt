@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,12 +31,11 @@ import com.git.itdolan31.crystalpad.core.localization.Translator
 import com.git.itdolan31.crystalpad.domain.model.NoteSortType
 import com.git.itdolan31.crystalpad.features.home.components.NoteItem
 import com.git.itdolan31.crystalpad.ui.components.DialogRadioItem
-import androidx.compose.foundation.lazy.items
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigateToSettings: () -> Unit, onNavigateToNoteEdit: (Long) -> Unit, viewModel: HomeViewModel
+    viewModel: HomeViewModel, onNavigateToSettings: () -> Unit, onNavigateToNoteEdit: (Long) -> Unit
 ) {
     var showSortMenu by rememberSaveable { mutableStateOf(false) }
 
@@ -100,13 +100,11 @@ fun HomeScreen(
         )
 
         ModalBottomSheet(
-            onDismissRequest = { showSortMenu = false }
-        ) {
+            onDismissRequest = { showSortMenu = false }) {
             Column(modifier = Modifier.padding()) {
                 sorts.forEach { (type, text) ->
                     DialogRadioItem(
-                        text = text,
-                        selected = currentSortType == type
+                        text = text, selected = currentSortType == type
                     ) {
                         viewModel.onSortTypeChange(type)
                         showSortMenu = false

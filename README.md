@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/itdolan31/crystalpad/main/images/crystalpad-icon.svg" alt="Crystalpad Icon" height="100">
+  <img src="https://raw.githubusercontent.com/itdolan31/crystalpad/main/images/ic_launcher.svg" alt="Crystalpad Icon" height="100">
 </p>
 
 # Crystalpad

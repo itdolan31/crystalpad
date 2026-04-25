@@ -61,6 +61,12 @@ fun SettingsScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
         ) {
+            Text(
+                text = Translator.getString("appearance"),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
+            )
             TextButton(onClick = { showThemeDialog = true }, shape = RectangleShape) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -70,10 +76,12 @@ fun SettingsScreen(
                         painter = when (theme) {
                             "light" -> painterResource(R.drawable.ic_light_mode)
                             "dark" -> painterResource(R.drawable.ic_dark_mode)
+                            "oled" -> painterResource(R.drawable.ic_contrast)
                             else -> painterResource(R.drawable.ic_brightness_4)
-                        }, contentDescription = null, modifier = Modifier.size(32.dp)
+                        }, contentDescription = null, modifier = Modifier.size(32.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
-                    Spacer(Modifier.width(10.dp))
+                    Spacer(Modifier.width(12.dp))
                     Column {
                         Text(
                             Translator.getString("theme"),
@@ -81,9 +89,14 @@ fun SettingsScreen(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            Translator.getString(theme),
+                            when (theme) {
+                                "light" -> Translator.getString("light")
+                                "dark" -> Translator.getString("dark")
+                                "oled" -> "OLED"
+                                else -> Translator.getString("system")
+                            },
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -96,7 +109,8 @@ fun SettingsScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_language),
                         contentDescription = null,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(Modifier.width(12.dp))
                     Column {
@@ -119,12 +133,17 @@ fun SettingsScreen(
                                 else -> language
                             },
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-
                 }
             }
+            Text(
+                text = Translator.getString("about"),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp)
+            )
             TextButton(
                 onClick = { uriHandler.openUri("https://github.com/itdolan31/crystalpad") },
                 shape = RectangleShape
@@ -136,7 +155,8 @@ fun SettingsScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_code),
                         contentDescription = null,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(Modifier.width(12.dp))
                     Text(
@@ -153,7 +173,8 @@ fun SettingsScreen(
         val themes = listOf(
             "system" to Translator.getString("system"),
             "light" to Translator.getString("light"),
-            "dark" to Translator.getString("dark")
+            "dark" to Translator.getString("dark"),
+            "oled" to "OLED"
         )
 
         AlertDialog(onDismissRequest = { showThemeDialog = false }, confirmButton = {}, text = {

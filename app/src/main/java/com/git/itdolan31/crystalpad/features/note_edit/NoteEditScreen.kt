@@ -1,5 +1,6 @@
 package com.git.itdolan31.crystalpad.features.note_edit
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,21 +24,17 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.git.itdolan31.crystalpad.R
 import com.git.itdolan31.crystalpad.core.localization.Translator
 import com.git.itdolan31.crystalpad.ui.components.DeleteConfirmationDialog
@@ -45,28 +42,11 @@ import com.git.itdolan31.crystalpad.ui.components.DeleteConfirmationDialog
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun NoteEditScreen(
-    noteId: Long = 0L, onBack: () -> Unit, viewModel: NoteEditViewModel
+    viewModel: NoteEditViewModel, onBack: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
 
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    LaunchedEffect(noteId) {
-        viewModel.loadNote(noteId)
-    }
-
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_DESTROY) {
-                viewModel.saveNote()
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -93,7 +73,7 @@ fun NoteEditScreen(
                     DropdownMenu(
                         expanded = showMenu, onDismissRequest = { showMenu = false }) {
                         DropdownMenuItem(text = {
-                            Row {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_delete),
                                     contentDescription = null,

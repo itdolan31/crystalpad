@@ -10,45 +10,67 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class NoteEditViewModel(private val repository: NoteRepository) : ViewModel() {
-
+class NoteEditViewModel(private val noteRepository: NoteRepository, private val noteId: Long = 0L) :
+    ViewModel() {
     private val _uiState = MutableStateFlow(NoteEditUiState())
     val uiState = _uiState.asStateFlow()
 
-    private var currentNote: NoteEntity? = null
+    private var note: NoteEntity? = null
     private var isDeleted = false
     private var saveJob: Job? = null
 
-    fun loadNote(id: Long) {
-        if (id == 0L) {
-            currentNote = null
-            _uiState.update { NoteEditUiState() }
-            return
-        }
-        if (currentNote?.id == id) return
+    init {
+        loadNote()
+    }
 
-        viewModelScope.launch {
-            repository.getNoteById(id)?.let { note ->
-                currentNote = note
-                _uiState.update { it.copy(title = note.title, content = note.content) }
+    fun onTitleChange(title: String) {
+        _uiState.update {
+            it.copy(title = title)
+        }
+        saveNote()
+    }
+
+    fun onContentChange(content: String) {
+        _uiState.update {
+            it.copy(content = content)
+        }
+        saveNote()
+    }
+
+    fun deleteNote() {
+        isDeleted = true
+        saveJob?.cancel()
+        note?.let { deletedNote ->
+            viewModelScope.launch {
+                noteRepository.delete(deletedNote)
             }
         }
     }
 
-    fun onTitleChange(title: String) = _uiState.update { it.copy(title = title) }
-    fun onContentChange(content: String) = _uiState.update { it.copy(content = content) }
+    private fun loadNote() {
+        if (noteId == 0L) {
+            note = null
+            _uiState.update { NoteEditUiState() }
+            return
+        }
+        if (note?.id == noteId) return
 
-    fun saveNote() {
+        viewModelScope.launch {
+            noteRepository.getNoteById(noteId)?.let { loadedNote ->
+                note = loadedNote
+                _uiState.update { it.copy(title = loadedNote.title, content = loadedNote.content) }
+            }
+        }
+    }
+
+    private fun saveNote() {
         val state = _uiState.value
-        val isNotEmpty = state.title.isNotBlank() || state.content.isNotBlank()
-        val isChanged = state.title != (currentNote?.title ?: "") ||
-                state.content != (currentNote?.content ?: "")
 
-        if (isDeleted || !isChanged || (!isNotEmpty && currentNote == null)) return
+        if (isDeleted || note == null && state.title.isBlank() && state.content.isBlank()) return
 
         saveJob?.cancel()
         saveJob = viewModelScope.launch {
-            val noteToSave = currentNote?.copy(
+            val savedNote = note?.copy(
                 title = state.title.trim(),
                 content = state.content.trim(),
                 timestamp = System.currentTimeMillis()
@@ -58,22 +80,12 @@ class NoteEditViewModel(private val repository: NoteRepository) : ViewModel() {
                 timestamp = System.currentTimeMillis()
             )
 
-            if (noteToSave.id == 0L) {
-                val newId = repository.insert(noteToSave)
-                currentNote = noteToSave.copy(id = newId)
+            if (savedNote.id == 0L) {
+                val newId = noteRepository.insert(savedNote)
+                note = savedNote.copy(id = newId)
             } else {
-                repository.update(noteToSave)
-                currentNote = noteToSave
-            }
-        }
-    }
-
-    fun deleteNote() {
-        isDeleted = true
-        saveJob?.cancel()
-        currentNote?.let { note ->
-            viewModelScope.launch {
-                repository.delete(note)
+                noteRepository.update(savedNote)
+                note = savedNote
             }
         }
     }

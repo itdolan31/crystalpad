@@ -16,5 +16,7 @@
     "sort_date_desc": "Сначала новые",
     "sort_date_asc": "Сначала старые",
     "sort_title_asc": "От А до Я",
-    "sort_title_desc": "От Я до А"
+    "sort_title_desc": "От Я до А",
+    "appearance": "Внешний вид",
+    "about": "О приложении"
 }

@@ -1,4 +1,4 @@
-CrystalPad is a minimalist, open-source notepad for Android.
+Crystalpad is a minimalist, open-source notepad for Android.
 
 Focus on your thoughts without distractions. It is built with Jetpack Compose and Material 3 for a modern and fluid experience.
 

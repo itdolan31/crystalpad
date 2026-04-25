@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: NoteRepository,
+    private val noteRepository: NoteRepository,
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
     private val _sortType = settingsRepository.sortTypeFlow
@@ -27,7 +27,7 @@ class HomeViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     val notes: StateFlow<List<NoteEntity>> = _sortType
         .flatMapLatest { selectedType ->
-            repository.getNotes(selectedType)
+            noteRepository.getNotes(selectedType)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
@@ -41,7 +41,7 @@ class HomeViewModel(
 
     fun deleteNote(note: NoteEntity) {
         viewModelScope.launch {
-            repository.delete(note)
+            noteRepository.delete(note)
         }
     }
 }

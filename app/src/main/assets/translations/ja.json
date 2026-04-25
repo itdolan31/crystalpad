@@ -16,5 +16,7 @@
     "sort_date_desc": "新しい順",
     "sort_date_asc": "古い順",
     "sort_title_asc": "タイトル (A-Z)",
-    "sort_title_desc": "タイトル (Z-A)"
+    "sort_title_desc": "タイトル (Z-A)",
+    "appearance": "外観",
+    "about": "アプリについて"
 }

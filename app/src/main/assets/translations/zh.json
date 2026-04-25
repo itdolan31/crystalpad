@@ -16,5 +16,7 @@
     "sort_date_desc": "最新优先",
     "sort_date_asc": "最早优先",
     "sort_title_asc": "标题 (A-Z)",
-    "sort_title_desc": "标题 (Z-A)"
+    "sort_title_desc": "标题 (Z-A)",
+    "appearance": "外观",
+    "about": "关于"
 }

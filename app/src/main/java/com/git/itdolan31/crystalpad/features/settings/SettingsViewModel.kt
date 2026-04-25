@@ -9,17 +9,16 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val repository: SettingsRepository
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
-
-    val themeState: StateFlow<String> = repository.themeFlow
+    val themeState: StateFlow<String> = settingsRepository.themeFlow
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = "system"
         )
 
-    val languageState: StateFlow<String> = repository.languageFlow
+    val languageState: StateFlow<String> = settingsRepository.languageFlow
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -28,13 +27,13 @@ class SettingsViewModel(
 
     fun onThemeSelected(newTheme: String) {
         viewModelScope.launch {
-            repository.saveTheme(newTheme)
+            settingsRepository.saveTheme(newTheme)
         }
     }
 
     fun onLanguageSelected(newLang: String) {
         viewModelScope.launch {
-            repository.saveLanguage(newLang)
+            settingsRepository.saveLanguage(newLang)
         }
     }
 }

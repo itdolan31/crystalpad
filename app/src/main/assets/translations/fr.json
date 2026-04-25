@@ -16,5 +16,7 @@
     "sort_date_desc": "Plus récents d'abord",
     "sort_date_asc": "Plus anciens d'abord",
     "sort_title_asc": "Titre (A-Z)",
-    "sort_title_desc": "Titre (Z-A)"
+    "sort_title_desc": "Titre (Z-A)",
+    "appearance": "Apparence",
+    "about": "À propos"
 }

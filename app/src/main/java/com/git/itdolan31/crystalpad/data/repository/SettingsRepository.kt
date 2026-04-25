@@ -10,7 +10,6 @@ class SettingsRepository(
     val themeFlow: Flow<String> = settingsDataSource.themeFlow
     val languageFlow: Flow<String> = settingsDataSource.languageFlow
     val sortTypeFlow: Flow<String> = settingsDataSource.sortTypeFlow
-
     suspend fun saveTheme(theme: String) {
         settingsDataSource.saveTheme(theme)
     }

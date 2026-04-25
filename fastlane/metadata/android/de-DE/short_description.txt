@@ -1,0 +1,1 @@
+Einfacher Open-Source-Notizblock. Kein Tracking, keine Werbung, nur Ihre Notizen.

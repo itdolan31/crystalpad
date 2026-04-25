@@ -4,16 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.git.itdolan31.crystalpad.core.localization.Translator
 import com.git.itdolan31.crystalpad.data.local.datastore.SettingsDataSource
 import com.git.itdolan31.crystalpad.data.local.room.AppDatabase
 import com.git.itdolan31.crystalpad.data.repository.NoteRepository
 import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
-import com.git.itdolan31.crystalpad.navigation.AppNavHost
+import com.git.itdolan31.crystalpad.navigation.CrystalPadNavHost
 import com.git.itdolan31.crystalpad.ui.theme.CrystalPadTheme
 import kotlinx.coroutines.launch
 
@@ -39,14 +41,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val themeState by settingsRepository.themeFlow.collectAsState("system")
 
-            val darkTheme = when (themeState) {
-                "light" -> false
-                "dark" -> true
-                else -> isSystemInDarkTheme()
-            }
-
-            CrystalPadTheme(darkTheme) {
-                AppNavHost(settingsRepository, noteRepository)
+            CrystalPadTheme(themeType = themeState) {
+                Surface(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    CrystalPadNavHost(settingsRepository, noteRepository)
+                }
             }
         }
     }
