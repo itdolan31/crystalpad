@@ -1,0 +1,3 @@
+• Se agregó un nuevo tema para pantalla OLED.
+• Se mejoró el diseño y la usabilidad.
+• Errores corregidos.
