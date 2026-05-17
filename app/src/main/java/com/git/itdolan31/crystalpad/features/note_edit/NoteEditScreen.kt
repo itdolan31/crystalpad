@@ -1,9 +1,23 @@
+/*
+ * Crystalpad
+ * Copyright (C) 2026 itdolan31
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.git.itdolan31.crystalpad.features.note_edit
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,8 +26,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,14 +41,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.git.itdolan31.crystalpad.R
-import com.git.itdolan31.crystalpad.core.localization.Translator
 import com.git.itdolan31.crystalpad.ui.components.DeleteConfirmationDialog
 
 @Composable
@@ -45,49 +57,32 @@ fun NoteEditScreen(
     viewModel: NoteEditViewModel, onBack: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
+    val keepScreenOn by viewModel.keepScreenOn.collectAsState()
 
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
+        modifier = if (keepScreenOn) Modifier.keepScreenOn() else Modifier,
         topBar = {
             TopAppBar(navigationIcon = {
-                IconButton(onClick = {
-                    onBack()
-                }) {
+                IconButton(
+                    onClick =
+                        onBack
+                ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_back),
-                        contentDescription = null
+                        contentDescription = stringResource(R.string.back)
                     )
                 }
             }, title = {}, actions = {
-                var showMenu by rememberSaveable { mutableStateOf(false) }
-                Box {
-                    IconButton(onClick = {
-                        showMenu = true
-                    }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_more_vert),
-                            contentDescription = null
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = showMenu, onDismissRequest = { showMenu = false }) {
-                        DropdownMenuItem(text = {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_delete),
-                                    contentDescription = null,
-                                    modifier = Modifier.padding(end = 8.dp)
-                                )
-                                Text(Translator.getString("delete"))
-                            }
-                        }, onClick = {
-                            showMenu = false
-                            showDeleteDialog = true
-                        })
-                    }
+                IconButton(onClick = {
+                    showDeleteDialog = true
+                }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_delete),
+                        contentDescription = stringResource(R.string.delete)
+                    )
                 }
-
             })
         }) { innerPadding ->
         Column(
@@ -100,7 +95,9 @@ fun NoteEditScreen(
             TextField(
                 value = state.title,
                 onValueChange = { viewModel.onTitleChange(it) },
+                modifier = Modifier.fillMaxWidth(),
                 textStyle = MaterialTheme.typography.titleMedium,
+                placeholder = { Text(stringResource(R.string.title)) },
                 maxLines = Int.MAX_VALUE,
                 shape = RectangleShape,
                 colors = TextFieldDefaults.colors(
@@ -109,16 +106,16 @@ fun NoteEditScreen(
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                     unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
                 ),
-                placeholder = { Text(Translator.getString("title")) },
-                modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(Modifier.height(8.dp))
             TextField(
                 value = state.content,
                 onValueChange = { viewModel.onContentChange(it) },
+                modifier = Modifier.fillMaxWidth(),
                 textStyle = MaterialTheme.typography.bodyMedium,
-                minLines = 10,
+                placeholder = { Text(stringResource(R.string.note)) },
                 maxLines = Int.MAX_VALUE,
+                minLines = 20,
                 shape = RectangleShape,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -126,11 +123,7 @@ fun NoteEditScreen(
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                     unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
                 ),
-                placeholder = { Text(Translator.getString("note")) },
-                modifier = Modifier.fillMaxWidth()
-
             )
-
         }
     }
 

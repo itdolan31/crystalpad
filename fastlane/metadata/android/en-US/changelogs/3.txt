@@ -1,0 +1,2 @@
+• Added "Keep screen on" mode for notes.
+• Improved translation performance.

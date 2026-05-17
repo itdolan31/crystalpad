@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Crystalpad
+  Copyright (C) 2026 itdolan31
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
+    <string name="delete_confirmation_title">¿Eliminar esta nota?</string>
+    <string name="delete_confirmation_message">La nota se eliminará sin posibilidad de recuperación.</string>
+    <string name="title">Título</string>
+    <string name="note">Nota</string>
+    <string name="system">Sistema</string>
+    <string name="dark">Oscuro</string>
+    <string name="light">Claro</string>
+    <string name="language">Idioma</string>
+    <string name="settings">Ajustes</string>
+    <string name="sort_title">Ordenar por</string>
+    <string name="sort_date_desc">Más recientes primero</string>
+    <string name="sort_date_asc">Más antiguos primero</string>
+    <string name="sort_title_asc">Título (A-Z)</string>
+    <string name="sort_title_desc">Título (Z-A)</string>
+    <string name="back">Atrás</string>
+    <string name="more_options">Más opciones</string>
+    <string name="section_interface">Interfaz</string>
+    <string name="section_screen">Pantalla</string>
+    <string name="section_about">Acerca de</string>
+    <string name="source_code">Código fuente</string>
+    <string name="source_code_description">Código fuente de la aplicación en GitHub</string>
+    <string name="theme">Tema</string>
+    <string name="keep_screen_on">Mantener pantalla encendida</string>
+    <string name="keep_screen_on_description">La pantalla no se apagará mientras editas notas</string>
+</resources>

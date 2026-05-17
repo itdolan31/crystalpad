@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Crystalpad
+  Copyright (C) 2026 itdolan31
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="cancel">取消</string>
+    <string name="delete">删除</string>
+    <string name="delete_confirmation_title">删除此笔记？</string>
+    <string name="delete_confirmation_message">笔记删除后将无法恢复。</string>
+    <string name="title">标题</string>
+    <string name="note">笔记</string>
+    <string name="system">系统默认</string>
+    <string name="dark">深色</string>
+    <string name="light">浅色</string>
+    <string name="language">语言</string>
+    <string name="settings">设置</string>
+    <string name="sort_title">排序方式</string>
+    <string name="sort_date_desc">从新到旧</string>
+    <string name="sort_date_asc">从旧到新</string>
+    <string name="sort_title_asc">标题 (A-Z)</string>
+    <string name="sort_title_desc">标题 (Z-A)</string>
+    <string name="back">返回</string>
+    <string name="more_options">更多选项</string>
+    <string name="section_interface">界面</string>
+    <string name="section_screen">屏幕</string>
+    <string name="section_about">关于</string>
+    <string name="source_code">源代码</string>
+    <string name="source_code_description">GitHub 上的应用程序源代码</string>
+    <string name="theme">主题</string>
+    <string name="keep_screen_on">保持屏幕常亮</string>
+    <string name="keep_screen_on_description">编辑笔记时屏幕不会关闭</string>
+</resources>

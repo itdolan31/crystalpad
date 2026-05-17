@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Crystalpad
+  Copyright (C) 2026 itdolan31
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="cancel">Abbrechen</string>
+    <string name="delete">Löschen</string>
+    <string name="delete_confirmation_title">Diese Notiz löschen?</string>
+    <string name="delete_confirmation_message">Die Notiz wird unwiderruflich gelöscht.</string>
+    <string name="title">Titel</string>
+    <string name="note">Notiz</string>
+    <string name="system">System</string>
+    <string name="dark">Dunkel</string>
+    <string name="light">Hell</string>
+    <string name="language">Sprache</string>
+    <string name="settings">Einstellungen</string>
+    <string name="sort_title">Sortieren nach</string>
+    <string name="sort_date_desc">Neueste zuerst</string>
+    <string name="sort_date_asc">Älteste zuerst</string>
+    <string name="sort_title_asc">Titel (A-Z)</string>
+    <string name="sort_title_desc">Titel (Z-A)</string>
+    <string name="back">Zurück</string>
+    <string name="more_options">Weitere Optionen</string>
+    <string name="section_interface">Interface</string>
+    <string name="section_screen">Bildschirm</string>
+    <string name="section_about">Über</string>
+    <string name="source_code">Quellcode</string>
+    <string name="source_code_description">Anwendungsquellcode auf GitHub</string>
+    <string name="theme">Design</string>
+    <string name="keep_screen_on">Bildschirm anlassen</string>
+    <string name="keep_screen_on_description">Der Bildschirm schaltet sich beim Bearbeiten von Notizen nicht aus</string>
+</resources>

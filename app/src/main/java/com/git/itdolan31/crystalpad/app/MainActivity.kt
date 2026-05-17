@@ -1,51 +1,62 @@
+/*
+ * Crystalpad
+ * Copyright (C) 2026 itdolan31
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.git.itdolan31.crystalpad.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.lifecycleScope
-import com.git.itdolan31.crystalpad.core.localization.Translator
-import com.git.itdolan31.crystalpad.data.local.datastore.SettingsDataSource
-import com.git.itdolan31.crystalpad.data.local.room.AppDatabase
-import com.git.itdolan31.crystalpad.data.repository.NoteRepository
-import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.git.itdolan31.crystalpad.navigation.CrystalPadNavHost
 import com.git.itdolan31.crystalpad.ui.theme.CrystalPadTheme
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val noteRepository by lazy {
-        val dao = AppDatabase.getInstance(applicationContext).noteDao()
-        NoteRepository(dao)
-    }
-    private lateinit var settingsRepository: SettingsRepository
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        val dataSource = SettingsDataSource(applicationContext)
-        settingsRepository = SettingsRepository(dataSource)
-
-        lifecycleScope.launch {
-            Translator.init(this@MainActivity, settingsRepository)
+        splashScreen.setKeepOnScreenCondition {
+            !viewModel.isReady
         }
 
         enableEdgeToEdge()
 
         setContent {
-            val themeState by settingsRepository.themeFlow.collectAsState("system")
+            val viewModel: MainViewModel = hiltViewModel()
 
-            CrystalPadTheme(themeType = themeState) {
+            val themeType by viewModel.themeType.collectAsStateWithLifecycle()
+
+            CrystalPadTheme(themeType = themeType) {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    CrystalPadNavHost(settingsRepository, noteRepository)
+                    CrystalPadNavHost()
                 }
             }
         }

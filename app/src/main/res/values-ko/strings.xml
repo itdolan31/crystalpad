@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Crystalpad
+  Copyright (C) 2026 itdolan31
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="cancel">취소</string>
+    <string name="delete">삭제</string>
+    <string name="delete_confirmation_title">이 노트를 삭제하시겠습니까?</string>
+    <string name="delete_confirmation_message">삭제된 노트는 복구할 수 없습니다.</string>
+    <string name="title">제목</string>
+    <string name="note">노트</string>
+    <string name="system">시스템</string>
+    <string name="dark">다크 모드</string>
+    <string name="light">라이트 모드</string>
+    <string name="language">언어</string>
+    <string name="settings">설정</string>
+    <string name="sort_title">정렬 기준</string>
+    <string name="sort_date_desc">최신순</string>
+    <string name="sort_date_asc">오래된순</string>
+    <string name="sort_title_asc">제목 (가나다순)</string>
+    <string name="sort_title_desc">제목 (역순)</string>
+    <string name="back">뒤로</string>
+    <string name="more_options">추가 옵션</string>
+    <string name="section_interface">인터페이스</string>
+    <string name="section_screen">화면</string>
+    <string name="section_about">정보</string>
+    <string name="source_code">소스 코드</string>
+    <string name="source_code_description">GitHub의 애플리케이션 소스 코드</string>
+    <string name="theme">테마</string>
+    <string name="keep_screen_on">화면 켜짐 유지</string>
+    <string name="keep_screen_on_description">노트 편집 중에는 화면이 꺼지지 않습니다</string>
+</resources>

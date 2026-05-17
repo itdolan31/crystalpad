@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Crystalpad
+  Copyright (C) 2026 itdolan31
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_confirmation_title">Удалить эту заметку?</string>
+    <string name="delete_confirmation_message">Заметка будет удалена без возможности восстановления.</string>
+    <string name="title">Заголовок</string>
+    <string name="note">Заметка</string>
+    <string name="system">Системная</string>
+    <string name="dark">Темная</string>
+    <string name="light">Светлая</string>
+    <string name="language">Язык</string>
+    <string name="settings">Настройки</string>
+    <string name="sort_title">Сортировка</string>
+    <string name="sort_date_desc">Сначала новые</string>
+    <string name="sort_date_asc">Сначала старые</string>
+    <string name="sort_title_asc">По названию (А-Я)</string>
+    <string name="sort_title_desc">По названию (Я-А)</string>
+    <string name="back">Назад</string>
+    <string name="more_options">Другие параметры</string>
+    <string name="section_interface">Интерфейс</string>
+    <string name="section_screen">Экран</string>
+    <string name="section_about">О приложении</string>
+    <string name="source_code">Исходный код</string>
+    <string name="source_code_description">Исходный код приложения на GitHub</string>
+    <string name="theme">Тема</string>
+    <string name="keep_screen_on">Не выключать экран</string>
+    <string name="keep_screen_on_description">Экран не будет гаснуть во время редактирования заметок</string>
+</resources>

@@ -1,0 +1,2 @@
+• Ajout du mode "Garder l'écran allumé" pour les notes.
+• Performances de traduction améliorées.

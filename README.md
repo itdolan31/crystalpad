@@ -6,15 +6,17 @@
 
 Simple open-source notepad. No tracking, no ads, just your notes.
 
-### Key Features:
+Crystalpad is a minimalist, open-source notepad for Android.
+Focus on your thoughts without distractions. It is built with Jetpack Compose and Material 3 for a modern and fluid experience.
+
+## Key Features:
 
 * **Privacy First:** No data collection, no tracking, and no internet permission required.
 * **Local Storage:** All your notes are stored securely on your device using Room database.
 * **Material You:** Supports dynamic colors and dark mode for a personalized look.
 * **Lightweight:** Fast startup and low resource usage.
-* **Open Source:** Licensed under GNU GPLv3.
 
-*A clean and simple notepad that respects your privacy.*
+A clean and simple notepad that respects your privacy.
 
 ## Installation
 

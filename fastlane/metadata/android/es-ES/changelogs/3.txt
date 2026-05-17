@@ -1,0 +1,2 @@
+• Añadido el modo "Mantener pantalla encendida" para notas.
+• Mejorado el rendimiento de la traducción.
