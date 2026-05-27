@@ -39,12 +39,12 @@ import kotlinx.coroutines.launch
 class NoteEditViewModel @AssistedInject constructor(
     private val noteRepository: NoteRepository,
     settingsRepository: SettingsRepository,
-    @Assisted private val noteId: Long
+    @Assisted private val noteId: Long?
 ) : ViewModel() {
 
     @AssistedFactory
     interface Factory {
-        fun create(noteId: Long): NoteEditViewModel
+        fun create(noteId: Long? = null): NoteEditViewModel
     }
 
     private val _uiState = MutableStateFlow(NoteEditUiState())
@@ -57,7 +57,6 @@ class NoteEditViewModel @AssistedInject constructor(
     )
 
     private var note: NoteEntity? = null
-    private var isDeleted = false
     private var saveJob: Job? = null
 
     init {
@@ -68,18 +67,16 @@ class NoteEditViewModel @AssistedInject constructor(
         _uiState.update {
             it.copy(title = title)
         }
-        saveNote()
     }
 
     fun onContentChange(content: String) {
         _uiState.update {
             it.copy(content = content)
         }
-        saveNote()
     }
 
     fun deleteNote() {
-        isDeleted = true
+        _uiState.update { it.copy(isDeleted = true) }
         saveJob?.cancel()
         note?.let { deletedNote ->
             viewModelScope.launch {
@@ -89,25 +86,27 @@ class NoteEditViewModel @AssistedInject constructor(
     }
 
     private fun loadNote() {
-        if (noteId == 0L) {
-            note = null
-            _uiState.update { NoteEditUiState() }
-            return
-        }
-        if (note?.id == noteId) return
+        if (noteId == null) return
 
         viewModelScope.launch {
             noteRepository.getNoteById(noteId)?.let { loadedNote ->
                 note = loadedNote
-                _uiState.update { it.copy(title = loadedNote.title, content = loadedNote.content) }
+                _uiState.update {
+                    it.copy(
+                        title = loadedNote.title,
+                        content = loadedNote.content,
+                        originalTitle = loadedNote.title,
+                        originalContent = loadedNote.content
+                    )
+                }
             }
         }
     }
 
-    private fun saveNote() {
+    fun saveNote() {
         val state = _uiState.value
 
-        if (isDeleted || note == null && state.title.isBlank() && state.content.isBlank()) return
+        if ((state.title == state.originalTitle && state.content == state.originalContent) || state.isDeleted || (note == null && state.title.isBlank() && state.content.isBlank())) return
 
         saveJob?.cancel()
         saveJob = viewModelScope.launch {
@@ -127,6 +126,13 @@ class NoteEditViewModel @AssistedInject constructor(
             } else {
                 noteRepository.update(savedNote)
                 note = savedNote
+            }
+
+            _uiState.update {
+                it.copy(
+                    originalTitle = savedNote.title,
+                    originalContent = savedNote.content
+                )
             }
         }
     }

@@ -21,4 +21,6 @@ object SettingsConstants {
     const val DEFAULT_THEME = "system"
     const val DEFAULT_SORT_TYPE = "DATE_DESC"
     const val DEFAULT_KEEP_SCREEN_ON = false
+    const val DEFAULT_BIOMETRY = false
+    const val DEFAULT_TIMEOUT = 0
 }

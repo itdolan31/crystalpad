@@ -55,7 +55,7 @@ import com.git.itdolan31.crystalpad.ui.components.DialogRadioItem
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToSettings: () -> Unit,
-    onNavigateToNoteEdit: (Long) -> Unit
+    onNavigateToNoteEdit: (Long?) -> Unit
 ) {
     var showSortMenu by rememberSaveable { mutableStateOf(false) }
 
@@ -108,7 +108,7 @@ fun HomeScreen(
         })
     }, floatingActionButton = {
         FloatingActionButton(
-            onClick = { onNavigateToNoteEdit(0L) }, modifier = Modifier.padding(16.dp)
+            onClick = { onNavigateToNoteEdit(null) }, modifier = Modifier.padding(16.dp)
         ) {
             Text("+", fontSize = 20.sp)
         }

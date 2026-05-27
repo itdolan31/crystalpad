@@ -25,8 +25,9 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.git.itdolan31.crystalpad.features.home.HomeScreen
@@ -35,10 +36,7 @@ import com.git.itdolan31.crystalpad.features.note_edit.NoteEditViewModel
 import com.git.itdolan31.crystalpad.features.settings.SettingsScreen
 
 @Composable
-fun CrystalPadNavHost(
-) {
-    val backStack = rememberNavBackStack(Screen.Home)
-
+fun CrystalPadNavHost(backStack: NavBackStack<NavKey>) {
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },

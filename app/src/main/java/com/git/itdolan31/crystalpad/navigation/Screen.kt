@@ -29,5 +29,5 @@ sealed class Screen : NavKey {
     data object Settings : Screen()
 
     @Serializable
-    data class NoteEdit(val noteId: Long = 0L) : Screen()
+    data class NoteEdit(val noteId: Long? = null) : Screen()
 }

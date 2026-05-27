@@ -1,0 +1,3 @@
+• Password and biometric data for app login
+• Predictive input animation now works correctly
+• Improved note saving performance

@@ -48,6 +48,8 @@ import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.git.itdolan31.crystalpad.R
 import com.git.itdolan31.crystalpad.ui.components.DeleteConfirmationDialog
 
@@ -61,8 +63,12 @@ fun NoteEditScreen(
 
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
 
+    LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) {
+        viewModel.saveNote()
+    }
+
     Scaffold(
-        modifier = if (keepScreenOn) Modifier.keepScreenOn() else Modifier,
+        modifier = Modifier.then(if (keepScreenOn) Modifier.keepScreenOn() else Modifier),
         topBar = {
             TopAppBar(navigationIcon = {
                 IconButton(
@@ -75,6 +81,17 @@ fun NoteEditScreen(
                     )
                 }
             }, title = {}, actions = {
+                IconButton(
+                    onClick = {
+                        viewModel.saveNote()
+                    },
+                    enabled = state.title != state.originalTitle || state.content != state.originalContent
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_save),
+                        contentDescription = stringResource(R.string.save)
+                    )
+                }
                 IconButton(onClick = {
                     showDeleteDialog = true
                 }) {

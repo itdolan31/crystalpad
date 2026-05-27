@@ -1,0 +1,3 @@
+• Passwort und biometrische Daten für den App-Login
+• Die Animation der vorausschauenden Eingabe funktioniert jetzt korrekt
+• Verbesserte Leistung beim Speichern von Notizen

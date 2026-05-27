@@ -31,8 +31,8 @@ android {
         applicationId = "com.git.itdolan31.crystalpad"
         minSdk = 24
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.2.0"
+        versionCode = 4
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -61,12 +61,6 @@ android {
         includeInApk = false
         includeInBundle = false
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            excludes += "**/build-data.properties"
-        }
-    }
 }
 
 kotlin {
@@ -94,6 +88,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.google.android.material)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.biometric.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

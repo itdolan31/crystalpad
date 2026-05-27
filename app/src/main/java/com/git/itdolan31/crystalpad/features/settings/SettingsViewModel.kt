@@ -20,12 +20,14 @@ package com.git.itdolan31.crystalpad.features.settings
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.git.itdolan31.crystalpad.R
 import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
 import com.git.itdolan31.crystalpad.domain.model.SettingsConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -34,19 +36,37 @@ import java.util.Locale
 class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
-    val themeState: StateFlow<String> = settingsRepository.themeFlow
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = SettingsConstants.DEFAULT_THEME
-        )
+    private val password: StateFlow<String> = settingsRepository.passwordFlow.stateIn(
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = ""
+    )
 
-    val keepScreenOn = settingsRepository.keepScreenOnFlow
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = SettingsConstants.DEFAULT_KEEP_SCREEN_ON
-        )
+    val theme: StateFlow<String> = settingsRepository.themeFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_THEME
+    )
+
+    val isKeepScreenOn: StateFlow<Boolean> = settingsRepository.keepScreenOnFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_KEEP_SCREEN_ON
+    )
+
+    val isPasswordSet: StateFlow<Boolean> = password.map { it.isNotEmpty() }.stateIn(
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = false
+    )
+
+    val isBiometryEnabled: StateFlow<Boolean> = settingsRepository.biometryFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_BIOMETRY
+    )
+
+    val lockTimeout: StateFlow<Int> = settingsRepository.timeoutFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TIMEOUT
+    )
 
     fun getEffectiveLocaleDisplayName(): String {
         val locales = AppCompatDelegate.getApplicationLocales()
@@ -58,6 +78,7 @@ class SettingsViewModel @Inject constructor(
         }.displayLanguage
     }
 
+
     fun setTheme(theme: String) {
         viewModelScope.launch {
             settingsRepository.saveTheme(theme)
@@ -67,6 +88,50 @@ class SettingsViewModel @Inject constructor(
     fun setKeepScreenOn(keepScreenOn: Boolean) {
         viewModelScope.launch {
             settingsRepository.saveKeepScreenOn(keepScreenOn)
+        }
+    }
+
+    private fun setPassword(password: String) {
+        viewModelScope.launch {
+            settingsRepository.savePassword(password)
+        }
+    }
+
+    fun setBiometryEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.saveBiometry(enabled)
+        }
+    }
+
+    fun setLockTimeout(seconds: Int) {
+        viewModelScope.launch {
+            settingsRepository.saveTimeout(seconds)
+        }
+    }
+
+    fun setNewPassword(newPassword: String, confirmPassword: String): Pair<Boolean, Int> {
+        return when {
+            newPassword.length < 4 -> {
+                false to R.string.password_min_length
+            }
+
+            newPassword != confirmPassword -> {
+                false to R.string.password_mismatch
+            }
+
+            else -> {
+                setPassword(newPassword)
+                true to R.string.password_set_success
+            }
+        }
+    }
+
+    fun resetPassword(currentPassword: String): Pair<Boolean, Int> {
+        return if (currentPassword == password.value) {
+            setPassword("")
+            true to R.string.password_reset_success
+        } else {
+            false to R.string.password_incorrect
         }
     }
 }

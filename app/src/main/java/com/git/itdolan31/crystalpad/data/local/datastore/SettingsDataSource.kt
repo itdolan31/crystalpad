@@ -24,6 +24,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.git.itdolan31.crystalpad.domain.model.SettingsConstants
@@ -38,6 +39,9 @@ class SettingsDataSource(private val context: Context) {
         private val THEME = stringPreferencesKey("theme")
         private val SORT_TYPE = stringPreferencesKey("sort_type")
         private val KEEP_SCREEN_ON = booleanPreferencesKey("keep_screen_on")
+        private val PASSWORD = stringPreferencesKey("password")
+        private val BIOMETRY = booleanPreferencesKey("biometry")
+        private val TIMEOUT = intPreferencesKey("timeout")
     }
 
     val themeFlow = context.dataStore.data
@@ -76,6 +80,42 @@ class SettingsDataSource(private val context: Context) {
             preferences[KEEP_SCREEN_ON] ?: SettingsConstants.DEFAULT_KEEP_SCREEN_ON
         }
 
+    val passwordFlow = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            preferences[PASSWORD] ?: ""
+        }
+
+    val biometryFlow = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            preferences[BIOMETRY] ?: SettingsConstants.DEFAULT_BIOMETRY
+        }
+
+    val timeoutFlow = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            preferences[TIMEOUT] ?: SettingsConstants.DEFAULT_TIMEOUT
+        }
+
     suspend fun saveTheme(theme: String) {
         context.dataStore.edit { preferences ->
             preferences[THEME] = theme
@@ -91,6 +131,24 @@ class SettingsDataSource(private val context: Context) {
     suspend fun saveKeepScreenOn(keepScreenOn: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[KEEP_SCREEN_ON] = keepScreenOn
+        }
+    }
+
+    suspend fun savePassword(password: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PASSWORD] = password
+        }
+    }
+
+    suspend fun saveBiometry(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[BIOMETRY] = enabled
+        }
+    }
+
+    suspend fun saveTimeout(seconds: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[TIMEOUT] = seconds
         }
     }
 }

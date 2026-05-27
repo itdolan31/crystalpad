@@ -1,0 +1,3 @@
+• Contraseña y datos biométricos para inicio de sesión en la app
+• La animación de entrada predictiva ahora funciona correctamente
+• Rendimiento mejorado al guardar notas

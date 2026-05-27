@@ -18,6 +18,7 @@
 package com.git.itdolan31.crystalpad.app
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -25,16 +26,25 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation3.runtime.rememberNavBackStack
+import com.git.itdolan31.crystalpad.features.app_lock.AppLockScreen
 import com.git.itdolan31.crystalpad.navigation.CrystalPadNavHost
+import com.git.itdolan31.crystalpad.navigation.Screen
 import com.git.itdolan31.crystalpad.ui.theme.CrystalPadTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private var lockJob: Job? = null
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,22 +52,72 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         splashScreen.setKeepOnScreenCondition {
-            !viewModel.isReady
+            !(viewModel.themeLoaded && viewModel.passwordLoaded)
         }
 
         enableEdgeToEdge()
 
         setContent {
-            val viewModel: MainViewModel = hiltViewModel()
+            val backStack = rememberNavBackStack(Screen.Home)
 
-            val themeType by viewModel.themeType.collectAsStateWithLifecycle()
+            val theme by viewModel.theme.collectAsStateWithLifecycle()
+            val isLocked by viewModel.isLocked.collectAsStateWithLifecycle()
 
-            CrystalPadTheme(themeType = themeType) {
+            CrystalPadTheme(themeType = theme) {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    CrystalPadNavHost()
+                    if (isLocked) {
+                        AppLockScreen(
+                            onUnlocked = { viewModel.setLocked(false) })
+                    } else {
+                        CrystalPadNavHost(backStack)
+                    }
                 }
+            }
+        }
+
+        lifecycleScope.launch {
+            snapshotFlow { viewModel.passwordLoaded }
+                .first { it }
+
+            if (viewModel.isPasswordSet) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            }
+
+            snapshotFlow { viewModel.isPasswordSet }
+                .collect { isSet ->
+                    if (isSet) {
+                        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                    } else {
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                    }
+                }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        lockJob?.cancel()
+        lockJob = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val timeout = viewModel.lockTimeout
+        val isPasswordSet = viewModel.isPasswordSet
+
+        if (isPasswordSet) {
+            if (timeout > 0) {
+                lockJob = lifecycleScope.launch {
+                    delay(timeout * 1000L)
+                    viewModel.setLocked(true)
+                }
+            } else if (timeout == 0) {
+                viewModel.setLocked(true)
             }
         }
     }

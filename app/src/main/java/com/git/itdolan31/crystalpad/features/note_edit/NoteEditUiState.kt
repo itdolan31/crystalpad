@@ -19,5 +19,8 @@ package com.git.itdolan31.crystalpad.features.note_edit
 
 data class NoteEditUiState(
     val title: String = "",
-    val content: String = ""
+    val content: String = "",
+    val originalTitle: String = "",
+    val originalContent: String = "",
+    val isDeleted: Boolean = false
 )

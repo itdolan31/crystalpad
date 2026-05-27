@@ -27,6 +27,9 @@ class SettingsRepository(
     val themeFlow: Flow<String> = settingsDataSource.themeFlow
     val sortTypeFlow: Flow<String> = settingsDataSource.sortTypeFlow
     val keepScreenOnFlow: Flow<Boolean> = settingsDataSource.keepScreenOnFlow
+    val passwordFlow: Flow<String> = settingsDataSource.passwordFlow
+    val biometryFlow: Flow<Boolean> = settingsDataSource.biometryFlow
+    val timeoutFlow: Flow<Int> = settingsDataSource.timeoutFlow
 
     suspend fun saveTheme(theme: String) {
         settingsDataSource.saveTheme(theme)
@@ -38,5 +41,17 @@ class SettingsRepository(
 
     suspend fun saveKeepScreenOn(keepScreenOn: Boolean) {
         settingsDataSource.saveKeepScreenOn(keepScreenOn)
+    }
+
+    suspend fun savePassword(password: String) {
+        settingsDataSource.savePassword(password)
+    }
+
+    suspend fun saveBiometry(enabled: Boolean) {
+        settingsDataSource.saveBiometry(enabled)
+    }
+
+    suspend fun saveTimeout(seconds: Int) {
+        settingsDataSource.saveTimeout(seconds)
     }
 }

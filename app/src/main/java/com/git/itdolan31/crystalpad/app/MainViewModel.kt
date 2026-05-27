@@ -18,29 +18,67 @@
 package com.git.itdolan31.crystalpad.app
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.domain.model.SettingsConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
-    var isReady by mutableStateOf(false)
+    var themeLoaded by mutableStateOf(false)
+        private set
+    var passwordLoaded by mutableStateOf(false)
         private set
 
-    val themeType = settingsRepository.themeFlow
-        .onEach { isReady = true }
+    private val _isLocked = MutableStateFlow(false)
+    val isLocked: StateFlow<Boolean> = _isLocked.asStateFlow()
+
+    var isPasswordSet by mutableStateOf(false)
+        private set
+    var lockTimeout by mutableIntStateOf(SettingsConstants.DEFAULT_TIMEOUT)
+        private set
+
+    val theme: StateFlow<String> = settingsRepository.themeFlow
+        .onEach { themeLoaded = true }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = "system"
         )
+
+    init {
+        viewModelScope.launch {
+            _isLocked.value = settingsRepository.passwordFlow.first().isNotEmpty()
+            passwordLoaded = true
+
+            settingsRepository.passwordFlow.collect { password ->
+                isPasswordSet = password.isNotEmpty()
+            }
+        }
+
+        viewModelScope.launch {
+            settingsRepository.timeoutFlow.collect { timeout ->
+                lockTimeout = timeout
+            }
+        }
+    }
+
+    fun setLocked(locked: Boolean) {
+        _isLocked.value = locked
+    }
 }

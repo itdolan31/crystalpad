@@ -1,0 +1,3 @@
+• Mot de passe et données biométriques pour la connexion à l'application
+• L'animation de saisie prédictive fonctionne désormais correctement
+• Performances améliorées lors de l'enregistrement des notes

@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SettingsRadioItem(
     onClick: () -> Unit,
+    enabled: Boolean = true,
     icon: Painter,
     title: String,
     subtitle: String,
@@ -46,6 +47,7 @@ fun SettingsRadioItem(
 ) {
     TextButton(
         onClick = onClick,
+        enabled = enabled,
         shape = RectangleShape,
     ) {
         Row(
@@ -73,7 +75,8 @@ fun SettingsRadioItem(
             }
             Switch(
                 checked = checked,
-                onCheckedChange = onCheckedChange
+                onCheckedChange = onCheckedChange,
+                enabled = enabled
             )
         }
     }
