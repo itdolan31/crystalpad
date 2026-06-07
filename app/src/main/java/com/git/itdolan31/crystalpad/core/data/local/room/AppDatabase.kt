@@ -15,14 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.data.local.room
+package com.git.itdolan31.crystalpad.core.data.local.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.git.itdolan31.crystalpad.data.local.room.dao.NoteDao
-import com.git.itdolan31.crystalpad.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.data.local.room.dao.NoteDao
+import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
 
 @Database(
     version = 1,

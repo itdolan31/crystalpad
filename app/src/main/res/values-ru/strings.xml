@@ -49,7 +49,6 @@
     <string name="biometric_title">Биометрия</string>
     <string name="biometric_subtitle">Вход по отпечатку пальца или лицу</string>
     <string name="auto_lock_title">Автоблокировка</string>
-    <string name="auto_lock_subtitle">Блокировать при сворачивании приложения</string>
     <string name="reset_password">Сбросить пароль</string>
     <string name="set_password">Установить пароль</string>
     <string name="password">Пароль</string>
@@ -74,4 +73,23 @@
     <string name="password_set_success">Пароль установлен</string>
     <string name="password_reset_success">Пароль сброшен</string>
     <string name="password_incorrect">Неверный пароль</string>
+    <string name="format_date_title">Формат даты</string>
+    <string name="format_time_title">Формат времени</string>
+    <string name="font_size">Размер шрифта</string>
+    <string name="font_size_error">Размер шрифта должен быть в диапазоне 15–50</string>
+    <string name="flag_secure">Блокировать скриншоты</string>
+    <string name="flag_secure_description">Запрещает скриншоты и скрывает содержимое экрана</string>
+    <string name="export_title">Экспорт заметок</string>
+    <string name="import_title">Импорт заметок</string>
+    <string name="export_title_description">Экспорт заметок в ZIP файл</string>
+    <string name="import_title_description">Импорт заметок из ZIP файла</string>
+    <string name="export_successful">Экспорт выполнен успешно</string>
+    <string name="import_successful">Импорт выполнен успешно</string>
+    <string name="error_file_not_found">Файл %s не найден</string>
+    <string name="error_file_not_json">Файл %s не является JSON форматом</string>
+    <string name="error_version_not_supported">Версия %d не поддерживается</string>
+    <string name="error_folder_notes_empty">Папка notes/ пуста</string>
+    <string name="error_zip_empty">ZIP файл пуст</string>
+    <string name="section_data">Данные</string>
+    <string name="export_no_notes">Нет заметок для экспорта</string>
 </resources>

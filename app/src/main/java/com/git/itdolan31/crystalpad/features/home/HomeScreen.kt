@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.git.itdolan31.crystalpad.R
-import com.git.itdolan31.crystalpad.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.core.domain.model.NoteSortType
 import com.git.itdolan31.crystalpad.features.home.components.NoteItem
 import com.git.itdolan31.crystalpad.ui.components.DialogRadioItem
 
@@ -60,6 +60,8 @@ fun HomeScreen(
     var showSortMenu by rememberSaveable { mutableStateOf(false) }
 
     val sortType by viewModel.sortType.collectAsState()
+    val datePattern by viewModel.datePattern.collectAsState()
+    val timePattern by viewModel.timePattern.collectAsState()
     val notes by viewModel.notes.collectAsState()
 
     Scaffold(topBar = {
@@ -121,7 +123,7 @@ fun HomeScreen(
             items(notes) { note ->
                 NoteItem(note = note, onClick = { onNavigateToNoteEdit(note.id) }, onDeleteClick = {
                     viewModel.deleteNote(note)
-                })
+                }, datePattern = datePattern, timePattern = timePattern)
             }
         }
     }

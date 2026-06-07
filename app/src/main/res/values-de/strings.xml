@@ -49,7 +49,6 @@
     <string name="biometric_title">Biometrie</string>
     <string name="biometric_subtitle">Anmeldung mit Fingerabdruck oder Gesicht</string>
     <string name="auto_lock_title">Automatische Sperrung</string>
-    <string name="auto_lock_subtitle">Sperren beim Minimieren der App</string>
     <string name="reset_password">Passwort zurücksetzen</string>
     <string name="set_password">Passwort festlegen</string>
     <string name="password">Passwort</string>
@@ -74,4 +73,23 @@
     <string name="password_set_success">Passwort festgelegt</string>
     <string name="password_reset_success">Passwort zurückgesetzt</string>
     <string name="password_incorrect">Falsches Passwort</string>
+    <string name="format_date_title">Datumsformat</string>
+    <string name="format_time_title">Zeitformat</string>
+    <string name="font_size">Schriftgröße</string>
+    <string name="font_size_error">Die Schriftgröße muss im Bereich von 15–50 liegen</string>
+    <string name="flag_secure">Screenshots blockieren</string>
+    <string name="flag_secure_description">Verhindert Screenshots und blendet Bildschirminhalte aus</string>
+    <string name="export_title">Notizen exportieren</string>
+    <string name="import_title">Notizen importieren</string>
+    <string name="export_title_description">Notizen in ZIP-Datei exportieren</string>
+    <string name="import_title_description">Notizen aus ZIP-Datei importieren</string>
+    <string name="export_successful">Export erfolgreich</string>
+    <string name="import_successful">Import erfolgreich</string>
+    <string name="error_file_not_found">Datei %s nicht gefunden</string>
+    <string name="error_file_not_json">Datei %s ist nicht im JSON-Format</string>
+    <string name="error_version_not_supported">Version %d wird nicht unterstützt</string>
+    <string name="error_folder_notes_empty">Ordner notes/ ist leer</string>
+    <string name="error_zip_empty">ZIP-Datei ist leer</string>
+    <string name="section_data">Daten</string>
+    <string name="export_no_notes">Keine Notizen zum Exportieren</string>
 </resources>

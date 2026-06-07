@@ -19,7 +19,7 @@ package com.git.itdolan31.crystalpad.features.app_lock
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -15,14 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.data.local.room.dao
+package com.git.itdolan31.crystalpad.core.data.local.room.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.git.itdolan31.crystalpad.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

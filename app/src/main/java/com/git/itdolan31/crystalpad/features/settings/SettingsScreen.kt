@@ -21,6 +21,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.AuthenticationRequest.Companion.biometricRequest
 import androidx.biometric.AuthenticationResult
 import androidx.biometric.BiometricManager
@@ -66,6 +68,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.git.itdolan31.crystalpad.R
+import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
+import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
+import com.git.itdolan31.crystalpad.core.utils.formatDateTime
 import com.git.itdolan31.crystalpad.features.settings.components.SettingsRadioItem
 import com.git.itdolan31.crystalpad.features.settings.components.SettingsSectionHeader
 import com.git.itdolan31.crystalpad.features.settings.components.SettingsTextItem
@@ -77,40 +82,63 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(), onBack: () -> Unit
 ) {
-    val confirmTitle = stringResource(R.string.biometric_confirm_title)
-
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val uriHandler = LocalUriHandler.current
 
+    val notes by viewModel.notes.collectAsState()
     val theme by viewModel.theme.collectAsState()
     val isKeepScreenOn by viewModel.isKeepScreenOn.collectAsState()
     val isPasswordSet by viewModel.isPasswordSet.collectAsState()
     val isBiometryEnabled by viewModel.isBiometryEnabled.collectAsState()
     val lockTimeout by viewModel.lockTimeout.collectAsState()
+    val datePattern by viewModel.datePattern.collectAsState()
+    val timePattern by viewModel.timePattern.collectAsState()
+    val fontSize by viewModel.fontSize.collectAsState()
+    val isFlagSecureEnabled by viewModel.isFlagSecureEnabled.collectAsState()
 
     var showThemeDialog by rememberSaveable { mutableStateOf(false) }
     var showPasswordDialog by rememberSaveable { mutableStateOf(false) }
     var showLockTimeoutDialog by rememberSaveable { mutableStateOf(false) }
+    var showDatePatternDialog by rememberSaveable { mutableStateOf(false) }
+    var showTimePatternDialog by rememberSaveable { mutableStateOf(false) }
+    var showFontSizeDialog by rememberSaveable { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    var password by rememberSaveable { mutableStateOf("") }
-    var confirmPassword by rememberSaveable { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
-
     var hasBiometric by remember { mutableStateOf(false) }
 
     val biometricRequest = remember {
         biometricRequest(
-            title = confirmTitle
+            title = context.getString(R.string.biometric_confirm_title)
         ) { }
     }
 
     val biometricLauncher = rememberAuthenticationLauncher { result ->
         if (result is AuthenticationResult.Success) {
             viewModel.setBiometryEnabled(!isBiometryEnabled)
+        }
+    }
+
+    val exportZipLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/zip")
+    ) { uri: Uri? ->
+        uri?.let {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(viewModel.exportNotes(context, it))
+            }
+        }
+    }
+
+    val importZipLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        uri?.let {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(
+                    viewModel.importNotes(context, it)
+                )
+            }
         }
     }
 
@@ -145,16 +173,26 @@ fun SettingsScreen(
             SettingsSectionHeader(stringResource(R.string.section_interface))
 
             SettingsTextItem(
-                onClick = { showThemeDialog = true }, icon = when (theme) {
-                    "light" -> painterResource(R.drawable.ic_light_mode)
-                    "dark" -> painterResource(R.drawable.ic_dark_mode)
-                    "oled" -> painterResource(R.drawable.ic_contrast)
-                    else -> painterResource(R.drawable.ic_brightness_4)
-                }, title = stringResource(R.string.theme), subtitle = when (theme) {
-                    "light" -> stringResource(R.string.light)
-                    "dark" -> stringResource(R.string.dark)
-                    "oled" -> "OLED"
-                    else -> stringResource(R.string.system)
+                onClick = { showThemeDialog = true },
+                icon = painterResource(remember(theme) {
+                    when (theme) {
+                        "light" -> R.drawable.ic_light_mode
+                        "dark" -> R.drawable.ic_dark_mode
+                        "oled" -> R.drawable.ic_contrast
+                        else -> R.drawable.ic_brightness_4
+                    }
+                }),
+                title = stringResource(R.string.theme),
+                subtitle = if (theme == "oled") {
+                    "OLED"
+                } else {
+                    stringResource(remember(theme) {
+                        when (theme) {
+                            "light" -> R.string.light
+                            "dark" -> R.string.dark
+                            else -> R.string.system
+                        }
+                    })
                 }
             )
 
@@ -173,6 +211,27 @@ fun SettingsScreen(
                     subtitle = language
                 )
             }
+
+            SettingsTextItem(
+                onClick = { showDatePatternDialog = true },
+                icon = painterResource(R.drawable.ic_date_range),
+                title = stringResource(R.string.format_date_title),
+                subtitle = formatDateTime(1738184400000, datePattern.pattern)
+            )
+
+            SettingsTextItem(
+                onClick = { showTimePatternDialog = true },
+                icon = painterResource(R.drawable.ic_schedule),
+                title = stringResource(R.string.format_time_title),
+                subtitle = formatDateTime(23400000, timePattern.pattern)
+            )
+
+            SettingsTextItem(
+                onClick = { showFontSizeDialog = true },
+                icon = painterResource(R.drawable.ic_format_size),
+                title = stringResource(R.string.font_size),
+                subtitle = fontSize.toString()
+            )
 
             SettingsSectionHeader(stringResource(R.string.section_screen))
 
@@ -222,9 +281,51 @@ fun SettingsScreen(
                 enabled = isPasswordSet,
                 icon = painterResource(R.drawable.ic_timer),
                 title = stringResource(R.string.auto_lock_title),
-                subtitle = stringResource(R.string.auto_lock_subtitle),
+                subtitle = stringResource(remember(lockTimeout) {
+                    when (lockTimeout) {
+                        -1 -> R.string.never
+                        60 -> R.string.minute_1
+                        300 -> R.string.minutes_5
+                        900 -> R.string.minutes_15
+                        1800 -> R.string.minutes_30
+                        3600 -> R.string.hour_1
+                        else -> R.string.immediately
+                    }
+                }),
                 checked = lockTimeout >= 0,
                 onCheckedChange = { showLockTimeoutDialog = true })
+
+            SettingsRadioItem(
+                onClick = { viewModel.setFlagSecureEnabled(!isFlagSecureEnabled) },
+                icon = painterResource(R.drawable.ic_screenshot_monitor),
+                title = stringResource(R.string.flag_secure),
+                subtitle = stringResource(R.string.flag_secure_description),
+                checked = isFlagSecureEnabled,
+                onCheckedChange = { viewModel.setFlagSecureEnabled(it) })
+
+            SettingsSectionHeader(stringResource(R.string.section_data))
+
+            SettingsTextItem(
+                onClick = {
+                    if (notes.isEmpty()) {
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(context.getString(R.string.export_no_notes))
+                        }
+                    } else {
+                        exportZipLauncher.launch("crystalpad-backup-${System.currentTimeMillis()}.zip")
+                    }
+                },
+                icon = painterResource(R.drawable.ic_upload),
+                title = stringResource(R.string.export_title),
+                subtitle = stringResource(R.string.export_title_description)
+            )
+
+            SettingsTextItem(
+                onClick = { importZipLauncher.launch(arrayOf("application/zip")) },
+                icon = painterResource(R.drawable.ic_download),
+                title = stringResource(R.string.import_title),
+                subtitle = stringResource(R.string.import_title_description)
+            )
 
             SettingsSectionHeader(stringResource(R.string.section_about))
 
@@ -238,12 +339,14 @@ fun SettingsScreen(
     }
 
     if (showThemeDialog) {
-        val themes = listOf(
-            "system" to stringResource(R.string.system),
-            "light" to stringResource(R.string.light),
-            "dark" to stringResource(R.string.dark),
-            "oled" to "OLED"
-        )
+        val themes = remember {
+            listOf(
+                "system" to R.string.system,
+                "light" to R.string.light,
+                "dark" to R.string.dark,
+                "oled" to null
+            )
+        }
 
         AlertDialog(onDismissRequest = { showThemeDialog = false }, confirmButton = {}, text = {
             Column(
@@ -251,9 +354,12 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
             ) {
-                themes.forEach { (code, text) ->
+                themes.forEach { (code, id) ->
                     DialogRadioItem(
-                        text = text, selected = theme == code
+                        text = when (id) {
+                            null -> "OLED"
+                            else -> stringResource(id)
+                        }, selected = theme == code
                     ) {
                         viewModel.setTheme(code)
                         showThemeDialog = false
@@ -262,37 +368,33 @@ fun SettingsScreen(
             }
         })
     } else if (showPasswordDialog) {
+        var passwordInput by rememberSaveable { mutableStateOf("") }
+        var confirmPasswordInput by rememberSaveable { mutableStateOf("") }
+        var passwordVisible by rememberSaveable { mutableStateOf(false) }
+        var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
+
         AlertDialog(onDismissRequest = {
             showPasswordDialog = false
-            password = ""
-            confirmPassword = ""
         }, confirmButton = {
             TextButton(
                 onClick = {
                     if (isPasswordSet) {
-                        val (isSuccess, messageRes) = viewModel.resetPassword(password)
+                        val (isNotSuccess, resId) = viewModel.resetPassword(passwordInput)
 
-                        if (isSuccess) {
-                            showPasswordDialog = false
-                            password = ""
-                        }
+                        showPasswordDialog = isNotSuccess
 
                         coroutineScope.launch {
-                            snackbarHostState.showSnackbar(context.getString(messageRes))
+                            snackbarHostState.showSnackbar(context.getString(resId))
                         }
                     } else {
-                        val (isSuccess, messageRes) = viewModel.setNewPassword(
-                            password, confirmPassword
+                        val (isNotSuccess, resId) = viewModel.setNewPassword(
+                            passwordInput, confirmPasswordInput
                         )
 
-                        if (isSuccess) {
-                            showPasswordDialog = false
-                            password = ""
-                            confirmPassword = ""
-                        }
+                        showPasswordDialog = isNotSuccess
 
                         coroutineScope.launch {
-                            snackbarHostState.showSnackbar(context.getString(messageRes))
+                            snackbarHostState.showSnackbar(context.getString(resId))
                         }
                     }
                 }) {
@@ -302,8 +404,6 @@ fun SettingsScreen(
             TextButton(
                 onClick = {
                     showPasswordDialog = false
-                    password = ""
-                    confirmPassword = ""
                 }) {
                 Text(stringResource(R.string.cancel))
             }
@@ -322,8 +422,8 @@ fun SettingsScreen(
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
+                    value = passwordInput,
+                    onValueChange = { passwordInput = it },
                     label = { Text(stringResource(R.string.password)) },
                     trailingIcon = {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -345,8 +445,8 @@ fun SettingsScreen(
                 if (!isPasswordSet) {
                     Spacer(Modifier.height(16.dp))
                     OutlinedTextField(
-                        value = confirmPassword,
-                        onValueChange = { confirmPassword = it },
+                        value = confirmPasswordInput,
+                        onValueChange = { confirmPasswordInput = it },
                         label = { Text(stringResource(R.string.confirm_password)) },
                         trailingIcon = {
                             IconButton(onClick = {
@@ -371,31 +471,30 @@ fun SettingsScreen(
             }
         })
     } else if (showLockTimeoutDialog) {
-        val lockTimeouts = listOf(
-            -1 to stringResource(R.string.never),
-            0 to stringResource(R.string.immediately),
-            60 to stringResource(R.string.minute_1),
-            300 to stringResource(R.string.minutes_5),
-            900 to stringResource(R.string.minutes_15),
-            1800 to stringResource(R.string.minutes_30),
-            3600 to stringResource(R.string.hour_1)
-        )
+        val lockTimeouts = remember {
+            listOf(
+                -1 to R.string.never,
+                0 to R.string.immediately,
+                60 to R.string.minute_1,
+                300 to R.string.minutes_5,
+                900 to R.string.minutes_15,
+                1800 to R.string.minutes_30,
+                3600 to R.string.hour_1
+            )
+        }
 
         AlertDialog(
             onDismissRequest = { showLockTimeoutDialog = false },
             confirmButton = {},
-            title = {
-                Text(stringResource(R.string.timeout))
-            },
             text = {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    lockTimeouts.forEach { (code, text) ->
+                    lockTimeouts.forEach { (code, id) ->
                         DialogRadioItem(
-                            text = text, selected = lockTimeout == code
+                            text = stringResource(id), selected = lockTimeout == code
                         ) {
                             viewModel.setLockTimeout(code)
                             showLockTimeoutDialog = false
@@ -403,5 +502,90 @@ fun SettingsScreen(
                     }
                 }
             })
+    } else if (showDatePatternDialog) {
+        val datePatterns = remember { DatePatternType.entries }
+
+        AlertDialog(
+            onDismissRequest = { showDatePatternDialog = false },
+            confirmButton = {},
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    datePatterns.forEach { code ->
+                        DialogRadioItem(
+                            text = formatDateTime(1738184400000, code.pattern),
+                            selected = datePattern == code
+                        ) {
+                            viewModel.setDatePattern(code)
+                            showDatePatternDialog = false
+                        }
+                    }
+                }
+            })
+    } else if (showTimePatternDialog) {
+        val timePatterns = remember { TimePatternType.entries }
+
+        AlertDialog(
+            onDismissRequest = { showTimePatternDialog = false },
+            confirmButton = {},
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    timePatterns.forEach { code ->
+                        DialogRadioItem(
+                            text = formatDateTime(23400000, code.pattern),
+                            selected = timePattern == code
+                        ) {
+                            viewModel.setTimePattern(code)
+                            showTimePatternDialog = false
+                        }
+                    }
+                }
+            })
+    } else if (showFontSizeDialog) {
+        var fontSizeInput by rememberSaveable { mutableStateOf(fontSize.toString()) }
+
+        AlertDialog(onDismissRequest = { showFontSizeDialog = false }, confirmButton = {
+            TextButton(onClick = {
+                val size = fontSizeInput.toIntOrNull()
+
+                if (size != null && size in 15..50) {
+                    showFontSizeDialog = false
+                    viewModel.setFontSize(size)
+                } else {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(context.getString(R.string.font_size_error))
+                    }
+                }
+            }) { Text("OK") }
+        }, dismissButton = {
+            TextButton(onClick = { showFontSizeDialog = false }) {
+                Text(
+                    stringResource(R.string.cancel)
+                )
+            }
+        }, text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                OutlinedTextField(
+                    value = fontSizeInput,
+                    onValueChange = {
+                        fontSizeInput = it
+                    },
+                    label = { Text(stringResource(R.string.font_size)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true
+                )
+            }
+        })
     }
 }

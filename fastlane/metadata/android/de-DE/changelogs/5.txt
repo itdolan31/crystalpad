@@ -1,0 +1,4 @@
+• Datums- und Zeitformatierung hinzugefügt
+• Möglichkeit zur Anpassung der Schriftgröße im Editor hinzugefügt
+• Bildschirmfoto-Sperrmodus hinzugefügt
+• Möglichkeit zum Exportieren von Notizen in ein ZIP-Archiv hinzugefügt

@@ -29,6 +29,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -48,6 +49,7 @@ import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.git.itdolan31.crystalpad.R
@@ -60,6 +62,7 @@ fun NoteEditScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     val keepScreenOn by viewModel.keepScreenOn.collectAsState()
+    val fontSize by viewModel.fontSize.collectAsState()
 
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -113,9 +116,8 @@ fun NoteEditScreen(
                 value = state.title,
                 onValueChange = { viewModel.onTitleChange(it) },
                 modifier = Modifier.fillMaxWidth(),
-                textStyle = MaterialTheme.typography.titleMedium,
+                textStyle = LocalTextStyle.current.copy(fontSize = fontSize.sp),
                 placeholder = { Text(stringResource(R.string.title)) },
-                maxLines = Int.MAX_VALUE,
                 shape = RectangleShape,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -129,9 +131,8 @@ fun NoteEditScreen(
                 value = state.content,
                 onValueChange = { viewModel.onContentChange(it) },
                 modifier = Modifier.fillMaxWidth(),
-                textStyle = MaterialTheme.typography.bodyMedium,
+                textStyle = LocalTextStyle.current.copy(fontSize = fontSize.sp),
                 placeholder = { Text(stringResource(R.string.note)) },
-                maxLines = Int.MAX_VALUE,
                 minLines = 20,
                 shape = RectangleShape,
                 colors = TextFieldDefaults.colors(

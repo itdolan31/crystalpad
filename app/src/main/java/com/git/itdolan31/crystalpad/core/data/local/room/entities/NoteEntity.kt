@@ -15,25 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.di
+package com.git.itdolan31.crystalpad.core.data.local.room.entities
 
-import android.content.Context
-import com.git.itdolan31.crystalpad.data.local.room.AppDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Singleton
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
-    @Provides
-    @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
-        AppDatabase.getInstance(context)
-
-    @Provides
-    fun provideNoteDao(db: AppDatabase) = db.noteDao()
-}
+@Entity("notes")
+data class NoteEntity(
+    @PrimaryKey(true)
+    val id: Long = 0,
+    val title: String = "",
+    val content: String = "",
+    val timestamp: Long = System.currentTimeMillis()
+)

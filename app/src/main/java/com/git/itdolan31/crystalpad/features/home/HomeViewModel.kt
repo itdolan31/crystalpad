@@ -19,10 +19,13 @@ package com.git.itdolan31.crystalpad.features.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.git.itdolan31.crystalpad.data.local.room.entities.NoteEntity
-import com.git.itdolan31.crystalpad.data.repository.NoteRepository
-import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
-import com.git.itdolan31.crystalpad.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.data.repository.NoteRepository
+import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
+import com.git.itdolan31.crystalpad.core.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,7 +44,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     val sortType: StateFlow<NoteSortType> = settingsRepository.sortTypeFlow
         .map { name ->
-            NoteSortType.entries.find { it.name == name } ?: NoteSortType.DATE_DESC
+            NoteSortType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_SORT_TYPE
         }
         .stateIn(
             scope = viewModelScope,
@@ -54,6 +57,26 @@ class HomeViewModel @Inject constructor(
             noteRepository.getNotes(selectedType)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val datePattern = settingsRepository.datePatternFlow
+        .map { name ->
+            DatePatternType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_DATE_PATTERN
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = SettingsConstants.DEFAULT_DATE_PATTERN
+        )
+
+    val timePattern = settingsRepository.timePatternFlow
+        .map { name ->
+            TimePatternType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_TIME_PATTERN
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = SettingsConstants.DEFAULT_TIME_PATTERN
+        )
 
     fun onSortTypeChange(type: NoteSortType) {
         viewModelScope.launch {

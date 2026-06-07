@@ -15,13 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.di
+package com.git.itdolan31.crystalpad.core.di
 
 import android.content.Context
-import com.git.itdolan31.crystalpad.data.local.datastore.SettingsDataSource
-import com.git.itdolan31.crystalpad.data.local.room.dao.NoteDao
-import com.git.itdolan31.crystalpad.data.repository.NoteRepository
-import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.core.data.local.datastore.SettingsDataSource
+import com.git.itdolan31.crystalpad.core.data.local.room.dao.NoteDao
+import com.git.itdolan31.crystalpad.core.data.repository.NoteRepository
+import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

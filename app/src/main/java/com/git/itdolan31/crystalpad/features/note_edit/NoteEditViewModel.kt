@@ -19,10 +19,10 @@ package com.git.itdolan31.crystalpad.features.note_edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.git.itdolan31.crystalpad.data.local.room.entities.NoteEntity
-import com.git.itdolan31.crystalpad.data.repository.NoteRepository
-import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
-import com.git.itdolan31.crystalpad.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.data.repository.NoteRepository
+import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -30,6 +30,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -41,7 +42,6 @@ class NoteEditViewModel @AssistedInject constructor(
     settingsRepository: SettingsRepository,
     @Assisted private val noteId: Long?
 ) : ViewModel() {
-
     @AssistedFactory
     interface Factory {
         fun create(noteId: Long? = null): NoteEditViewModel
@@ -50,10 +50,16 @@ class NoteEditViewModel @AssistedInject constructor(
     private val _uiState = MutableStateFlow(NoteEditUiState())
     val uiState = _uiState.asStateFlow()
 
-    val keepScreenOn = settingsRepository.keepScreenOnFlow.stateIn(
+    val keepScreenOn: StateFlow<Boolean> = settingsRepository.keepScreenOnFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = SettingsConstants.DEFAULT_KEEP_SCREEN_ON
+    )
+
+    val fontSize: StateFlow<Int> = settingsRepository.fontSizeFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_FONT_SIZE
     )
 
     private var note: NoteEntity? = null

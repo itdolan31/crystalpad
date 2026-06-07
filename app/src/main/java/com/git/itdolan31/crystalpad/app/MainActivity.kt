@@ -26,11 +26,12 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.git.itdolan31.crystalpad.features.app_lock.AppLockScreen
 import com.git.itdolan31.crystalpad.navigation.CrystalPadNavHost
@@ -39,7 +40,6 @@ import com.git.itdolan31.crystalpad.ui.theme.CrystalPadTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -78,23 +78,15 @@ class MainActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
-            snapshotFlow { viewModel.passwordLoaded }
-                .first { it }
-
-            if (viewModel.isPasswordSet) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-            } else {
-                window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-            }
-
-            snapshotFlow { viewModel.isPasswordSet }
-                .collect { isSet ->
-                    if (isSet) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isFlagSecureEnabled.collect { enabled ->
+                    if (enabled) {
                         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
                     } else {
                         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
                     }
                 }
+            }
         }
     }
 

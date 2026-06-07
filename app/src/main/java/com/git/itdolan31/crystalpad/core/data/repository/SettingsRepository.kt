@@ -15,10 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.data.repository
+package com.git.itdolan31.crystalpad.core.data.repository
 
-import com.git.itdolan31.crystalpad.data.local.datastore.SettingsDataSource
-import com.git.itdolan31.crystalpad.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.core.data.local.datastore.SettingsDataSource
+import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
+import com.git.itdolan31.crystalpad.core.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import kotlinx.coroutines.flow.Flow
 
 class SettingsRepository(
@@ -30,6 +32,10 @@ class SettingsRepository(
     val passwordFlow: Flow<String> = settingsDataSource.passwordFlow
     val biometryFlow: Flow<Boolean> = settingsDataSource.biometryFlow
     val timeoutFlow: Flow<Int> = settingsDataSource.timeoutFlow
+    val datePatternFlow: Flow<String> = settingsDataSource.datePatternFlow
+    val timePatternFlow: Flow<String> = settingsDataSource.timePatternFlow
+    val fontSizeFlow: Flow<Int> = settingsDataSource.fontSizeFlow
+    val flagSecureFlow: Flow<Boolean> = settingsDataSource.flagSecureFlow
 
     suspend fun saveTheme(theme: String) {
         settingsDataSource.saveTheme(theme)
@@ -53,5 +59,21 @@ class SettingsRepository(
 
     suspend fun saveTimeout(seconds: Int) {
         settingsDataSource.saveTimeout(seconds)
+    }
+
+    suspend fun saveDatePattern(pattern: DatePatternType) {
+        settingsDataSource.saveDatePattern(pattern.name)
+    }
+
+    suspend fun saveTimePattern(pattern: TimePatternType) {
+        settingsDataSource.saveTimePattern(pattern.name)
+    }
+
+    suspend fun saveFontSize(size: Int) {
+        settingsDataSource.saveFontSize(size)
+    }
+
+    suspend fun saveFlagSecure(enabled: Boolean) {
+        settingsDataSource.saveFlagSecure(enabled)
     }
 }

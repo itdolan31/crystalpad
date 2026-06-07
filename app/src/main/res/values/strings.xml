@@ -49,7 +49,6 @@
     <string name="biometric_title">Biometrics</string>
     <string name="biometric_subtitle">Login with fingerprint or face</string>
     <string name="auto_lock_title">Auto-lock</string>
-    <string name="auto_lock_subtitle">Lock when app is minimized</string>
     <string name="reset_password">Reset password</string>
     <string name="set_password">Set password</string>
     <string name="password">Password</string>
@@ -74,4 +73,23 @@
     <string name="password_set_success">Password set</string>
     <string name="password_reset_success">Password reset</string>
     <string name="password_incorrect">Incorrect password</string>
+    <string name="format_date_title">Format date</string>
+    <string name="format_time_title">Format time</string>
+    <string name="font_size">Font size</string>
+    <string name="font_size_error">The font size should be in the range of 15–50</string>
+    <string name="flag_secure">Block screenshots</string>
+    <string name="flag_secure_description">Prevents screenshots and hides screen contents</string>
+    <string name="export_title">Export notes</string>
+    <string name="import_title">Import notes</string>
+    <string name="export_title_description">Export notes to ZIP file</string>
+    <string name="import_title_description">Import notes from ZIP file</string>
+    <string name="export_successful">Export is successful</string>
+    <string name="import_successful">Import is successful</string>
+    <string name="error_file_not_found">File %s not found</string>
+    <string name="error_file_not_json">File %s is not in JSON format</string>
+    <string name="error_version_not_supported">Version %d is not supported</string>
+    <string name="error_folder_notes_empty">Folder notes/ is empty</string>
+    <string name="error_zip_empty">Zip file is empty</string>
+    <string name="section_data">Data</string>
+    <string name="export_no_notes">No notes to export</string>
 </resources>

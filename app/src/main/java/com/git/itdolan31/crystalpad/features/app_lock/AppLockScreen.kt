@@ -71,8 +71,6 @@ import kotlinx.coroutines.launch
 fun AppLockScreen(
     viewModel: AppLockViewModel = hiltViewModel(), onUnlocked: () -> Unit
 ) {
-    val confirmTitle = stringResource(R.string.biometric_confirm_title)
-
     val context = LocalContext.current
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -84,7 +82,7 @@ fun AppLockScreen(
 
     val biometricRequest = remember {
         biometricRequest(
-            title = confirmTitle
+            title = context.getString(R.string.biometric_confirm_title)
         ) { }
     }
 

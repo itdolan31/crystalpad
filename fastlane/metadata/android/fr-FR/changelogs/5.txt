@@ -1,0 +1,4 @@
+• Ajout du formatage de la date et de l’heure
+• Ajout de la possibilité d’ajuster la taille de la police dans l’éditeur
+• Ajout d’un mode de blocage des captures d’écran
+• Ajout de la possibilité d’exporter des notes vers une archive ZIP

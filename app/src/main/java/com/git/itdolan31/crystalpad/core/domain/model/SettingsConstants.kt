@@ -15,12 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.domain.model
+package com.git.itdolan31.crystalpad.core.domain.model
 
 object SettingsConstants {
     const val DEFAULT_THEME = "system"
-    const val DEFAULT_SORT_TYPE = "DATE_DESC"
+    val DEFAULT_SORT_TYPE = NoteSortType.DATE_DESC
     const val DEFAULT_KEEP_SCREEN_ON = false
     const val DEFAULT_BIOMETRY = false
     const val DEFAULT_TIMEOUT = 0
+    val DEFAULT_DATE_PATTERN = DatePatternType.DD_MM_YYYY_DOT
+    val DEFAULT_TIME_PATTERN = TimePatternType.HH_MM
+    const val DEFAULT_FONT_SIZE = 16
+    const val DEFAULT_FLAG_SECURE = true
 }

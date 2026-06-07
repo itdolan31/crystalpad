@@ -49,7 +49,6 @@
     <string name="biometric_title">生体認証</string>
     <string name="biometric_subtitle">指紋または顔でログイン</string>
     <string name="auto_lock_title">自動ロック</string>
-    <string name="auto_lock_subtitle">アプリ最小化時にロック</string>
     <string name="reset_password">パスワードをリセット</string>
     <string name="set_password">パスワードを設定</string>
     <string name="password">パスワード</string>
@@ -74,4 +73,23 @@
     <string name="password_set_success">パスワードを設定しました</string>
     <string name="password_reset_success">パスワードをリセットしました</string>
     <string name="password_incorrect">パスワードが正しくありません</string>
+    <string name="format_date_title">日付の形式</string>
+    <string name="format_time_title">時刻の形式</string>
+    <string name="font_size">フォントサイズ</string>
+    <string name="font_size_error">フォントサイズは15～50の範囲で指定してください</string>
+    <string name="flag_secure">スクリーンショットをブロック</string>
+    <string name="flag_secure_description">スクリーンショットを防止し、画面の内容を非表示にします</string>
+    <string name="export_title">ノートをエクスポート</string>
+    <string name="import_title">ノートをインポート</string>
+    <string name="export_title_description">ノートをZIPファイルにエクスポート</string>
+    <string name="import_title_description">ZIPファイルからノートをインポート</string>
+    <string name="export_successful">エクスポート成功</string>
+    <string name="import_successful">インポート成功</string>
+    <string name="error_file_not_found">ファイル %s が見つかりません</string>
+    <string name="error_file_not_json">ファイル %s はJSON形式ではありません</string>
+    <string name="error_version_not_supported">バージョン %d はサポートされていません</string>
+    <string name="error_folder_notes_empty">notes/ フォルダは空です</string>
+    <string name="error_zip_empty">ZIPファイルは空です</string>
+    <string name="section_data">データ</string>
+    <string name="export_no_notes">エクスポートするノートがありません</string>
 </resources>

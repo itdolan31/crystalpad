@@ -1,0 +1,4 @@
+• Se agregó el formato de fecha y hora
+• Se agregó la capacidad de ajustar el tamaño de la fuente en el editor
+• Se agregó un modo de bloqueo de capturas de pantalla
+• Se agregó la capacidad de exportar notas a un archivo ZIP

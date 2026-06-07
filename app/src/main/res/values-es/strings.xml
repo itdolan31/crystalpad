@@ -49,7 +49,6 @@
     <string name="biometric_title">Biometría</string>
     <string name="biometric_subtitle">Iniciar sesión con huella digital o rostro</string>
     <string name="auto_lock_title">Bloqueo automático</string>
-    <string name="auto_lock_subtitle">Bloquear al minimizar la aplicación</string>
     <string name="reset_password">Restablecer contraseña</string>
     <string name="set_password">Establecer contraseña</string>
     <string name="password">Contraseña</string>
@@ -74,4 +73,23 @@
     <string name="password_set_success">Contraseña establecida</string>
     <string name="password_reset_success">Contraseña restablecida</string>
     <string name="password_incorrect">Contraseña incorrecta</string>
+    <string name="format_date_title">Formato de fecha</string>
+    <string name="format_time_title">Formato de hora</string>
+    <string name="font_size">Tamaño de fuente</string>
+    <string name="font_size_error">El tamaño de fuente debe estar en el rango de 15 a 50</string>
+    <string name="flag_secure">Bloquear capturas de pantalla</string>
+    <string name="flag_secure_description">Evita capturas de pantalla y oculta el contenido de la pantalla</string>
+    <string name="export_title">Exportar notas</string>
+    <string name="import_title">Importar notas</string>
+    <string name="export_title_description">Exportar notas a archivo ZIP</string>
+    <string name="import_title_description">Importar notas desde archivo ZIP</string>
+    <string name="export_successful">Exportación exitosa</string>
+    <string name="import_successful">Importación exitosa</string>
+    <string name="error_file_not_found">Archivo %s no encontrado</string>
+    <string name="error_file_not_json">El archivo %s no está en formato JSON</string>
+    <string name="error_version_not_supported">Versión %d no soportada</string>
+    <string name="error_folder_notes_empty">La carpeta notes/ está vacía</string>
+    <string name="error_zip_empty">El archivo ZIP está vacío</string>
+    <string name="section_data">Datos</string>
+    <string name="export_no_notes">No hay notas para exportar</string>
 </resources>

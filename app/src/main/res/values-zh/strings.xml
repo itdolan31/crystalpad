@@ -49,7 +49,6 @@
     <string name="biometric_title">生物识别</string>
     <string name="biometric_subtitle">使用指纹或人脸登录</string>
     <string name="auto_lock_title">自动锁定</string>
-    <string name="auto_lock_subtitle">应用最小化时锁定</string>
     <string name="reset_password">重置密码</string>
     <string name="set_password">设置密码</string>
     <string name="password">密码</string>
@@ -74,4 +73,23 @@
     <string name="password_set_success">密码已设置</string>
     <string name="password_reset_success">密码已重置</string>
     <string name="password_incorrect">密码不正确</string>
+    <string name="format_date_title">日期格式</string>
+    <string name="format_time_title">时间格式</string>
+    <string name="font_size">字体大小</string>
+    <string name="font_size_error">字体大小应在15–50范围内</string>
+    <string name="flag_secure">阻止截屏</string>
+    <string name="flag_secure_description">防止截屏并隐藏屏幕内容</string>
+    <string name="export_title">导出笔记</string>
+    <string name="import_title">导入笔记</string>
+    <string name="export_title_description">将笔记导出为ZIP文件</string>
+    <string name="import_title_description">从ZIP文件导入笔记</string>
+    <string name="export_successful">导出成功</string>
+    <string name="import_successful">导入成功</string>
+    <string name="error_file_not_found">未找到文件 %s</string>
+    <string name="error_file_not_json">文件 %s 不是JSON格式</string>
+    <string name="error_version_not_supported">不支持版本 %d</string>
+    <string name="error_folder_notes_empty">notes/ 文件夹为空</string>
+    <string name="error_zip_empty">ZIP文件为空</string>
+    <string name="section_data">数据</string>
+    <string name="export_no_notes">没有要导出的笔记</string>
 </resources>

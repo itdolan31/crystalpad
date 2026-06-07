@@ -23,8 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
-import com.git.itdolan31.crystalpad.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,13 +40,16 @@ import kotlinx.coroutines.launch
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
+    private val _isLocked = MutableStateFlow(false)
+    private val _isFlagSecureEnabled = MutableStateFlow(SettingsConstants.DEFAULT_FLAG_SECURE)
+
     var themeLoaded by mutableStateOf(false)
         private set
     var passwordLoaded by mutableStateOf(false)
         private set
 
-    private val _isLocked = MutableStateFlow(false)
     val isLocked: StateFlow<Boolean> = _isLocked.asStateFlow()
+    val isFlagSecureEnabled: StateFlow<Boolean> = _isFlagSecureEnabled.asStateFlow()
 
     var isPasswordSet by mutableStateOf(false)
         private set
@@ -74,6 +77,12 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             settingsRepository.timeoutFlow.collect { timeout ->
                 lockTimeout = timeout
+            }
+        }
+
+        viewModelScope.launch {
+            settingsRepository.flagSecureFlow.collect { enabled ->
+                _isFlagSecureEnabled.value = enabled
             }
         }
     }

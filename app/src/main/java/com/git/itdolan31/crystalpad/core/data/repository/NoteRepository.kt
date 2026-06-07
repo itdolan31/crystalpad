@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.data.repository
+package com.git.itdolan31.crystalpad.core.data.repository
 
-import com.git.itdolan31.crystalpad.data.local.room.dao.NoteDao
-import com.git.itdolan31.crystalpad.data.local.room.entities.NoteEntity
-import com.git.itdolan31.crystalpad.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.core.data.local.room.dao.NoteDao
+import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.domain.model.NoteSortType
 import kotlinx.coroutines.flow.Flow
 
 class NoteRepository(private val noteDao: NoteDao) {

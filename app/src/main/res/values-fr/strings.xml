@@ -49,7 +49,6 @@
     <string name="biometric_title">Biométrie</string>
     <string name="biometric_subtitle">Connexion par empreinte digitale ou visage</string>
     <string name="auto_lock_title">Verrouillage automatique</string>
-    <string name="auto_lock_subtitle">Verrouiller lors de la réduction de l\'application</string>
     <string name="reset_password">Réinitialiser le mot de passe</string>
     <string name="set_password">Définir le mot de passe</string>
     <string name="password">Mot de passe</string>
@@ -74,4 +73,23 @@
     <string name="password_set_success">Mot de passe défini</string>
     <string name="password_reset_success">Mot de passe réinitialisé</string>
     <string name="password_incorrect">Mot de passe incorrect</string>
+    <string name="format_date_title">Format de date</string>
+    <string name="format_time_title">Format de l\'heure</string>
+    <string name="font_size">Taille de police</string>
+    <string name="font_size_error">La taille de police doit être comprise entre 15 et 50</string>
+    <string name="flag_secure">Bloquer les captures d\'écran</string>
+    <string name="flag_secure_description">Empêche les captures d\'écran et masque le contenu de l\'écran</string>
+    <string name="export_title">Exporter les notes</string>
+    <string name="import_title">Importer les notes</string>
+    <string name="export_title_description">Exporter les notes vers un fichier ZIP</string>
+    <string name="import_title_description">Importer les notes depuis un fichier ZIP</string>
+    <string name="export_successful">Exportation réussie</string>
+    <string name="import_successful">Importation réussie</string>
+    <string name="error_file_not_found">Fichier %s introuvable</string>
+    <string name="error_file_not_json">Le fichier %s n\'est pas au format JSON</string>
+    <string name="error_version_not_supported">Version %d non prise en charge</string>
+    <string name="error_folder_notes_empty">Le dossier notes/ est vide</string>
+    <string name="error_zip_empty">Le fichier ZIP est vide</string>
+    <string name="section_data">Données</string>
+    <string name="export_no_notes">Aucune note à exporter</string>
 </resources>

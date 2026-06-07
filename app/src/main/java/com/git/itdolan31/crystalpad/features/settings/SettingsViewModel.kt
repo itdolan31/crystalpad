@@ -17,28 +17,51 @@
  */
 package com.git.itdolan31.crystalpad.features.settings
 
+import android.content.Context
+import android.net.Uri
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.git.itdolan31.crystalpad.R
-import com.git.itdolan31.crystalpad.data.repository.SettingsRepository
-import com.git.itdolan31.crystalpad.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.data.repository.NoteRepository
+import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
+import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Locale
+import java.util.zip.ZipEntry
+import java.util.zip.ZipException
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val settingsRepository: SettingsRepository
+    private val noteRepository: NoteRepository, private val settingsRepository: SettingsRepository
 ) : ViewModel() {
     private val password: StateFlow<String> = settingsRepository.passwordFlow.stateIn(
         scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = ""
     )
+
+    val notes: StateFlow<List<NoteEntity>> =
+        noteRepository.getNotes(SettingsConstants.DEFAULT_SORT_TYPE).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     val theme: StateFlow<String> = settingsRepository.themeFlow.stateIn(
         scope = viewModelScope,
@@ -68,16 +91,43 @@ class SettingsViewModel @Inject constructor(
         initialValue = SettingsConstants.DEFAULT_TIMEOUT
     )
 
+    val datePattern = settingsRepository.datePatternFlow.map { name ->
+        DatePatternType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_DATE_PATTERN
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_DATE_PATTERN
+    )
+
+    val timePattern = settingsRepository.timePatternFlow.map { name ->
+        TimePatternType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_TIME_PATTERN
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TIME_PATTERN
+    )
+
+    val fontSize: StateFlow<Int> = settingsRepository.fontSizeFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_FONT_SIZE
+    )
+
+    val isFlagSecureEnabled: StateFlow<Boolean> = settingsRepository.flagSecureFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_FLAG_SECURE
+    )
+
     fun getEffectiveLocaleDisplayName(): String {
         val locales = AppCompatDelegate.getApplicationLocales()
 
         return if (locales.isEmpty) {
             Locale.getDefault()
         } else {
-            locales.get(0) ?: Locale.getDefault()
+            locales[0] ?: Locale.getDefault()
         }.displayLanguage
     }
-
 
     fun setTheme(theme: String) {
         viewModelScope.launch {
@@ -109,19 +159,43 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun setDatePattern(pattern: DatePatternType) {
+        viewModelScope.launch {
+            settingsRepository.saveDatePattern(pattern)
+        }
+    }
+
+    fun setTimePattern(pattern: TimePatternType) {
+        viewModelScope.launch {
+            settingsRepository.saveTimePattern(pattern)
+        }
+    }
+
+    fun setFontSize(size: Int) {
+        viewModelScope.launch {
+            settingsRepository.saveFontSize(size)
+        }
+    }
+
+    fun setFlagSecureEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.saveFlagSecure(enabled)
+        }
+    }
+
     fun setNewPassword(newPassword: String, confirmPassword: String): Pair<Boolean, Int> {
         return when {
             newPassword.length < 4 -> {
-                false to R.string.password_min_length
+                true to R.string.password_min_length
             }
 
             newPassword != confirmPassword -> {
-                false to R.string.password_mismatch
+                true to R.string.password_mismatch
             }
 
             else -> {
                 setPassword(newPassword)
-                true to R.string.password_set_success
+                false to R.string.password_set_success
             }
         }
     }
@@ -129,9 +203,166 @@ class SettingsViewModel @Inject constructor(
     fun resetPassword(currentPassword: String): Pair<Boolean, Int> {
         return if (currentPassword == password.value) {
             setPassword("")
-            true to R.string.password_reset_success
+            false to R.string.password_reset_success
         } else {
-            false to R.string.password_incorrect
+            true to R.string.password_incorrect
         }
+    }
+
+    suspend fun exportNotes(context: Context, uri: Uri): String {
+        var result = context.getString(R.string.export_successful)
+
+        withContext(Dispatchers.IO) {
+            val tempZip = File(context.cacheDir, "export-${System.currentTimeMillis()}.zip")
+
+            try {
+                ZipOutputStream(FileOutputStream(tempZip)).use { zipOut ->
+                    zipOut.putNextEntry(ZipEntry("manifest.json"))
+                    zipOut.write(
+                        JSONObject().apply {
+                            put("version", 1)
+                        }.toString().toByteArray()
+                    )
+                    zipOut.closeEntry()
+
+                    zipOut.putNextEntry(ZipEntry("notes/"))
+                    zipOut.closeEntry()
+
+                    notes.value.forEach { note ->
+                        val folder = "notes/${note.id}/"
+
+                        zipOut.putNextEntry(ZipEntry(folder))
+                        zipOut.closeEntry()
+
+                        zipOut.putNextEntry(ZipEntry("${folder}note.json"))
+                        zipOut.write(
+                            JSONObject().apply {
+                                put("title", note.title)
+                                put("content", note.content)
+                                put("timestamp", note.timestamp)
+                            }.toString().toByteArray()
+                        )
+                        zipOut.closeEntry()
+                    }
+                }
+
+                val outputStream = context.contentResolver.openOutputStream(uri)
+                if (outputStream == null) {
+                    result = context.getString(R.string.error_file_not_found, uri.toString())
+                    return@withContext
+                }
+
+                outputStream.use { output ->
+                    tempZip.inputStream().use { input ->
+                        input.copyTo(output)
+                    }
+                }
+
+                result = context.getString(R.string.export_successful)
+            } catch (e: Exception) {
+                result = "$e"
+            } finally {
+                tempZip.delete()
+            }
+        }
+        return result
+    }
+
+    suspend fun importNotes(context: Context, uri: Uri): String {
+        var result = context.getString(R.string.import_successful)
+
+        withContext(Dispatchers.IO) {
+            val tempZip = File(context.cacheDir, "import-${System.currentTimeMillis()}.zip")
+
+            val inputStream = context.contentResolver.openInputStream(uri)
+            if (inputStream == null) {
+                result = context.getString(R.string.error_file_not_found, uri.toString())
+                return@withContext
+            }
+
+            inputStream.use { input ->
+                tempZip.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            try {
+                ZipFile(tempZip).use { zip ->
+                    val manifestEntry = zip.getEntry("manifest.json")
+                    if (manifestEntry == null) {
+                        result = context.getString(R.string.error_file_not_found, "manifest.json")
+                        return@withContext
+                    }
+
+                    val manifestJson = try {
+                        JSONObject(
+                            zip.getInputStream(manifestEntry).bufferedReader()
+                                .use { it.readText() })
+                    } catch (_: JSONException) {
+                        result = context.getString(R.string.error_file_not_json, "manifest.json")
+                        return@withContext
+                    }
+
+                    val version = manifestJson.optInt("version", 0)
+                    if (version < 1) {
+                        result = context.getString(R.string.error_version_not_supported, version)
+                        return@withContext
+                    }
+
+                    val noteFolders = zip.entries().asSequence()
+                        .filter { it.isDirectory && it.name.matches(Regex("^notes/[^/]+/$")) }
+                        .map { it.name }.toList()
+
+                    if (noteFolders.isEmpty()) {
+                        result = context.getString(R.string.error_folder_notes_empty)
+                        return@withContext
+                    }
+
+                    val importNotes = mutableListOf<NoteEntity>()
+
+                    for (folder in noteFolders) {
+                        val fileName = "${folder}note.json"
+                        val noteEntry = zip.getEntry(fileName)
+                        if (noteEntry == null) {
+                            result = context.getString(R.string.error_file_not_found, fileName)
+                            return@withContext
+                        }
+
+                        val noteJson = try {
+                            JSONObject(
+                                zip.getInputStream(noteEntry).bufferedReader()
+                                    .use { it.readText() })
+                        } catch (_: JSONException) {
+                            result = context.getString(R.string.error_file_not_json, fileName)
+                            return@withContext
+                        }
+
+                        importNotes.add(
+                            NoteEntity(
+                                title = noteJson.optString("title", ""),
+                                content = noteJson.optString("content", ""),
+                                timestamp = noteJson.optLong(
+                                    "timestamp", System.currentTimeMillis()
+                                )
+                            )
+                        )
+                    }
+
+                    importNotes.forEach { note ->
+                        val importedNote = NoteEntity(
+                            title = note.title, content = note.content, timestamp = note.timestamp
+                        )
+
+                        noteRepository.insert(importedNote)
+                    }
+                }
+            } catch (_: ZipException) {
+                result = context.getString(R.string.error_zip_empty)
+            } finally {
+                tempZip.delete()
+            }
+        }
+
+        return result
     }
 }

@@ -47,14 +47,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.git.itdolan31.crystalpad.R
-import com.git.itdolan31.crystalpad.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
+import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
+import com.git.itdolan31.crystalpad.core.utils.formatDateTime
 import com.git.itdolan31.crystalpad.ui.components.DeleteConfirmationDialog
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
-fun NoteItem(note: NoteEntity, onClick: () -> Unit, onDeleteClick: () -> Unit) {
+fun NoteItem(
+    note: NoteEntity,
+    onClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    datePattern: DatePatternType,
+    timePattern: TimePatternType
+) {
     var showMenu by rememberSaveable { mutableStateOf(false) }
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -98,7 +104,7 @@ fun NoteItem(note: NoteEntity, onClick: () -> Unit, onDeleteClick: () -> Unit) {
                         tint = MaterialTheme.colorScheme.primary,
                     )
                     Text(
-                        formatDate(note.timestamp),
+                        formatDateTime(note.timestamp, datePattern.pattern),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -110,7 +116,7 @@ fun NoteItem(note: NoteEntity, onClick: () -> Unit, onDeleteClick: () -> Unit) {
                         tint = MaterialTheme.colorScheme.primary,
                     )
                     Text(
-                        formatTime(note.timestamp),
+                        formatDateTime(note.timestamp, timePattern.pattern),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -145,24 +151,9 @@ fun NoteItem(note: NoteEntity, onClick: () -> Unit, onDeleteClick: () -> Unit) {
     }
 
     if (showDeleteDialog) {
-        DeleteConfirmationDialog(
-            onDismiss = { showDeleteDialog = false },
-            onConfirm = {
-                onDeleteClick()
-                showDeleteDialog = false
-            }
-        )
+        DeleteConfirmationDialog(onDismiss = { showDeleteDialog = false }, onConfirm = {
+            onDeleteClick()
+            showDeleteDialog = false
+        })
     }
-}
-
-private fun formatDate(timestamp: Long): String {
-    val date = Date(timestamp)
-    val format = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-    return format.format(date)
-}
-
-private fun formatTime(timestamp: Long): String {
-    val date = Date(timestamp)
-    val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-    return format.format(date)
 }

@@ -1,0 +1,4 @@
+• Added date and time formatting
+• Added the ability to adjust the font size in the editor
+• Added a screenshot blocking mode
+• Added the ability to export notes to a ZIP archive
