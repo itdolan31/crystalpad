@@ -579,7 +579,9 @@ fun SettingsScreen(
                 OutlinedTextField(
                     value = fontSizeInput,
                     onValueChange = {
-                        fontSizeInput = it
+                        if (it.isEmpty() || it.toIntOrNull() != null) {
+                            fontSizeInput = it
+                        }
                     },
                     label = { Text(stringResource(R.string.font_size)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

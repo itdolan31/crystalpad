@@ -1,0 +1,2 @@
+• Beim Ändern der Schriftgröße erscheinen jetzt Einzüge zwischen den Zeilen
+• Die Speichern-Taste ist jetzt nur aktiv, wenn die Notiz gespeichert werden kann

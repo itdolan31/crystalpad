@@ -1,0 +1,2 @@
+• Indents now appear between lines when changing the font size
+• The save button is now only active when the note can be saved

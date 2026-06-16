@@ -60,7 +60,8 @@ class HomeViewModel @Inject constructor(
 
     val datePattern = settingsRepository.datePatternFlow
         .map { name ->
-            DatePatternType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_DATE_PATTERN
+            DatePatternType.entries.find { it.name == name }
+                ?: SettingsConstants.DEFAULT_DATE_PATTERN
         }
         .stateIn(
             scope = viewModelScope,
@@ -70,7 +71,8 @@ class HomeViewModel @Inject constructor(
 
     val timePattern = settingsRepository.timePatternFlow
         .map { name ->
-            TimePatternType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_TIME_PATTERN
+            TimePatternType.entries.find { it.name == name }
+                ?: SettingsConstants.DEFAULT_TIME_PATTERN
         }
         .stateIn(
             scope = viewModelScope,

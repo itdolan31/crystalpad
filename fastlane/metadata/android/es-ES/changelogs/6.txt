@@ -1,0 +1,2 @@
+• Ahora aparecen sangrías entre líneas al cambiar el tamaño de la fuente
+• El botón de guardar ahora solo está activo cuando la nota se puede guardar

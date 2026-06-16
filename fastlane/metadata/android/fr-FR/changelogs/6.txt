@@ -1,0 +1,2 @@
+• Des retraits apparaissent désormais entre les lignes lors du changement de taille de police
+• Le bouton d'enregistrement n'est désormais actif que lorsque la note peut être enregistrée

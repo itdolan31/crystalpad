@@ -75,8 +75,7 @@ fun NoteEditScreen(
         topBar = {
             TopAppBar(navigationIcon = {
                 IconButton(
-                    onClick =
-                        onBack
+                    onClick = onBack
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_back),
@@ -87,8 +86,7 @@ fun NoteEditScreen(
                 IconButton(
                     onClick = {
                         viewModel.saveNote()
-                    },
-                    enabled = state.title != state.originalTitle || state.content != state.originalContent
+                    }, enabled = state.canSave()
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_save),
@@ -116,7 +114,9 @@ fun NoteEditScreen(
                 value = state.title,
                 onValueChange = { viewModel.onTitleChange(it) },
                 modifier = Modifier.fillMaxWidth(),
-                textStyle = LocalTextStyle.current.copy(fontSize = fontSize.sp),
+                textStyle = LocalTextStyle.current.copy(
+                    fontSize = fontSize.sp, lineHeight = (fontSize * 1.5).sp
+                ),
                 placeholder = { Text(stringResource(R.string.title)) },
                 shape = RectangleShape,
                 colors = TextFieldDefaults.colors(
@@ -131,7 +131,9 @@ fun NoteEditScreen(
                 value = state.content,
                 onValueChange = { viewModel.onContentChange(it) },
                 modifier = Modifier.fillMaxWidth(),
-                textStyle = LocalTextStyle.current.copy(fontSize = fontSize.sp),
+                textStyle = LocalTextStyle.current.copy(
+                    fontSize = fontSize.sp, lineHeight = (fontSize * 1.5).sp
+                ),
                 placeholder = { Text(stringResource(R.string.note)) },
                 minLines = 20,
                 shape = RectangleShape,

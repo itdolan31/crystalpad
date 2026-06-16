@@ -81,48 +81,20 @@ class NoteEditViewModel @AssistedInject constructor(
         }
     }
 
-    fun deleteNote() {
-        _uiState.update { it.copy(isDeleted = true) }
-        saveJob?.cancel()
-        note?.let { deletedNote ->
-            viewModelScope.launch {
-                noteRepository.delete(deletedNote)
-            }
-        }
-    }
-
-    private fun loadNote() {
-        if (noteId == null) return
-
-        viewModelScope.launch {
-            noteRepository.getNoteById(noteId)?.let { loadedNote ->
-                note = loadedNote
-                _uiState.update {
-                    it.copy(
-                        title = loadedNote.title,
-                        content = loadedNote.content,
-                        originalTitle = loadedNote.title,
-                        originalContent = loadedNote.content
-                    )
-                }
-            }
-        }
-    }
-
     fun saveNote() {
         val state = _uiState.value
 
-        if ((state.title == state.originalTitle && state.content == state.originalContent) || state.isDeleted || (note == null && state.title.isBlank() && state.content.isBlank())) return
+        if (!state.canSave()) return
 
         saveJob?.cancel()
         saveJob = viewModelScope.launch {
             val savedNote = note?.copy(
-                title = state.title.trim(),
-                content = state.content.trim(),
+                title = state.title,
+                content = state.content,
                 timestamp = System.currentTimeMillis()
             ) ?: NoteEntity(
-                title = state.title.trim(),
-                content = state.content.trim(),
+                title = state.title,
+                content = state.content,
                 timestamp = System.currentTimeMillis()
             )
 
@@ -139,6 +111,37 @@ class NoteEditViewModel @AssistedInject constructor(
                     originalTitle = savedNote.title,
                     originalContent = savedNote.content
                 )
+            }
+        }
+    }
+
+    fun deleteNote() {
+        _uiState.update { it.copy(isDeleted = true) }
+        saveJob?.cancel()
+        note?.let { deletedNote ->
+            viewModelScope.launch {
+                noteRepository.delete(deletedNote)
+            }
+        }
+    }
+
+    private fun loadNote() {
+        if (noteId == null) {
+            _uiState.update { it.copy(isNewNote = true) }
+            return
+        }
+
+        viewModelScope.launch {
+            noteRepository.getNoteById(noteId)?.let { loadedNote ->
+                note = loadedNote
+                _uiState.update {
+                    it.copy(
+                        title = loadedNote.title,
+                        content = loadedNote.content,
+                        originalTitle = loadedNote.title,
+                        originalContent = loadedNote.content
+                    )
+                }
             }
         }
     }

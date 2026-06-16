@@ -22,5 +22,10 @@ data class NoteEditUiState(
     val content: String = "",
     val originalTitle: String = "",
     val originalContent: String = "",
-    val isDeleted: Boolean = false
-)
+    val isDeleted: Boolean = false,
+    val isNewNote: Boolean = false
+) {
+    fun canSave(): Boolean {
+        return (title != originalTitle || content != originalContent) && !isDeleted && !(isNewNote && title.isBlank() && content.isBlank())
+    }
+}

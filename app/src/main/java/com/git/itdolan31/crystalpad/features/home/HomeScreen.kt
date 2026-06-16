@@ -112,7 +112,7 @@ fun HomeScreen(
         FloatingActionButton(
             onClick = { onNavigateToNoteEdit(null) }, modifier = Modifier.padding(16.dp)
         ) {
-            Text("+", fontSize = 20.sp)
+            Text("+", fontSize = 24.sp)
         }
     }) { innerPadding ->
         LazyColumn(
