@@ -6,7 +6,6 @@ Hauptmerkmale:
 
 • Datenschutz zuerst: Keine Datenerfassung, kein Tracking und keine Internetberechtigung erforderlich.
 • Lokale Speicherung: Alle Ihre Notizen werden sicher auf Ihrem Gerät in einer Room-Datenbank gespeichert.
-• Material You: Unterstützt dynamische Farben und den Dunkelmodus für einen personalisierten Look.
 • Leichtgewicht: Schneller Start und geringer Ressourcenverbrauch.
 
 Ein sauberer und einfacher Notizblock, der Ihre Privatsphäre respektiert.

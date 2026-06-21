@@ -6,7 +6,6 @@ Características principales:
 
 • La privacidad es lo primero: sin recopilación de datos, sin seguimiento y sin necesidad de permisos de internet.
 • Almacenamiento local: todas tus notas se guardan de forma segura en tu dispositivo mediante la base de datos Room.
-• Material You: compatible con colores dinámicos y modo oscuro para un aspecto personalizado.
 • Ligero: inicio rápido y bajo consumo de recursos.
 
 Un bloc de notas limpio y sencillo que respeta tu privacidad.
