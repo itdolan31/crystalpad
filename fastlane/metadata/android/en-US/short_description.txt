@@ -1,1 +1,1 @@
-Simple open-source notepad. No tracking, no ads, just your notes.
+A simple notepad, no tracking or ads, just your notes

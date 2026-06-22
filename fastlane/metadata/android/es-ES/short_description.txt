@@ -1,1 +1,1 @@
-Bloc de notas sencillo y abierto. Sin rastreo ni anuncios, solo tus notas.
+Un bloc de notas simple, sin seguimiento ni anuncios, solo tus notas
