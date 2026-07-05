@@ -22,6 +22,9 @@ A clean and simple notepad that respects your privacy.
 [<img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.svg"
 alt="Get it on GitHub"
 height="80">](https://github.com/itdolan31/crystalpad/releases)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+alt="Get it on  F-Droid"
+height="80">](https://f-droid.org/packages/com.git.itdolan31.crystalpad)
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
 alt="Get it on IzzyOnDroid"
 height="80">](https://apt.izzysoft.de/packages/com.git.itdolan31.crystalpad)
