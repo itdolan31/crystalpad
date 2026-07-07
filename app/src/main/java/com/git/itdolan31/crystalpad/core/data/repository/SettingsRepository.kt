@@ -20,25 +20,36 @@ package com.git.itdolan31.crystalpad.core.data.repository
 import com.git.itdolan31.crystalpad.core.data.local.datastore.SettingsDataSource
 import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
 import com.git.itdolan31.crystalpad.core.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.core.domain.model.ThemeType
 import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SettingsRepository(
     private val settingsDataSource: SettingsDataSource
 ) {
-    val themeFlow: Flow<String> = settingsDataSource.themeFlow
-    val sortTypeFlow: Flow<String> = settingsDataSource.sortTypeFlow
+    val themeFlow: Flow<ThemeType> = settingsDataSource.themeFlow.map { name ->
+        ThemeType.fromName(name)
+    }
+    val sortTypeFlow: Flow<NoteSortType> = settingsDataSource.sortTypeFlow.map { name ->
+        NoteSortType.fromName(name)
+    }
     val keepScreenOnFlow: Flow<Boolean> = settingsDataSource.keepScreenOnFlow
     val passwordFlow: Flow<String> = settingsDataSource.passwordFlow
     val biometryFlow: Flow<Boolean> = settingsDataSource.biometryFlow
     val timeoutFlow: Flow<Int> = settingsDataSource.timeoutFlow
-    val datePatternFlow: Flow<String> = settingsDataSource.datePatternFlow
-    val timePatternFlow: Flow<String> = settingsDataSource.timePatternFlow
+    val datePatternFlow: Flow<DatePatternType> = settingsDataSource.datePatternFlow.map { name ->
+        DatePatternType.fromName(name)
+    }
+    val timePatternFlow: Flow<TimePatternType> = settingsDataSource.timePatternFlow.map { name ->
+        TimePatternType.fromName(name)
+    }
     val fontSizeFlow: Flow<Int> = settingsDataSource.fontSizeFlow
     val flagSecureFlow: Flow<Boolean> = settingsDataSource.flagSecureFlow
+    val dynamicColorFlow: Flow<Boolean> = settingsDataSource.dynamicColorFlow
 
-    suspend fun saveTheme(theme: String) {
-        settingsDataSource.saveTheme(theme)
+    suspend fun saveTheme(themeType: ThemeType) {
+        settingsDataSource.saveTheme(themeType.name)
     }
 
     suspend fun saveSortType(sortType: NoteSortType) {
@@ -75,5 +86,9 @@ class SettingsRepository(
 
     suspend fun saveFlagSecure(enabled: Boolean) {
         settingsDataSource.saveFlagSecure(enabled)
+    }
+
+    suspend fun saveDynamicColor(enabled: Boolean) {
+        settingsDataSource.saveDynamicColor(enabled)
     }
 }

@@ -92,4 +92,6 @@
     <string name="error_zip_empty">ZIP файл пуст</string>
     <string name="section_data">Данные</string>
     <string name="export_no_notes">Нет заметок для экспорта</string>
+    <string name="dynamic_color_title">Динамические цвета</string>
+    <string name="dynamic_color_subtitle">Цвета под обои телефона</string>
 </resources>

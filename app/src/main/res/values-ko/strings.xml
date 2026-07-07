@@ -92,4 +92,6 @@
     <string name="error_zip_empty">ZIP 파일이 비어 있음</string>
     <string name="section_data">데이터</string>
     <string name="export_no_notes">내보낼 노트가 없습니다</string>
+    <string name="dynamic_color_title">다이나믹 컬러</string>
+    <string name="dynamic_color_subtitle">앱 색상을 배경화면에 맞추기</string>
 </resources>

@@ -28,6 +28,7 @@ import com.git.itdolan31.crystalpad.core.data.repository.NoteRepository
 import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
 import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
 import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.domain.model.ThemeType
 import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -63,11 +64,12 @@ class SettingsViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    val theme: StateFlow<String> = settingsRepository.themeFlow.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = SettingsConstants.DEFAULT_THEME
-    )
+    val themeType: StateFlow<ThemeType> = settingsRepository.themeFlow
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = SettingsConstants.DEFAULT_THEME
+        )
 
     val isKeepScreenOn: StateFlow<Boolean> = settingsRepository.keepScreenOnFlow.stateIn(
         scope = viewModelScope,
@@ -91,17 +93,13 @@ class SettingsViewModel @Inject constructor(
         initialValue = SettingsConstants.DEFAULT_TIMEOUT
     )
 
-    val datePattern = settingsRepository.datePatternFlow.map { name ->
-        DatePatternType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_DATE_PATTERN
-    }.stateIn(
+    val datePattern = settingsRepository.datePatternFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = SettingsConstants.DEFAULT_DATE_PATTERN
     )
 
-    val timePattern = settingsRepository.timePatternFlow.map { name ->
-        TimePatternType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_TIME_PATTERN
-    }.stateIn(
+    val timePattern = settingsRepository.timePatternFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = SettingsConstants.DEFAULT_TIME_PATTERN
@@ -119,6 +117,12 @@ class SettingsViewModel @Inject constructor(
         initialValue = SettingsConstants.DEFAULT_FLAG_SECURE
     )
 
+    val isDynamicColorEnabled: StateFlow<Boolean> = settingsRepository.dynamicColorFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_DYNAMIC_COLOR
+    )
+
     fun getEffectiveLocaleDisplayName(): String {
         val locales = AppCompatDelegate.getApplicationLocales()
 
@@ -129,9 +133,9 @@ class SettingsViewModel @Inject constructor(
         }.displayLanguage
     }
 
-    fun setTheme(theme: String) {
+    fun setTheme(type: ThemeType) {
         viewModelScope.launch {
-            settingsRepository.saveTheme(theme)
+            settingsRepository.saveTheme(type)
         }
     }
 
@@ -180,6 +184,12 @@ class SettingsViewModel @Inject constructor(
     fun setFlagSecureEnabled(enabled: Boolean) {
         viewModelScope.launch {
             settingsRepository.saveFlagSecure(enabled)
+        }
+    }
+
+    fun setDynamicColorEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.saveDynamicColor(enabled)
         }
     }
 

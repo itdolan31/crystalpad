@@ -59,10 +59,10 @@ fun HomeScreen(
 ) {
     var showSortMenu by rememberSaveable { mutableStateOf(false) }
 
+    val notes by viewModel.notes.collectAsState()
     val sortType by viewModel.sortType.collectAsState()
     val datePattern by viewModel.datePattern.collectAsState()
     val timePattern by viewModel.timePattern.collectAsState()
-    val notes by viewModel.notes.collectAsState()
 
     Scaffold(topBar = {
         TopAppBar(title = { Text("Crystalpad") }, actions = {
@@ -120,7 +120,7 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            items(notes) { note ->
+            items(notes, key = { it.id }) { note ->
                 NoteItem(note = note, onClick = { onNavigateToNoteEdit(note.id) }, onDeleteClick = {
                     viewModel.deleteNote(note)
                 }, datePattern = datePattern, timePattern = timePattern)
@@ -143,7 +143,7 @@ fun HomeScreen(
                     DialogRadioItem(
                         text = text, selected = sortType == type
                     ) {
-                        viewModel.onSortTypeChange(type)
+                        viewModel.setSortType(type)
                         showSortMenu = false
                     }
                 }

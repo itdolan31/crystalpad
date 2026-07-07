@@ -103,6 +103,7 @@ fun NoteItem(
                         modifier = Modifier.size(16.dp),
                         tint = MaterialTheme.colorScheme.primary,
                     )
+                    Spacer(Modifier.width(4.dp))
                     Text(
                         formatDateTime(note.timestamp, datePattern.pattern),
                         color = MaterialTheme.colorScheme.primary,
@@ -115,6 +116,7 @@ fun NoteItem(
                         modifier = Modifier.size(16.dp),
                         tint = MaterialTheme.colorScheme.primary,
                     )
+                    Spacer(Modifier.width(4.dp))
                     Text(
                         formatDateTime(note.timestamp, timePattern.pattern),
                         color = MaterialTheme.colorScheme.primary,

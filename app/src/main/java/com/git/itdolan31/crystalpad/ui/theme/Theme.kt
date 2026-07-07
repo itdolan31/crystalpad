@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.domain.model.ThemeType
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -147,23 +149,23 @@ private val oledScheme = darkColorScheme(
 
 @Composable
 fun CrystalPadTheme(
-    themeType: String = "system",
-    dynamicColor: Boolean = true,
+    themeType: ThemeType = SettingsConstants.DEFAULT_THEME,
+    dynamicColor: Boolean = SettingsConstants.DEFAULT_DYNAMIC_COLOR,
     content: @Composable () -> Unit
 ) {
     val darkTheme = when (themeType) {
-        "light" -> false
-        "dark", "oled" -> true
-        else -> isSystemInDarkTheme()
+        ThemeType.LIGHT -> false
+        ThemeType.DARK, ThemeType.OLED -> true
+        ThemeType.SYSTEM -> isSystemInDarkTheme()
     }
 
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && themeType != "oled" -> {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && themeType != ThemeType.OLED -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        themeType == "oled" -> oledScheme
+        themeType == ThemeType.OLED -> oledScheme
         darkTheme -> darkScheme
         else -> lightScheme
     }

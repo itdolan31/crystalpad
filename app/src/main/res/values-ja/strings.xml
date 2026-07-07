@@ -92,4 +92,6 @@
     <string name="error_zip_empty">ZIPファイルは空です</string>
     <string name="section_data">データ</string>
     <string name="export_no_notes">エクスポートするノートがありません</string>
+    <string name="dynamic_color_title">ダイナミックカラー</string>
+    <string name="dynamic_color_subtitle">アプリの色を壁紙に合わせる</string>
 </resources>

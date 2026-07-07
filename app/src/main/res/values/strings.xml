@@ -92,4 +92,6 @@
     <string name="error_zip_empty">Zip file is empty</string>
     <string name="section_data">Data</string>
     <string name="export_no_notes">No notes to export</string>
+    <string name="dynamic_color_title">Dynamic colors</string>
+    <string name="dynamic_color_subtitle">Match app colors with your wallpaper</string>
 </resources>

@@ -41,6 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -52,7 +53,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         splashScreen.setKeepOnScreenCondition {
-            !(viewModel.themeLoaded && viewModel.passwordLoaded)
+            !(viewModel.isThemeLoaded && viewModel.isDynamicColorLoaded && viewModel.isPasswordLoaded)
         }
 
         enableEdgeToEdge()
@@ -60,10 +61,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             val backStack = rememberNavBackStack(Screen.Home)
 
-            val theme by viewModel.theme.collectAsStateWithLifecycle()
+            val themeType by viewModel.themeType.collectAsStateWithLifecycle()
+            val dynamicColorEnabled by viewModel.dynamicColorEnabled.collectAsStateWithLifecycle()
             val isLocked by viewModel.isLocked.collectAsStateWithLifecycle()
 
-            CrystalPadTheme(themeType = theme) {
+            CrystalPadTheme(themeType = themeType, dynamicColor = dynamicColorEnabled) {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -105,7 +107,7 @@ class MainActivity : ComponentActivity() {
         if (isPasswordSet) {
             if (timeout > 0) {
                 lockJob = lifecycleScope.launch {
-                    delay(timeout * 1000L)
+                    delay((timeout * 1000L).milliseconds)
                     viewModel.setLocked(true)
                 }
             } else if (timeout == 0) {

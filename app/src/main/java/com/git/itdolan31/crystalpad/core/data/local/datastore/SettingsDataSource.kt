@@ -46,33 +46,30 @@ class SettingsDataSource(private val context: Context) {
         private val TIME_PATTERN = stringPreferencesKey("time_pattern")
         private val FONT_SIZE = intPreferencesKey("font_size")
         private val FLAG_SECURE = booleanPreferencesKey("flag_secure")
+        private val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
     }
 
     private fun <T> preferenceFlow(
-        key: Preferences.Key<T>,
-        defaultValue: T
-    ): Flow<T> = context.dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
+        key: Preferences.Key<T>, defaultValue: T
+    ): Flow<T> = context.dataStore.data.catch { exception ->
+        if (exception is IOException) {
+            emit(emptyPreferences())
+        } else {
+            throw exception
         }
-        .map { preferences ->
-            preferences[key] ?: defaultValue
-        }
+    }.map { preferences ->
+        preferences[key] ?: defaultValue
+    }
 
     private suspend fun <T> savePreference(
-        key: Preferences.Key<T>,
-        value: T
+        key: Preferences.Key<T>, value: T
     ) {
         context.dataStore.edit { preferences ->
             preferences[key] = value
         }
     }
 
-    val themeFlow = preferenceFlow(THEME, SettingsConstants.DEFAULT_THEME)
+    val themeFlow = preferenceFlow(THEME, SettingsConstants.DEFAULT_THEME.name)
     val sortTypeFlow = preferenceFlow(SORT_TYPE, SettingsConstants.DEFAULT_SORT_TYPE.name)
     val keepScreenOnFlow = preferenceFlow(KEEP_SCREEN_ON, SettingsConstants.DEFAULT_KEEP_SCREEN_ON)
     val passwordFlow = preferenceFlow(PASSWORD, "")
@@ -82,17 +79,28 @@ class SettingsDataSource(private val context: Context) {
     val timePatternFlow = preferenceFlow(TIME_PATTERN, SettingsConstants.DEFAULT_TIME_PATTERN.name)
     val fontSizeFlow = preferenceFlow(FONT_SIZE, SettingsConstants.DEFAULT_FONT_SIZE)
     val flagSecureFlow = preferenceFlow(FLAG_SECURE, SettingsConstants.DEFAULT_FLAG_SECURE)
+    val dynamicColorFlow = preferenceFlow(DYNAMIC_COLOR, SettingsConstants.DEFAULT_DYNAMIC_COLOR)
 
     suspend fun saveTheme(theme: String) = savePreference(THEME, theme)
+
     suspend fun saveSortType(sortType: String) = savePreference(SORT_TYPE, sortType)
+
     suspend fun saveKeepScreenOn(keepScreenOn: Boolean) =
         savePreference(KEEP_SCREEN_ON, keepScreenOn)
 
     suspend fun savePassword(password: String) = savePreference(PASSWORD, password)
+
     suspend fun saveBiometry(enabled: Boolean) = savePreference(BIOMETRY, enabled)
+
     suspend fun saveTimeout(seconds: Int) = savePreference(TIMEOUT, seconds)
+
     suspend fun saveDatePattern(pattern: String) = savePreference(DATE_PATTERN, pattern)
+
     suspend fun saveTimePattern(pattern: String) = savePreference(TIME_PATTERN, pattern)
+
     suspend fun saveFontSize(size: Int) = savePreference(FONT_SIZE, size)
+
     suspend fun saveFlagSecure(enabled: Boolean) = savePreference(FLAG_SECURE, enabled)
+
+    suspend fun saveDynamicColor(enabled: Boolean) = savePreference(DYNAMIC_COLOR, enabled)
 }

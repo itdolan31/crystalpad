@@ -92,4 +92,6 @@
     <string name="error_zip_empty">ZIP-Datei ist leer</string>
     <string name="section_data">Daten</string>
     <string name="export_no_notes">Keine Notizen zum Exportieren</string>
+    <string name="dynamic_color_title">Dynamische Farben</string>
+    <string name="dynamic_color_subtitle">Farben an Ihr Hintergrundbild anpassen</string>
 </resources>

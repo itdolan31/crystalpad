@@ -1,0 +1,3 @@
+• Added and removed some date and time templates
+• Added dynamic color (Material You)
+• Added support for RTL languages

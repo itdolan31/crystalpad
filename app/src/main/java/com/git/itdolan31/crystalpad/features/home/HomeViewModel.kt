@@ -22,17 +22,14 @@ import androidx.lifecycle.viewModelScope
 import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
 import com.git.itdolan31.crystalpad.core.data.repository.NoteRepository
 import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
-import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
 import com.git.itdolan31.crystalpad.core.domain.model.NoteSortType
 import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
-import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -43,13 +40,10 @@ class HomeViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
     val sortType: StateFlow<NoteSortType> = settingsRepository.sortTypeFlow
-        .map { name ->
-            NoteSortType.entries.find { it.name == name } ?: SettingsConstants.DEFAULT_SORT_TYPE
-        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = NoteSortType.DATE_DESC
+            initialValue = SettingsConstants.DEFAULT_SORT_TYPE
         )
 
     val notes: StateFlow<List<NoteEntity>> = sortType
@@ -59,10 +53,6 @@ class HomeViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val datePattern = settingsRepository.datePatternFlow
-        .map { name ->
-            DatePatternType.entries.find { it.name == name }
-                ?: SettingsConstants.DEFAULT_DATE_PATTERN
-        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -70,17 +60,13 @@ class HomeViewModel @Inject constructor(
         )
 
     val timePattern = settingsRepository.timePatternFlow
-        .map { name ->
-            TimePatternType.entries.find { it.name == name }
-                ?: SettingsConstants.DEFAULT_TIME_PATTERN
-        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = SettingsConstants.DEFAULT_TIME_PATTERN
         )
 
-    fun onSortTypeChange(type: NoteSortType) {
+    fun setSortType(type: NoteSortType) {
         viewModelScope.launch {
             settingsRepository.saveSortType(type)
         }

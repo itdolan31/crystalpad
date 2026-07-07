@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
 import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.domain.model.ThemeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,9 +44,11 @@ class MainViewModel @Inject constructor(
     private val _isLocked = MutableStateFlow(false)
     private val _isFlagSecureEnabled = MutableStateFlow(SettingsConstants.DEFAULT_FLAG_SECURE)
 
-    var themeLoaded by mutableStateOf(false)
+    var isThemeLoaded by mutableStateOf(false)
         private set
-    var passwordLoaded by mutableStateOf(false)
+    var isDynamicColorLoaded by mutableStateOf(false)
+        private set
+    var isPasswordLoaded by mutableStateOf(false)
         private set
 
     val isLocked: StateFlow<Boolean> = _isLocked.asStateFlow()
@@ -56,18 +59,28 @@ class MainViewModel @Inject constructor(
     var lockTimeout by mutableIntStateOf(SettingsConstants.DEFAULT_TIMEOUT)
         private set
 
-    val theme: StateFlow<String> = settingsRepository.themeFlow
-        .onEach { themeLoaded = true }
+    val themeType: StateFlow<ThemeType> = settingsRepository.themeFlow
+        .onEach {
+            isThemeLoaded = true
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = "system"
+            initialValue = SettingsConstants.DEFAULT_THEME
+        )
+
+    val dynamicColorEnabled: StateFlow<Boolean> = settingsRepository.dynamicColorFlow
+        .onEach { isDynamicColorLoaded = true }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = SettingsConstants.DEFAULT_DYNAMIC_COLOR
         )
 
     init {
         viewModelScope.launch {
             _isLocked.value = settingsRepository.passwordFlow.first().isNotEmpty()
-            passwordLoaded = true
+            isPasswordLoaded = true
 
             settingsRepository.passwordFlow.collect { password ->
                 isPasswordSet = password.isNotEmpty()

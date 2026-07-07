@@ -48,6 +48,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -115,7 +116,9 @@ fun NoteEditScreen(
                 onValueChange = { viewModel.onTitleChange(it) },
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = LocalTextStyle.current.copy(
-                    fontSize = fontSize.sp, lineHeight = (fontSize * 1.5).sp
+                    fontSize = fontSize.sp,
+                    textDirection = TextDirection.Content,
+                    lineHeight = (fontSize * 1.5).sp
                 ),
                 placeholder = { Text(stringResource(R.string.title)) },
                 shape = RectangleShape,
@@ -132,7 +135,9 @@ fun NoteEditScreen(
                 onValueChange = { viewModel.onContentChange(it) },
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = LocalTextStyle.current.copy(
-                    fontSize = fontSize.sp, lineHeight = (fontSize * 1.5).sp
+                    fontSize = fontSize.sp,
+                    textDirection = TextDirection.Content,
+                    lineHeight = (fontSize * 1.5).sp
                 ),
                 placeholder = { Text(stringResource(R.string.note)) },
                 minLines = 20,

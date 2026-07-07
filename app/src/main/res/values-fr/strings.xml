@@ -92,4 +92,6 @@
     <string name="error_zip_empty">Le fichier ZIP est vide</string>
     <string name="section_data">Données</string>
     <string name="export_no_notes">Aucune note à exporter</string>
+    <string name="dynamic_color_title">Couleurs dynamiques</string>
+    <string name="dynamic_color_subtitle">Adapter les couleurs de l\'application à votre fond d\'écran</string>
 </resources>

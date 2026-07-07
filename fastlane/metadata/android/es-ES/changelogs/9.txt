@@ -1,0 +1,3 @@
+• Se agregaron y eliminaron algunas plantillas de fecha y hora
+• Se agregó color dinámico (Material You)
+• Se agregó compatibilidad con idiomas RTL

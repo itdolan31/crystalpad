@@ -1,0 +1,3 @@
+• Einige Vorlagen für Datum und Zeit wurden hinzugefügt und entfernt
+• Dynamische Farben (Material You) hinzugefügt
+• Unterstützung für RTL-Sprachen hinzugefügt

@@ -69,6 +69,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.git.itdolan31.crystalpad.R
 import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
+import com.git.itdolan31.crystalpad.core.domain.model.ThemeType
 import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import com.git.itdolan31.crystalpad.core.utils.formatDateTime
 import com.git.itdolan31.crystalpad.features.settings.components.SettingsRadioItem
@@ -87,7 +88,7 @@ fun SettingsScreen(
     val uriHandler = LocalUriHandler.current
 
     val notes by viewModel.notes.collectAsState()
-    val theme by viewModel.theme.collectAsState()
+    val themeType by viewModel.themeType.collectAsState()
     val isKeepScreenOn by viewModel.isKeepScreenOn.collectAsState()
     val isPasswordSet by viewModel.isPasswordSet.collectAsState()
     val isBiometryEnabled by viewModel.isBiometryEnabled.collectAsState()
@@ -96,6 +97,7 @@ fun SettingsScreen(
     val timePattern by viewModel.timePattern.collectAsState()
     val fontSize by viewModel.fontSize.collectAsState()
     val isFlagSecureEnabled by viewModel.isFlagSecureEnabled.collectAsState()
+    val isDynamicColorEnabled by viewModel.isDynamicColorEnabled.collectAsState()
 
     var showThemeDialog by rememberSaveable { mutableStateOf(false) }
     var showPasswordDialog by rememberSaveable { mutableStateOf(false) }
@@ -174,27 +176,39 @@ fun SettingsScreen(
 
             SettingsTextItem(
                 onClick = { showThemeDialog = true },
-                icon = painterResource(remember(theme) {
-                    when (theme) {
-                        "light" -> R.drawable.ic_light_mode
-                        "dark" -> R.drawable.ic_dark_mode
-                        "oled" -> R.drawable.ic_contrast
-                        else -> R.drawable.ic_brightness_4
+                icon = painterResource(remember(themeType) {
+                    when (themeType) {
+                        ThemeType.LIGHT -> R.drawable.ic_light_mode
+                        ThemeType.DARK -> R.drawable.ic_dark_mode
+                        ThemeType.OLED -> R.drawable.ic_contrast
+                        ThemeType.SYSTEM -> R.drawable.ic_brightness_4
                     }
                 }),
                 title = stringResource(R.string.theme),
-                subtitle = if (theme == "oled") {
+                subtitle = if (themeType == ThemeType.OLED) {
                     "OLED"
                 } else {
-                    stringResource(remember(theme) {
-                        when (theme) {
-                            "light" -> R.string.light
-                            "dark" -> R.string.dark
+                    stringResource(
+                        when (themeType) {
+                            ThemeType.LIGHT -> R.string.light
+                            ThemeType.DARK -> R.string.dark
                             else -> R.string.system
                         }
-                    })
+                    )
                 }
             )
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                SettingsRadioItem(
+                    onClick = { viewModel.setDynamicColorEnabled(!isDynamicColorEnabled) },
+                    enabled = themeType != ThemeType.OLED,
+                    icon = painterResource(R.drawable.ic_palette),
+                    title = stringResource(R.string.dynamic_color_title),
+                    subtitle = stringResource(R.string.dynamic_color_subtitle),
+                    checked = isDynamicColorEnabled,
+                    onCheckedChange = { viewModel.setDynamicColorEnabled(it) }
+                )
+            }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 val language = remember(configuration) { viewModel.getEffectiveLocaleDisplayName() }
@@ -339,29 +353,27 @@ fun SettingsScreen(
     }
 
     if (showThemeDialog) {
-        val themes = remember {
-            listOf(
-                "system" to R.string.system,
-                "light" to R.string.light,
-                "dark" to R.string.dark,
-                "oled" to null
-            )
-        }
-
         AlertDialog(onDismissRequest = { showThemeDialog = false }, confirmButton = {}, text = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
             ) {
-                themes.forEach { (code, id) ->
+                ThemeType.entries.forEach { type ->
                     DialogRadioItem(
-                        text = when (id) {
-                            null -> "OLED"
-                            else -> stringResource(id)
-                        }, selected = theme == code
+                        text = if (type == ThemeType.OLED) {
+                            "OLED"
+                        } else {
+                            stringResource(
+                                when (type) {
+                                    ThemeType.LIGHT -> R.string.light
+                                    ThemeType.DARK -> R.string.dark
+                                    else -> R.string.system
+                                }
+                            )
+                        }, selected = themeType == type
                     ) {
-                        viewModel.setTheme(code)
+                        viewModel.setTheme(type)
                         showThemeDialog = false
                     }
                 }
@@ -503,8 +515,6 @@ fun SettingsScreen(
                 }
             })
     } else if (showDatePatternDialog) {
-        val datePatterns = remember { DatePatternType.entries }
-
         AlertDialog(
             onDismissRequest = { showDatePatternDialog = false },
             confirmButton = {},
@@ -514,20 +524,18 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    datePatterns.forEach { code ->
+                    DatePatternType.entries.forEach { type ->
                         DialogRadioItem(
-                            text = formatDateTime(1738184400000, code.pattern),
-                            selected = datePattern == code
+                            text = formatDateTime(1738184400000, type.pattern),
+                            selected = datePattern == type
                         ) {
-                            viewModel.setDatePattern(code)
+                            viewModel.setDatePattern(type)
                             showDatePatternDialog = false
                         }
                     }
                 }
             })
     } else if (showTimePatternDialog) {
-        val timePatterns = remember { TimePatternType.entries }
-
         AlertDialog(
             onDismissRequest = { showTimePatternDialog = false },
             confirmButton = {},
@@ -537,12 +545,12 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    timePatterns.forEach { code ->
+                    TimePatternType.entries.forEach { type ->
                         DialogRadioItem(
-                            text = formatDateTime(23400000, code.pattern),
-                            selected = timePattern == code
+                            text = formatDateTime(23400000, type.pattern),
+                            selected = timePattern == type
                         ) {
-                            viewModel.setTimePattern(code)
+                            viewModel.setTimePattern(type)
                             showTimePatternDialog = false
                         }
                     }

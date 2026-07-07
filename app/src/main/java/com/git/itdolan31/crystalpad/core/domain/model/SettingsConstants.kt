@@ -18,13 +18,14 @@
 package com.git.itdolan31.crystalpad.core.domain.model
 
 object SettingsConstants {
-    const val DEFAULT_THEME = "system"
-    val DEFAULT_SORT_TYPE = NoteSortType.DATE_DESC
+    val DEFAULT_THEME = ThemeType.DEFAULT
+    val DEFAULT_SORT_TYPE = NoteSortType.DEFAULT
     const val DEFAULT_KEEP_SCREEN_ON = false
     const val DEFAULT_BIOMETRY = false
     const val DEFAULT_TIMEOUT = 0
-    val DEFAULT_DATE_PATTERN = DatePatternType.DD_MM_YYYY_DOT
+    val DEFAULT_DATE_PATTERN = DatePatternType.DEFAULT
     val DEFAULT_TIME_PATTERN = TimePatternType.HH_MM
     const val DEFAULT_FONT_SIZE = 16
     const val DEFAULT_FLAG_SECURE = true
+    const val DEFAULT_DYNAMIC_COLOR = true
 }

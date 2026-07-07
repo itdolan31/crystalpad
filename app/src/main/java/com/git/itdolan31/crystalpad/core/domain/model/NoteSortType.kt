@@ -18,5 +18,13 @@
 package com.git.itdolan31.crystalpad.core.domain.model
 
 enum class NoteSortType {
-    DATE_DESC, DATE_ASC, TITLE_ASC, TITLE_DESC
+    DATE_DESC, DATE_ASC, TITLE_ASC, TITLE_DESC;
+
+    companion object {
+        val DEFAULT = DATE_DESC
+
+        fun fromName(name: String): NoteSortType {
+            return entries.find { it.name == name } ?: DEFAULT
+        }
+    }
 }
