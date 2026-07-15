@@ -29,8 +29,16 @@ height="80">](https://f-droid.org/packages/com.git.itdolan31.crystalpad)
 alt="Get it on IzzyOnDroid"
 height="80">](https://apt.izzysoft.de/packages/com.git.itdolan31.crystalpad)
 
-## License
+## Forks
 
+Please observe the following rules when creating a copy of the repository.
+
+1. Don't use the name Crystalpad for your app - or make sure your users understand that it's unofficial.
+2. Do not use the Crystalpad logo for your app (the blue pad with a crystal in the middle).
+3. Credit the original app author (itdolan31) both in the app itself so that it is visible to the user, and in the README file containing the source code.
+
+## License
+```
 Crystalpad
 Copyright (C) 2026 itdolan31
 
@@ -46,3 +54,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
+```
