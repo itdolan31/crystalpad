@@ -47,6 +47,8 @@ class SettingsRepository(
     val fontSizeFlow: Flow<Int> = settingsDataSource.fontSizeFlow
     val flagSecureFlow: Flow<Boolean> = settingsDataSource.flagSecureFlow
     val dynamicColorFlow: Flow<Boolean> = settingsDataSource.dynamicColorFlow
+    val trashFlow: Flow<Boolean> = settingsDataSource.trashFlow
+    val trashRetentionFlow: Flow<Long> = settingsDataSource.trashRetentionFlow
 
     suspend fun saveTheme(themeType: ThemeType) {
         settingsDataSource.saveTheme(themeType.name)
@@ -90,5 +92,13 @@ class SettingsRepository(
 
     suspend fun saveDynamicColor(enabled: Boolean) {
         settingsDataSource.saveDynamicColor(enabled)
+    }
+
+    suspend fun saveTrash(enabled: Boolean) {
+        settingsDataSource.saveTrash(enabled)
+    }
+
+    suspend fun saveTrashRetention(millis: Long) {
+        settingsDataSource.saveTrashRetention(millis)
     }
 }

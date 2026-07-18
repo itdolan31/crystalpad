@@ -37,11 +37,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SettingsTextItem(
     onClick: () -> Unit,
+    enabled: Boolean = true,
     icon: Painter,
     title: String,
     subtitle: String
 ) {
-    TextButton(onClick = onClick, shape = RectangleShape) {
+    TextButton(onClick = onClick, enabled = enabled, shape = RectangleShape) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically

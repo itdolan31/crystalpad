@@ -18,8 +18,6 @@
 <resources>
     <string name="cancel">Отмена</string>
     <string name="delete">Удалить</string>
-    <string name="delete_confirmation_title">Удалить эту заметку?</string>
-    <string name="delete_confirmation_message">Заметка будет удалена без возможности восстановления.</string>
     <string name="title">Заголовок</string>
     <string name="note">Заметка</string>
     <string name="system">Системная</string>
@@ -28,8 +26,6 @@
     <string name="language">Язык</string>
     <string name="settings">Настройки</string>
     <string name="sort_title">Сортировка</string>
-    <string name="sort_date_desc">Сначала новые</string>
-    <string name="sort_date_asc">Сначала старые</string>
     <string name="sort_title_asc">По названию (А-Я)</string>
     <string name="sort_title_desc">По названию (Я-А)</string>
     <string name="back">Назад</string>
@@ -55,7 +51,6 @@
     <string name="hide_password">Скрыть пароль</string>
     <string name="show_password">Показать пароль</string>
     <string name="confirm_password">Подтверждение пароля</string>
-    <string name="timeout">Тайм-аут</string>
     <string name="never">Никогда</string>
     <string name="immediately">Немедленно</string>
     <string name="minute_1">1 минута</string>
@@ -94,4 +89,28 @@
     <string name="export_no_notes">Нет заметок для экспорта</string>
     <string name="dynamic_color_title">Динамические цвета</string>
     <string name="dynamic_color_subtitle">Цвета под обои телефона</string>
+    <string name="sort_created_at_desc">По дате создания (сначала новые)</string>
+    <string name="sort_created_at_asc">По дате создания (сначала старые)</string>
+    <string name="sort_updated_at_desc">По дате изменения (сначала новые)</string>
+    <string name="sort_updated_at_asc">По дате изменения (сначала старые)</string>
+    <string name="trash">Корзина</string>
+    <string name="trash_clear_all">Очистить корзину</string>
+    <string name="restore">Восстановить</string>
+    <string name="delete_permanently_title">Удалить навсегда?</string>
+    <string name="delete_permanently_message">Это действие невозможно отменить.</string>
+    <string name="move_to_trash_title">Удалить заметку?</string>
+    <string name="move_to_trash_message">Заметка будет перемещена в корзину.</string>
+    <string name="trash_description">Включите корзину для восстановления удалённых заметок</string>
+    <string name="clear_trash_title">Очистить корзину?</string>
+    <string name="clear_trash_message">Все заметки в корзине будут удалены навсегда.</string>
+    <string name="created_at">Дата создания</string>
+    <string name="updated_at">Дата изменения</string>
+    <string name="trashed_at">Дата удаления</string>
+    <string name="days_1">1 день</string>
+    <string name="days_3">3 дня</string>
+    <string name="days_7">7 дней</string>
+    <string name="days_15">15 дней</string>
+    <string name="days_30">30 дней</string>
+    <string name="trash_retention_title">Срок хранения в корзине</string>
+    <string name="info">Информация</string>
 </resources>

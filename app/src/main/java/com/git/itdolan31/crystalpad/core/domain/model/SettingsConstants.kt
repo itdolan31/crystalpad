@@ -26,6 +26,8 @@ object SettingsConstants {
     val DEFAULT_DATE_PATTERN = DatePatternType.DEFAULT
     val DEFAULT_TIME_PATTERN = TimePatternType.HH_MM
     const val DEFAULT_FONT_SIZE = 16
-    const val DEFAULT_FLAG_SECURE = true
+    const val DEFAULT_FLAG_SECURE = false
     const val DEFAULT_DYNAMIC_COLOR = true
+    const val DEFAULT_TRASH = true
+    const val DEFAULT_TRASH_RETENTION = 2_592_000_000L
 }

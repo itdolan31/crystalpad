@@ -17,14 +17,17 @@
  */
 package com.git.itdolan31.crystalpad.core.data.local.room.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity("notes")
 data class NoteEntity(
-    @PrimaryKey(true)
-    val id: Long = 0,
+    @PrimaryKey(true) val id: Long = 0,
     val title: String = "",
     val content: String = "",
-    val timestamp: Long = System.currentTimeMillis()
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updated_at") val updatedAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "is_trashed") val isTrashed: Boolean = false,
+    @ColumnInfo(name = "trashed_at") val trashedAt: Long? = null
 )

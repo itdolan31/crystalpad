@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-fun formatDateTime(timestamp: Long, pattern: String) = SimpleDateFormat(
-    pattern, AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
-).format(Date(timestamp))
+fun formatDateTime(timestamp: Long, pattern: String): String {
+    return SimpleDateFormat(
+        pattern, AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
+    ).format(Date(timestamp))
+}

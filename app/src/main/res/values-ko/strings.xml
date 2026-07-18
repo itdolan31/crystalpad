@@ -18,8 +18,6 @@
 <resources>
     <string name="cancel">취소</string>
     <string name="delete">삭제</string>
-    <string name="delete_confirmation_title">이 노트를 삭제하시겠습니까?</string>
-    <string name="delete_confirmation_message">삭제된 노트는 복구할 수 없습니다.</string>
     <string name="title">제목</string>
     <string name="note">노트</string>
     <string name="system">시스템</string>
@@ -28,8 +26,6 @@
     <string name="language">언어</string>
     <string name="settings">설정</string>
     <string name="sort_title">정렬 기준</string>
-    <string name="sort_date_desc">최신순</string>
-    <string name="sort_date_asc">오래된순</string>
     <string name="sort_title_asc">제목 (가나다순)</string>
     <string name="sort_title_desc">제목 (역순)</string>
     <string name="back">뒤로</string>
@@ -55,7 +51,6 @@
     <string name="hide_password">비밀번호 숨기기</string>
     <string name="show_password">비밀번호 표시</string>
     <string name="confirm_password">비밀번호 확인</string>
-    <string name="timeout">시간 초과</string>
     <string name="never">사용 안함</string>
     <string name="immediately">즉시</string>
     <string name="minute_1">1분</string>
@@ -94,4 +89,28 @@
     <string name="export_no_notes">내보낼 노트가 없습니다</string>
     <string name="dynamic_color_title">다이나믹 컬러</string>
     <string name="dynamic_color_subtitle">앱 색상을 배경화면에 맞추기</string>
+    <string name="sort_created_at_desc">생성일 순 (최신순)</string>
+    <string name="sort_created_at_asc">생성일 순 (오래된 순)</string>
+    <string name="sort_updated_at_desc">수정일 순 (최신순)</string>
+    <string name="sort_updated_at_asc">수정일 순 (오래된 순)</string>
+    <string name="trash">휴지통</string>
+    <string name="trash_clear_all">휴지통 비우기</string>
+    <string name="restore">복원</string>
+    <string name="delete_permanently_title">영구 삭제하시겠습니까?</string>
+    <string name="delete_permanently_message">이 작업은 취소할 수 없습니다.</string>
+    <string name="move_to_trash_title">메모를 삭제하시겠습니까?</string>
+    <string name="move_to_trash_message">메모가 휴지통으로 이동됩니다.</string>
+    <string name="trash_description">휴지통을 활성화하여 삭제된 메모 복원</string>
+    <string name="clear_trash_title">휴지통을 비우시겠습니까?</string>
+    <string name="clear_trash_message">휴지통의 모든 메모가 영구 삭제됩니다.</string>
+    <string name="created_at">생성일</string>
+    <string name="updated_at">수정일</string>
+    <string name="trashed_at">삭제일</string>
+    <string name="days_1">1일</string>
+    <string name="days_3">3일</string>
+    <string name="days_7">7일</string>
+    <string name="days_15">15일</string>
+    <string name="days_30">30일</string>
+    <string name="trash_retention_title">휴지통 보관 기간</string>
+    <string name="info">정보</string>
 </resources>

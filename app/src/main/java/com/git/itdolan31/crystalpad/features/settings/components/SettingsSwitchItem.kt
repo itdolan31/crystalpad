@@ -36,7 +36,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsRadioItem(
+fun SettingsSwitchItem(
     onClick: () -> Unit,
     enabled: Boolean = true,
     icon: Painter,

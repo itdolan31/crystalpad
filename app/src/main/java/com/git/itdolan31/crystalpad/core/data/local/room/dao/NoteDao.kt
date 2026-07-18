@@ -36,18 +36,54 @@ interface NoteDao {
     @Delete
     suspend fun delete(note: NoteEntity)
 
+    @Query("UPDATE notes SET is_trashed = 1, trashed_at = :trashedAt WHERE id = :noteId")
+    suspend fun moveNoteToTrash(noteId: Long, trashedAt: Long)
+
+    @Query("UPDATE notes SET is_trashed = 0, trashed_at = NULL WHERE id = :noteId")
+    suspend fun restoreNoteFromTrash(noteId: Long)
+
+    @Query("DELETE FROM notes WHERE is_trashed = 1 AND trashed_at < :cutoffTime")
+    suspend fun deleteExpiredTrashedNotes(cutoffTime: Long)
+
+    @Query("DELETE FROM notes WHERE is_trashed = 1")
+    suspend fun clearTrash()
+
     @Query("SELECT * FROM notes WHERE id = :noteId")
     suspend fun getNoteById(noteId: Long): NoteEntity?
 
-    @Query("SELECT * FROM notes ORDER BY timestamp DESC")
-    fun getNotesByDateDesc(): Flow<List<NoteEntity>>
+    @Query("SELECT * FROM notes WHERE is_trashed = 0 ORDER BY created_at DESC")
+    fun getNotesByCreatedAtDesc(): Flow<List<NoteEntity>>
 
-    @Query("SELECT * FROM notes ORDER BY timestamp ASC")
-    fun getNotesByDateAsc(): Flow<List<NoteEntity>>
+    @Query("SELECT * FROM notes WHERE is_trashed = 0 ORDER BY created_at ASC")
+    fun getNotesByCreatedAtAsc(): Flow<List<NoteEntity>>
 
-    @Query("SELECT * FROM notes ORDER BY title ASC")
+    @Query("SELECT * FROM notes WHERE is_trashed = 0 ORDER BY updated_at DESC")
+    fun getNotesByUpdatedAtDesc(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_trashed = 0 ORDER BY updated_at ASC")
+    fun getNotesByUpdatedAtAsc(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_trashed = 0 ORDER BY title ASC")
     fun getNotesByTitleAsc(): Flow<List<NoteEntity>>
 
-    @Query("SELECT * FROM notes ORDER BY title DESC")
+    @Query("SELECT * FROM notes WHERE is_trashed = 0 ORDER BY title DESC")
     fun getNotesByTitleDesc(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_trashed = 1 ORDER BY created_at DESC")
+    fun getTrashedNotesByCreatedAtDesc(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_trashed = 1 ORDER BY created_at ASC")
+    fun getTrashedNotesByCreatedAtAsc(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_trashed = 1 ORDER BY updated_at DESC")
+    fun getTrashedNotesByUpdatedAtDesc(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_trashed = 1 ORDER BY updated_at ASC")
+    fun getTrashedNotesByUpdatedAtAsc(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_trashed = 1 ORDER BY title ASC")
+    fun getTrashedNotesByTitleAsc(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_trashed = 1 ORDER BY title DESC")
+    fun getTrashedNotesByTitleDesc(): Flow<List<NoteEntity>>
 }

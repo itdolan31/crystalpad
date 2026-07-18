@@ -1,0 +1,4 @@
+• Añadida papelera
+• Añadida ordenación por fecha de creación
+• Añadida información de notas
+• Optimización de la aplicación

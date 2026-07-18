@@ -29,16 +29,43 @@ class NoteRepository(private val noteDao: NoteDao) {
 
     suspend fun delete(note: NoteEntity) = noteDao.delete(note)
 
+    suspend fun moveNoteToTrash(noteId: Long) {
+        noteDao.moveNoteToTrash(noteId, System.currentTimeMillis())
+    }
+
+    suspend fun restoreNoteFromTrash(noteId: Long) {
+        noteDao.restoreNoteFromTrash(noteId)
+    }
+
+    suspend fun deleteExpiredTrashedNotes(cutoffTime: Long) {
+        noteDao.deleteExpiredTrashedNotes(cutoffTime)
+    }
+
+    suspend fun clearTrash() = noteDao.clearTrash()
+
     suspend fun getNoteById(noteId: Long): NoteEntity? {
         return noteDao.getNoteById(noteId)
     }
 
     fun getNotes(sortType: NoteSortType): Flow<List<NoteEntity>> {
         return when (sortType) {
-            NoteSortType.DATE_DESC -> noteDao.getNotesByDateDesc()
-            NoteSortType.DATE_ASC -> noteDao.getNotesByDateAsc()
+            NoteSortType.CREATED_AT_DESC -> noteDao.getNotesByCreatedAtDesc()
+            NoteSortType.CREATED_AT_ASC -> noteDao.getNotesByCreatedAtAsc()
+            NoteSortType.UPDATED_AT_DESC -> noteDao.getNotesByUpdatedAtDesc()
+            NoteSortType.UPDATED_AT_ASC -> noteDao.getNotesByUpdatedAtAsc()
             NoteSortType.TITLE_ASC -> noteDao.getNotesByTitleAsc()
             NoteSortType.TITLE_DESC -> noteDao.getNotesByTitleDesc()
+        }
+    }
+
+    fun getTrashedNotes(sortType: NoteSortType): Flow<List<NoteEntity>> {
+        return when (sortType) {
+            NoteSortType.CREATED_AT_DESC -> noteDao.getTrashedNotesByCreatedAtDesc()
+            NoteSortType.CREATED_AT_ASC -> noteDao.getTrashedNotesByCreatedAtAsc()
+            NoteSortType.UPDATED_AT_DESC -> noteDao.getTrashedNotesByUpdatedAtDesc()
+            NoteSortType.UPDATED_AT_ASC -> noteDao.getTrashedNotesByUpdatedAtAsc()
+            NoteSortType.TITLE_ASC -> noteDao.getTrashedNotesByTitleAsc()
+            NoteSortType.TITLE_DESC -> noteDao.getTrashedNotesByTitleDesc()
         }
     }
 }

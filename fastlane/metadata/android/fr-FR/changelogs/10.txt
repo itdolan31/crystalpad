@@ -1,0 +1,4 @@
+• Ajout de la corbeille
+• Ajout du tri par date de création
+• Ajout des informations sur les notes
+• Optimisation de l'application

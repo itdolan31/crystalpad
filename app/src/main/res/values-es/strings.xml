@@ -18,8 +18,6 @@
 <resources>
     <string name="cancel">Cancelar</string>
     <string name="delete">Eliminar</string>
-    <string name="delete_confirmation_title">¿Eliminar esta nota?</string>
-    <string name="delete_confirmation_message">La nota se eliminará sin posibilidad de recuperación.</string>
     <string name="title">Título</string>
     <string name="note">Nota</string>
     <string name="system">Sistema</string>
@@ -28,8 +26,6 @@
     <string name="language">Idioma</string>
     <string name="settings">Ajustes</string>
     <string name="sort_title">Ordenar por</string>
-    <string name="sort_date_desc">Más recientes primero</string>
-    <string name="sort_date_asc">Más antiguos primero</string>
     <string name="sort_title_asc">Título (A-Z)</string>
     <string name="sort_title_desc">Título (Z-A)</string>
     <string name="back">Atrás</string>
@@ -55,7 +51,6 @@
     <string name="hide_password">Ocultar contraseña</string>
     <string name="show_password">Mostrar contraseña</string>
     <string name="confirm_password">Confirmar contraseña</string>
-    <string name="timeout">Tiempo de espera</string>
     <string name="never">Nunca</string>
     <string name="immediately">Inmediatamente</string>
     <string name="minute_1">1 minuto</string>
@@ -94,4 +89,28 @@
     <string name="export_no_notes">No hay notas para exportar</string>
     <string name="dynamic_color_title">Colores dinámicos</string>
     <string name="dynamic_color_subtitle">Adaptar los colores de la aplicación a tu fondo de pantalla</string>
+    <string name="sort_created_at_desc">Por fecha de creación (nuevos primero)</string>
+    <string name="sort_created_at_asc">Por fecha de creación (antiguos primero)</string>
+    <string name="sort_updated_at_desc">Por fecha de modificación (nuevos primero)</string>
+    <string name="sort_updated_at_asc">Por fecha de modificación (antiguos primero)</string>
+    <string name="trash">Papelera</string>
+    <string name="trash_clear_all">Vaciar papelera</string>
+    <string name="restore">Restaurar</string>
+    <string name="delete_permanently_title">¿Eliminar permanentemente?</string>
+    <string name="delete_permanently_message">Esta acción no se puede deshacer.</string>
+    <string name="move_to_trash_title">¿Eliminar nota?</string>
+    <string name="move_to_trash_message">La nota se moverá a la papelera.</string>
+    <string name="trash_description">Activa la papelera para restaurar notas eliminadas</string>
+    <string name="clear_trash_title">¿Vaciar papelera?</string>
+    <string name="clear_trash_message">Todas las notas en la papelera se eliminarán permanentemente.</string>
+    <string name="created_at">Creado</string>
+    <string name="updated_at">Modificado</string>
+    <string name="trashed_at">Eliminado</string>
+    <string name="days_1">1 día</string>
+    <string name="days_3">3 días</string>
+    <string name="days_7">7 días</string>
+    <string name="days_15">15 días</string>
+    <string name="days_30">30 días</string>
+    <string name="trash_retention_title">Período de retención de la papelera</string>
+    <string name="info">Información</string>
 </resources>

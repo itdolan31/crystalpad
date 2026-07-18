@@ -64,12 +64,11 @@ class SettingsViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    val themeType: StateFlow<ThemeType> = settingsRepository.themeFlow
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = SettingsConstants.DEFAULT_THEME
-        )
+    val themeType: StateFlow<ThemeType> = settingsRepository.themeFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_THEME
+    )
 
     val isKeepScreenOn: StateFlow<Boolean> = settingsRepository.keepScreenOnFlow.stateIn(
         scope = viewModelScope,
@@ -121,6 +120,18 @@ class SettingsViewModel @Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = SettingsConstants.DEFAULT_DYNAMIC_COLOR
+    )
+
+    val isTrashEnabled: StateFlow<Boolean> = settingsRepository.trashFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TRASH
+    )
+
+    val trashRetention: StateFlow<Long> = settingsRepository.trashRetentionFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TRASH_RETENTION
     )
 
     fun getEffectiveLocaleDisplayName(): String {
@@ -193,6 +204,18 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun setTrashEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.saveTrash(enabled)
+        }
+    }
+
+    fun setTrashRetention(millis: Long) {
+        viewModelScope.launch {
+            settingsRepository.saveTrashRetention(millis)
+        }
+    }
+
     fun setNewPassword(newPassword: String, confirmPassword: String): Pair<Boolean, Int> {
         return when {
             newPassword.length < 4 -> {
@@ -230,7 +253,7 @@ class SettingsViewModel @Inject constructor(
                     zipOut.putNextEntry(ZipEntry("manifest.json"))
                     zipOut.write(
                         JSONObject().apply {
-                            put("version", 1)
+                            put("version", 2)
                         }.toString().toByteArray()
                     )
                     zipOut.closeEntry()
@@ -249,7 +272,8 @@ class SettingsViewModel @Inject constructor(
                             JSONObject().apply {
                                 put("title", note.title)
                                 put("content", note.content)
-                                put("timestamp", note.timestamp)
+                                put("created_at", note.createdAt)
+                                put("updated_at", note.updatedAt)
                             }.toString().toByteArray()
                         )
                         zipOut.closeEntry()
@@ -349,10 +373,16 @@ class SettingsViewModel @Inject constructor(
 
                         importNotes.add(
                             NoteEntity(
-                                title = noteJson.optString("title", ""),
+                                title = noteJson.optString("title", "").replace("\n", " "),
                                 content = noteJson.optString("content", ""),
-                                timestamp = noteJson.optLong(
-                                    "timestamp", System.currentTimeMillis()
+                                createdAt = noteJson.optLong(
+                                    "created_at",
+                                    noteJson.optLong("timestamp", System.currentTimeMillis())
+                                ),
+                                updatedAt = noteJson.optLong(
+                                    "updated_at", noteJson.optLong(
+                                        "timestamp", System.currentTimeMillis()
+                                    )
                                 )
                             )
                         )
@@ -360,7 +390,10 @@ class SettingsViewModel @Inject constructor(
 
                     importNotes.forEach { note ->
                         val importedNote = NoteEntity(
-                            title = note.title, content = note.content, timestamp = note.timestamp
+                            title = note.title,
+                            content = note.content,
+                            createdAt = note.createdAt,
+                            updatedAt = note.updatedAt
                         )
 
                         noteRepository.insert(importedNote)

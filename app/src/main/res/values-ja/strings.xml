@@ -18,8 +18,6 @@
 <resources>
     <string name="cancel">キャンセル</string>
     <string name="delete">削除</string>
-    <string name="delete_confirmation_title">このメモを削除しますか？</string>
-    <string name="delete_confirmation_message">メモは復元できない形で削除されます。</string>
     <string name="title">タイトル</string>
     <string name="note">メモ</string>
     <string name="system">システム設定</string>
@@ -28,8 +26,6 @@
     <string name="language">言語</string>
     <string name="settings">設定</string>
     <string name="sort_title">並べ替え</string>
-    <string name="sort_date_desc">新しい順</string>
-    <string name="sort_date_asc">古い順</string>
     <string name="sort_title_asc">タイトル (昇順)</string>
     <string name="sort_title_desc">タイトル (降順)</string>
     <string name="back">戻る</string>
@@ -55,7 +51,6 @@
     <string name="hide_password">パスワードを隠す</string>
     <string name="show_password">パスワードを表示</string>
     <string name="confirm_password">パスワードを確認</string>
-    <string name="timeout">タイムアウト</string>
     <string name="never">なし</string>
     <string name="immediately">即時</string>
     <string name="minute_1">1分</string>
@@ -94,4 +89,28 @@
     <string name="export_no_notes">エクスポートするノートがありません</string>
     <string name="dynamic_color_title">ダイナミックカラー</string>
     <string name="dynamic_color_subtitle">アプリの色を壁紙に合わせる</string>
+    <string name="sort_created_at_desc">作成日順（新しい順）</string>
+    <string name="sort_created_at_asc">作成日順（古い順）</string>
+    <string name="sort_updated_at_desc">更新日順（新しい順）</string>
+    <string name="sort_updated_at_asc">更新日順（古い順）</string>
+    <string name="trash">ゴミ箱</string>
+    <string name="trash_clear_all">ゴミ箱を空にする</string>
+    <string name="restore">復元</string>
+    <string name="delete_permanently_title">完全に削除しますか？</string>
+    <string name="delete_permanently_message">この操作は元に戻せません。</string>
+    <string name="move_to_trash_title">メモを削除しますか？</string>
+    <string name="move_to_trash_message">メモはゴミ箱に移動されます。</string>
+    <string name="trash_description">ゴミ箱を有効にして削除したメモを復元</string>
+    <string name="clear_trash_title">ゴミ箱を空にしますか？</string>
+    <string name="clear_trash_message">ゴミ箱内のすべてのメモが完全に削除されます。</string>
+    <string name="created_at">作成日</string>
+    <string name="updated_at">更新日</string>
+    <string name="trashed_at">削除日</string>
+    <string name="days_1">1日</string>
+    <string name="days_3">3日</string>
+    <string name="days_7">7日</string>
+    <string name="days_15">15日</string>
+    <string name="days_30">30日</string>
+    <string name="trash_retention_title">ゴミ箱の保持期間</string>
+    <string name="info">情報</string>
 </resources>

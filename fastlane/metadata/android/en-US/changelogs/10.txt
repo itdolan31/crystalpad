@@ -1,0 +1,4 @@
+• Added trash bin
+• Added sorting by creation date
+• Added note information
+• App optimization

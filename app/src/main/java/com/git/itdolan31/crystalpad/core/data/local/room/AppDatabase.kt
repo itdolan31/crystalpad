@@ -25,9 +25,7 @@ import com.git.itdolan31.crystalpad.core.data.local.room.dao.NoteDao
 import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
 
 @Database(
-    version = 1,
-    entities = [NoteEntity::class],
-    exportSchema = false
+    entities = [NoteEntity::class], version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
@@ -42,9 +40,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context = context.applicationContext,
                     klass = AppDatabase::class.java,
                     name = "crystalpad_database"
-                ).build(
-
-                )
+                ).addMigrations(Migrations.MIGRATION_1_2).build()
                 INSTANCE = instance
                 instance
             }

@@ -18,8 +18,6 @@
 <resources>
     <string name="cancel">Annuler</string>
     <string name="delete">Supprimer</string>
-    <string name="delete_confirmation_title">Supprimer cette note ?</string>
-    <string name="delete_confirmation_message">La note sera supprimée sans possibilité de récupération.</string>
     <string name="title">Titre</string>
     <string name="note">Note</string>
     <string name="system">Système</string>
@@ -28,8 +26,6 @@
     <string name="language">Langue</string>
     <string name="settings">Paramètres</string>
     <string name="sort_title">Trier par</string>
-    <string name="sort_date_desc">Plus récents d\'abord</string>
-    <string name="sort_date_asc">Plus anciens d\'abord</string>
     <string name="sort_title_asc">Titre (A-Z)</string>
     <string name="sort_title_desc">Titre (Z-A)</string>
     <string name="back">Retour</string>
@@ -55,7 +51,6 @@
     <string name="hide_password">Masquer le mot de passe</string>
     <string name="show_password">Afficher le mot de passe</string>
     <string name="confirm_password">Confirmer le mot de passe</string>
-    <string name="timeout">Délai d\'attente</string>
     <string name="never">Jamais</string>
     <string name="immediately">Immédiatement</string>
     <string name="minute_1">1 minute</string>
@@ -94,4 +89,28 @@
     <string name="export_no_notes">Aucune note à exporter</string>
     <string name="dynamic_color_title">Couleurs dynamiques</string>
     <string name="dynamic_color_subtitle">Adapter les couleurs de l\'application à votre fond d\'écran</string>
+    <string name="sort_created_at_desc">Par date de création (plus récentes d\'abord)</string>
+    <string name="sort_created_at_asc">Par date de création (plus anciennes d\'abord)</string>
+    <string name="sort_updated_at_desc">Par date de modification (plus récentes d\'abord)</string>
+    <string name="sort_updated_at_asc">Par date de modification (plus anciennes d\'abord)</string>
+    <string name="trash">Corbeille</string>
+    <string name="trash_clear_all">Vider la corbeille</string>
+    <string name="restore">Restaurer</string>
+    <string name="delete_permanently_title">Supprimer définitivement ?</string>
+    <string name="delete_permanently_message">Cette action est irréversible.</string>
+    <string name="move_to_trash_title">Supprimer la note ?</string>
+    <string name="move_to_trash_message">La note sera déplacée dans la corbeille.</string>
+    <string name="trash_description">Activez la corbeille pour restaurer les notes supprimées</string>
+    <string name="clear_trash_title">Vider la corbeille ?</string>
+    <string name="clear_trash_message">Toutes les notes dans la corbeille seront supprimées définitivement.</string>
+    <string name="created_at">Créé</string>
+    <string name="updated_at">Modifié</string>
+    <string name="trashed_at">Supprimé</string>
+    <string name="days_1">1 jour</string>
+    <string name="days_3">3 jours</string>
+    <string name="days_7">7 jours</string>
+    <string name="days_15">15 jours</string>
+    <string name="days_30">30 jours</string>
+    <string name="trash_retention_title">Période de conservation dans la corbeille</string>
+    <string name="info">Infos</string>
 </resources>

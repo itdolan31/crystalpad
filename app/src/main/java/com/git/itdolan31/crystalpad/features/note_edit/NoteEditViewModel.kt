@@ -22,7 +22,9 @@ import androidx.lifecycle.viewModelScope
 import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
 import com.git.itdolan31.crystalpad.core.data.repository.NoteRepository
 import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
 import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
+import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -62,7 +64,32 @@ class NoteEditViewModel @AssistedInject constructor(
         initialValue = SettingsConstants.DEFAULT_FONT_SIZE
     )
 
-    private var note: NoteEntity? = null
+    val datePattern: StateFlow<DatePatternType> = settingsRepository.datePatternFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_DATE_PATTERN
+    )
+
+    val timePattern: StateFlow<TimePatternType> = settingsRepository.timePatternFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TIME_PATTERN
+    )
+
+    val isTrashEnabled: StateFlow<Boolean> = settingsRepository.trashFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TRASH
+    )
+
+    val trashRetention: StateFlow<Long> = settingsRepository.trashRetentionFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TRASH_RETENTION
+    )
+
+    var note: NoteEntity? = null
+        private set
     private var saveJob: Job? = null
 
     init {
@@ -89,13 +116,12 @@ class NoteEditViewModel @AssistedInject constructor(
         saveJob?.cancel()
         saveJob = viewModelScope.launch {
             val savedNote = note?.copy(
-                title = state.title,
-                content = state.content,
-                timestamp = System.currentTimeMillis()
+                title = state.title, content = state.content, updatedAt = System.currentTimeMillis()
             ) ?: NoteEntity(
                 title = state.title,
                 content = state.content,
-                timestamp = System.currentTimeMillis()
+                createdAt = System.currentTimeMillis(),
+                updatedAt = System.currentTimeMillis()
             )
 
             if (savedNote.id == 0L) {
@@ -108,8 +134,7 @@ class NoteEditViewModel @AssistedInject constructor(
 
             _uiState.update {
                 it.copy(
-                    originalTitle = savedNote.title,
-                    originalContent = savedNote.content
+                    originalTitle = savedNote.title, originalContent = savedNote.content
                 )
             }
         }
@@ -120,7 +145,19 @@ class NoteEditViewModel @AssistedInject constructor(
         saveJob?.cancel()
         note?.let { deletedNote ->
             viewModelScope.launch {
-                noteRepository.delete(deletedNote)
+                if (isTrashEnabled.value && !deletedNote.isTrashed) {
+                    noteRepository.moveNoteToTrash(deletedNote.id)
+                } else {
+                    noteRepository.delete(deletedNote)
+                }
+            }
+        }
+    }
+
+    fun restoreNote() {
+        note?.let { restoredNote ->
+            viewModelScope.launch {
+                noteRepository.restoreNoteFromTrash(restoredNote.id)
             }
         }
     }

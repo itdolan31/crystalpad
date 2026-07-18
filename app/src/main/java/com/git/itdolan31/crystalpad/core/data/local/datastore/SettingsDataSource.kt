@@ -25,6 +25,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
@@ -47,6 +48,8 @@ class SettingsDataSource(private val context: Context) {
         private val FONT_SIZE = intPreferencesKey("font_size")
         private val FLAG_SECURE = booleanPreferencesKey("flag_secure")
         private val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
+        private val TRASH = booleanPreferencesKey("trash")
+        private val TRASH_RETENTION = longPreferencesKey("trash_retention")
     }
 
     private fun <T> preferenceFlow(
@@ -80,6 +83,9 @@ class SettingsDataSource(private val context: Context) {
     val fontSizeFlow = preferenceFlow(FONT_SIZE, SettingsConstants.DEFAULT_FONT_SIZE)
     val flagSecureFlow = preferenceFlow(FLAG_SECURE, SettingsConstants.DEFAULT_FLAG_SECURE)
     val dynamicColorFlow = preferenceFlow(DYNAMIC_COLOR, SettingsConstants.DEFAULT_DYNAMIC_COLOR)
+    val trashFlow = preferenceFlow(TRASH, SettingsConstants.DEFAULT_TRASH)
+    val trashRetentionFlow =
+        preferenceFlow(TRASH_RETENTION, SettingsConstants.DEFAULT_TRASH_RETENTION)
 
     suspend fun saveTheme(theme: String) = savePreference(THEME, theme)
 
@@ -103,4 +109,8 @@ class SettingsDataSource(private val context: Context) {
     suspend fun saveFlagSecure(enabled: Boolean) = savePreference(FLAG_SECURE, enabled)
 
     suspend fun saveDynamicColor(enabled: Boolean) = savePreference(DYNAMIC_COLOR, enabled)
+
+    suspend fun saveTrash(enabled: Boolean) = savePreference(TRASH, enabled)
+
+    suspend fun saveTrashRetention(millis: Long) = savePreference(TRASH_RETENTION, millis)
 }

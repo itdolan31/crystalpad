@@ -40,6 +40,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -48,7 +49,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,16 +64,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.git.itdolan31.crystalpad.R
 import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
 import com.git.itdolan31.crystalpad.core.domain.model.ThemeType
 import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import com.git.itdolan31.crystalpad.core.utils.formatDateTime
-import com.git.itdolan31.crystalpad.features.settings.components.SettingsRadioItem
 import com.git.itdolan31.crystalpad.features.settings.components.SettingsSectionHeader
+import com.git.itdolan31.crystalpad.features.settings.components.SettingsSwitchItem
 import com.git.itdolan31.crystalpad.features.settings.components.SettingsTextItem
 import com.git.itdolan31.crystalpad.ui.components.DialogRadioItem
 import kotlinx.coroutines.launch
@@ -87,17 +90,19 @@ fun SettingsScreen(
     val configuration = LocalConfiguration.current
     val uriHandler = LocalUriHandler.current
 
-    val notes by viewModel.notes.collectAsState()
-    val themeType by viewModel.themeType.collectAsState()
-    val isKeepScreenOn by viewModel.isKeepScreenOn.collectAsState()
-    val isPasswordSet by viewModel.isPasswordSet.collectAsState()
-    val isBiometryEnabled by viewModel.isBiometryEnabled.collectAsState()
-    val lockTimeout by viewModel.lockTimeout.collectAsState()
-    val datePattern by viewModel.datePattern.collectAsState()
-    val timePattern by viewModel.timePattern.collectAsState()
-    val fontSize by viewModel.fontSize.collectAsState()
-    val isFlagSecureEnabled by viewModel.isFlagSecureEnabled.collectAsState()
-    val isDynamicColorEnabled by viewModel.isDynamicColorEnabled.collectAsState()
+    val notes by viewModel.notes.collectAsStateWithLifecycle()
+    val themeType by viewModel.themeType.collectAsStateWithLifecycle()
+    val isKeepScreenOn by viewModel.isKeepScreenOn.collectAsStateWithLifecycle()
+    val isPasswordSet by viewModel.isPasswordSet.collectAsStateWithLifecycle()
+    val isBiometryEnabled by viewModel.isBiometryEnabled.collectAsStateWithLifecycle()
+    val lockTimeout by viewModel.lockTimeout.collectAsStateWithLifecycle()
+    val datePattern by viewModel.datePattern.collectAsStateWithLifecycle()
+    val timePattern by viewModel.timePattern.collectAsStateWithLifecycle()
+    val fontSize by viewModel.fontSize.collectAsStateWithLifecycle()
+    val isFlagSecureEnabled by viewModel.isFlagSecureEnabled.collectAsStateWithLifecycle()
+    val isDynamicColorEnabled by viewModel.isDynamicColorEnabled.collectAsStateWithLifecycle()
+    val isTrashEnabled by viewModel.isTrashEnabled.collectAsStateWithLifecycle()
+    val trashRetention by viewModel.trashRetention.collectAsStateWithLifecycle()
 
     var showThemeDialog by rememberSaveable { mutableStateOf(false) }
     var showPasswordDialog by rememberSaveable { mutableStateOf(false) }
@@ -105,6 +110,7 @@ fun SettingsScreen(
     var showDatePatternDialog by rememberSaveable { mutableStateOf(false) }
     var showTimePatternDialog by rememberSaveable { mutableStateOf(false) }
     var showFontSizeDialog by rememberSaveable { mutableStateOf(false) }
+    var showTrashRetentionDialog by rememberSaveable { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -199,15 +205,14 @@ fun SettingsScreen(
             )
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                SettingsRadioItem(
+                SettingsSwitchItem(
                     onClick = { viewModel.setDynamicColorEnabled(!isDynamicColorEnabled) },
                     enabled = themeType != ThemeType.OLED,
                     icon = painterResource(R.drawable.ic_palette),
                     title = stringResource(R.string.dynamic_color_title),
                     subtitle = stringResource(R.string.dynamic_color_subtitle),
                     checked = isDynamicColorEnabled,
-                    onCheckedChange = { viewModel.setDynamicColorEnabled(it) }
-                )
+                    onCheckedChange = { viewModel.setDynamicColorEnabled(it) })
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -249,7 +254,7 @@ fun SettingsScreen(
 
             SettingsSectionHeader(stringResource(R.string.section_screen))
 
-            SettingsRadioItem(
+            SettingsSwitchItem(
                 onClick = { viewModel.setKeepScreenOn(!isKeepScreenOn) },
                 icon = painterResource(R.drawable.ic_mobile_lock_portrait),
                 title = stringResource(R.string.keep_screen_on),
@@ -259,7 +264,7 @@ fun SettingsScreen(
 
             SettingsSectionHeader(stringResource(R.string.section_security))
 
-            SettingsRadioItem(
+            SettingsSwitchItem(
                 onClick = { showPasswordDialog = true },
                 icon = painterResource(R.drawable.ic_lock),
                 title = stringResource(R.string.password_title),
@@ -267,7 +272,7 @@ fun SettingsScreen(
                 checked = isPasswordSet,
                 onCheckedChange = { showPasswordDialog = true })
 
-            SettingsRadioItem(
+            SettingsSwitchItem(
                 onClick = {
                     if (isBiometryEnabled) {
                         viewModel.setBiometryEnabled(false)
@@ -288,7 +293,7 @@ fun SettingsScreen(
                     }
                 })
 
-            SettingsRadioItem(
+            SettingsSwitchItem(
                 onClick = {
                     showLockTimeoutDialog = true
                 },
@@ -309,7 +314,7 @@ fun SettingsScreen(
                 checked = lockTimeout >= 0,
                 onCheckedChange = { showLockTimeoutDialog = true })
 
-            SettingsRadioItem(
+            SettingsSwitchItem(
                 onClick = { viewModel.setFlagSecureEnabled(!isFlagSecureEnabled) },
                 icon = painterResource(R.drawable.ic_screenshot_monitor),
                 title = stringResource(R.string.flag_secure),
@@ -318,6 +323,31 @@ fun SettingsScreen(
                 onCheckedChange = { viewModel.setFlagSecureEnabled(it) })
 
             SettingsSectionHeader(stringResource(R.string.section_data))
+
+            SettingsSwitchItem(
+                onClick = { viewModel.setTrashEnabled(!isTrashEnabled) },
+                icon = painterResource(R.drawable.ic_delete),
+                title = stringResource(R.string.trash),
+                subtitle = stringResource(R.string.trash_description),
+                checked = isTrashEnabled,
+                onCheckedChange = { viewModel.setTrashEnabled(it) })
+
+            SettingsTextItem(
+                onClick = { showTrashRetentionDialog = true },
+                enabled = isTrashEnabled,
+                icon = painterResource(R.drawable.ic_delete),
+                title = stringResource(R.string.trash_retention_title),
+                subtitle = stringResource(
+                    when (trashRetention) {
+                        86_400_000L -> R.string.days_1
+                        259_200_000L -> R.string.days_3
+                        604_800_000L -> R.string.days_7
+                        1_296_000_000L -> R.string.days_15
+                        2_592_000_000L -> R.string.days_30
+                        else -> R.string.days_30
+                    }
+                )
+            )
 
             SettingsTextItem(
                 onClick = {
@@ -355,9 +385,7 @@ fun SettingsScreen(
     if (showThemeDialog) {
         AlertDialog(onDismissRequest = { showThemeDialog = false }, confirmButton = {}, text = {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
                 ThemeType.entries.forEach { type ->
                     DialogRadioItem(
@@ -429,13 +457,16 @@ fun SettingsScreen(
             )
         }, text = {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
                     value = passwordInput,
                     onValueChange = { passwordInput = it },
+                    textStyle = LocalTextStyle.current.copy(
+                        fontSize = fontSize.sp,
+                        textDirection = TextDirection.Content,
+                        lineHeight = (fontSize * 1.5).sp
+                    ),
                     label = { Text(stringResource(R.string.password)) },
                     trailingIcon = {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -459,7 +490,16 @@ fun SettingsScreen(
                     OutlinedTextField(
                         value = confirmPasswordInput,
                         onValueChange = { confirmPasswordInput = it },
-                        label = { Text(stringResource(R.string.confirm_password)) },
+                        textStyle = LocalTextStyle.current.copy(
+                            fontSize = fontSize.sp,
+                            textDirection = TextDirection.Content,
+                            lineHeight = (fontSize * 1.5).sp
+                        ),
+                        label = {
+                            Text(
+                                stringResource(R.string.confirm_password)
+                            )
+                        },
                         trailingIcon = {
                             IconButton(onClick = {
                                 confirmPasswordVisible = !confirmPasswordVisible
@@ -500,9 +540,7 @@ fun SettingsScreen(
             confirmButton = {},
             text = {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
+                    modifier = Modifier.verticalScroll(rememberScrollState())
                 ) {
                     lockTimeouts.forEach { (code, id) ->
                         DialogRadioItem(
@@ -520,9 +558,7 @@ fun SettingsScreen(
             confirmButton = {},
             text = {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
+                    modifier = Modifier.verticalScroll(rememberScrollState())
                 ) {
                     DatePatternType.entries.forEach { type ->
                         DialogRadioItem(
@@ -541,9 +577,7 @@ fun SettingsScreen(
             confirmButton = {},
             text = {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
+                    modifier = Modifier.verticalScroll(rememberScrollState())
                 ) {
                     TimePatternType.entries.forEach { type ->
                         DialogRadioItem(
@@ -591,11 +625,44 @@ fun SettingsScreen(
                             fontSizeInput = it
                         }
                     },
+                    textStyle = LocalTextStyle.current.copy(
+                        fontSize = fontSize.sp,
+                        textDirection = TextDirection.Content,
+                        lineHeight = (fontSize * 1.5).sp
+                    ),
                     label = { Text(stringResource(R.string.font_size)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true
                 )
             }
         })
+    } else if (showTrashRetentionDialog) {
+        val trashRetentions = remember {
+            listOf(
+                86_400_000L to R.string.days_1,
+                259_200_000L to R.string.days_3,
+                604_800_000L to R.string.days_7,
+                1_296_000_000L to R.string.days_15,
+                2_592_000_000L to R.string.days_30
+            )
+        }
+
+        AlertDialog(
+            onDismissRequest = { showTrashRetentionDialog = false },
+            confirmButton = {},
+            text = {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState())
+                ) {
+                    trashRetentions.forEach { (millis, id) ->
+                        DialogRadioItem(
+                            text = stringResource(id), selected = trashRetention == millis
+                        ) {
+                            viewModel.setTrashRetention(millis)
+                            showTrashRetentionDialog = false
+                        }
+                    }
+                }
+            })
     }
 }

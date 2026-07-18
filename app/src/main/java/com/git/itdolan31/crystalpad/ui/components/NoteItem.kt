@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.features.home.components
+package com.git.itdolan31.crystalpad.ui.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -51,18 +51,19 @@ import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
 import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
 import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
 import com.git.itdolan31.crystalpad.core.utils.formatDateTime
-import com.git.itdolan31.crystalpad.ui.components.DeleteConfirmationDialog
 
 @Composable
 fun NoteItem(
-    note: NoteEntity,
     onClick: () -> Unit,
-    onDeleteClick: () -> Unit,
+    note: NoteEntity,
+    trashRetention: Long? = null,
     datePattern: DatePatternType,
-    timePattern: TimePatternType
+    timePattern: TimePatternType,
+    onRestoreClick: () -> Unit = {},
+    onDeleteClick: () -> Unit,
+    onInfoClick: () -> Unit
 ) {
     var showMenu by rememberSaveable { mutableStateOf(false) }
-    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -105,7 +106,13 @@ fun NoteItem(
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        formatDateTime(note.timestamp, datePattern.pattern),
+                        formatDateTime(
+                            if (note.isTrashed && note.trashedAt != null && trashRetention != null) {
+                                note.trashedAt + trashRetention
+                            } else {
+                                note.updatedAt
+                            }, datePattern.pattern
+                        ),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -118,7 +125,13 @@ fun NoteItem(
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        formatDateTime(note.timestamp, timePattern.pattern),
+                        formatDateTime(
+                            if (note.isTrashed && note.trashedAt != null && trashRetention != null) {
+                                note.trashedAt + trashRetention
+                            } else {
+                                note.updatedAt
+                            }, timePattern.pattern
+                        ),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -136,26 +149,41 @@ fun NoteItem(
                 }
                 DropdownMenu(
                     expanded = showMenu, onDismissRequest = { showMenu = false }) {
+                    if (note.isTrashed) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.restore)) },
+                            onClick = {
+                                showMenu = false
+                                onRestoreClick()
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_restore_from_trash),
+                                    contentDescription = null
+                                )
+                            })
+                    }
                     DropdownMenuItem(text = {
                         Text(stringResource(R.string.delete))
                     }, onClick = {
                         showMenu = false
-                        showDeleteDialog = true
+                        onDeleteClick()
                     }, leadingIcon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_delete),
                             contentDescription = null
                         )
                     })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.info)) }, onClick = {
+                        showMenu = false
+                        onInfoClick()
+                    }, leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_info), contentDescription = null
+                        )
+                    })
                 }
             }
         }
-    }
-
-    if (showDeleteDialog) {
-        DeleteConfirmationDialog(onDismiss = { showDeleteDialog = false }, onConfirm = {
-            onDeleteClick()
-            showDeleteDialog = false
-        })
     }
 }

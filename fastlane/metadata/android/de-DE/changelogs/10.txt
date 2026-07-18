@@ -1,0 +1,4 @@
+• Papierkorb hinzugefügt
+• Sortierung nach Erstellungsdatum hinzugefügt
+• Notizeninformationen hinzugefügt
+• App-Optimierung

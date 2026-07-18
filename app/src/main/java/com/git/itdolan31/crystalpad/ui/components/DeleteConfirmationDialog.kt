@@ -18,6 +18,7 @@
 package com.git.itdolan31.crystalpad.ui.components
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -26,22 +27,36 @@ import com.git.itdolan31.crystalpad.R
 
 @Composable
 fun DeleteConfirmationDialog(
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    trashEnabled: Boolean,
+    onDismiss: () -> Unit, onConfirm: () -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.delete_confirmation_title)) },
-        text = { Text(stringResource(R.string.delete_confirmation_message)) },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text(stringResource(R.string.delete))
-            }
+    AlertDialog(onDismissRequest = onDismiss, title = {
+        Text(
+            stringResource(
+                if (trashEnabled) {
+                    R.string.move_to_trash_title
+                } else {
+                    R.string.delete_permanently_title
+                }
+            )
+        )
+    }, text = {
+        Text(
+            stringResource(
+                if (trashEnabled) {
+                    R.string.move_to_trash_message
+                } else {
+                    R.string.delete_permanently_message
+                }
+            )
+        )
+    }, dismissButton = {
+        TextButton(onClick = onDismiss) {
+            Text(stringResource(R.string.cancel))
         }
-    )
+    }, confirmButton = {
+        TextButton(onClick = onConfirm) {
+            Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
+        }
+    })
 }

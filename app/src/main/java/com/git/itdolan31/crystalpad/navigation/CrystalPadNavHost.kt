@@ -34,6 +34,7 @@ import com.git.itdolan31.crystalpad.features.home.HomeScreen
 import com.git.itdolan31.crystalpad.features.note_edit.NoteEditScreen
 import com.git.itdolan31.crystalpad.features.note_edit.NoteEditViewModel
 import com.git.itdolan31.crystalpad.features.settings.SettingsScreen
+import com.git.itdolan31.crystalpad.features.trash.TrashScreen
 
 @Composable
 fun CrystalPadNavHost(backStack: NavBackStack<NavKey>) {
@@ -43,15 +44,20 @@ fun CrystalPadNavHost(backStack: NavBackStack<NavKey>) {
         entryDecorators = listOf(
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
-        ), transitionSpec = {
+        ),
+        transitionSpec = {
             slideInHorizontally { it } + fadeIn() togetherWith slideOutHorizontally { -it } + fadeOut()
-        }, popTransitionSpec = {
+        },
+        popTransitionSpec = {
             slideInHorizontally { -it } + fadeIn() togetherWith slideOutHorizontally { it } + fadeOut()
-        }, predictivePopTransitionSpec = {
+        },
+        predictivePopTransitionSpec = {
             slideInHorizontally { -it } + fadeIn() togetherWith slideOutHorizontally { it } + fadeOut()
-        }, entryProvider = entryProvider {
+        },
+        entryProvider = entryProvider {
             entry<Screen.Home> {
                 HomeScreen(
+                    onNavigateToTrash = { backStack.add(Screen.Trash) },
                     onNavigateToSettings = { backStack.add(Screen.Settings) },
                     onNavigateToNoteEdit = { noteId ->
                         backStack.add(Screen.NoteEdit(noteId))
@@ -67,10 +73,17 @@ fun CrystalPadNavHost(backStack: NavBackStack<NavKey>) {
                 val viewModel: NoteEditViewModel = hiltViewModel(
                     creationCallback = { factory: NoteEditViewModel.Factory ->
                         factory.create(entry.noteId)
-                    }
-                )
+                    })
 
                 NoteEditScreen(viewModel = viewModel, onBack = { backStack.removeLastOrNull() })
+            }
+
+            entry<Screen.Trash> {
+                TrashScreen(
+                    onBack = { backStack.removeLastOrNull() },
+                    onNavigateToNoteEdit = { noteId ->
+                        backStack.add(Screen.NoteEdit(noteId))
+                    })
             }
         })
 }

@@ -23,11 +23,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.git.itdolan31.crystalpad.core.data.repository.NoteRepository
 import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
 import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
 import com.git.itdolan31.crystalpad.core.domain.model.ThemeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +41,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val settingsRepository: SettingsRepository
+    private val noteRepository: NoteRepository, private val settingsRepository: SettingsRepository
 ) : ViewModel() {
     private val _isLocked = MutableStateFlow(false)
     private val _isFlagSecureEnabled = MutableStateFlow(SettingsConstants.DEFAULT_FLAG_SECURE)
@@ -59,23 +61,32 @@ class MainViewModel @Inject constructor(
     var lockTimeout by mutableIntStateOf(SettingsConstants.DEFAULT_TIMEOUT)
         private set
 
-    val themeType: StateFlow<ThemeType> = settingsRepository.themeFlow
-        .onEach {
-            isThemeLoaded = true
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = SettingsConstants.DEFAULT_THEME
-        )
+    val themeType: StateFlow<ThemeType> = settingsRepository.themeFlow.onEach {
+        isThemeLoaded = true
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_THEME
+    )
 
-    val dynamicColorEnabled: StateFlow<Boolean> = settingsRepository.dynamicColorFlow
-        .onEach { isDynamicColorLoaded = true }
-        .stateIn(
+    val dynamicColorEnabled: StateFlow<Boolean> =
+        settingsRepository.dynamicColorFlow.onEach { isDynamicColorLoaded = true }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = SettingsConstants.DEFAULT_DYNAMIC_COLOR
         )
+
+    val isTrashEnabled: StateFlow<Boolean> = settingsRepository.trashFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TRASH
+    )
+
+    val trashRetention: StateFlow<Long> = settingsRepository.trashRetentionFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_TRASH_RETENTION
+    )
 
     init {
         viewModelScope.launch {
@@ -102,5 +113,15 @@ class MainViewModel @Inject constructor(
 
     fun setLocked(locked: Boolean) {
         _isLocked.value = locked
+    }
+
+    fun cleanExpiredTrash() {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (isTrashEnabled.value && trashRetention.value > 0) {
+                noteRepository.deleteExpiredTrashedNotes(
+                    System.currentTimeMillis() - trashRetention.value
+                )
+            }
+        }
     }
 }

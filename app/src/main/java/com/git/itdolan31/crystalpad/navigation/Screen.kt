@@ -30,4 +30,7 @@ sealed class Screen : NavKey {
 
     @Serializable
     data class NoteEdit(val noteId: Long? = null) : Screen()
+
+    @Serializable
+    data object Trash : Screen()
 }

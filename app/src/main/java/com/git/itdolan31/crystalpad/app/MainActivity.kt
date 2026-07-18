@@ -79,6 +79,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        viewModel.cleanExpiredTrash()
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isFlagSecureEnabled.collect { enabled ->
@@ -94,6 +96,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+
         lockJob?.cancel()
         lockJob = null
     }

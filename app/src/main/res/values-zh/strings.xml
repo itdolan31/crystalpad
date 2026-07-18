@@ -18,8 +18,6 @@
 <resources>
     <string name="cancel">取消</string>
     <string name="delete">删除</string>
-    <string name="delete_confirmation_title">删除此笔记？</string>
-    <string name="delete_confirmation_message">笔记删除后将无法恢复。</string>
     <string name="title">标题</string>
     <string name="note">笔记</string>
     <string name="system">系统默认</string>
@@ -28,8 +26,6 @@
     <string name="language">语言</string>
     <string name="settings">设置</string>
     <string name="sort_title">排序方式</string>
-    <string name="sort_date_desc">从新到旧</string>
-    <string name="sort_date_asc">从旧到新</string>
     <string name="sort_title_asc">标题 (A-Z)</string>
     <string name="sort_title_desc">标题 (Z-A)</string>
     <string name="back">返回</string>
@@ -55,7 +51,6 @@
     <string name="hide_password">隐藏密码</string>
     <string name="show_password">显示密码</string>
     <string name="confirm_password">确认密码</string>
-    <string name="timeout">超时</string>
     <string name="never">从不</string>
     <string name="immediately">立即</string>
     <string name="minute_1">1分钟</string>
@@ -94,4 +89,28 @@
     <string name="export_no_notes">没有要导出的笔记</string>
     <string name="dynamic_color_title">动态颜色</string>
     <string name="dynamic_color_subtitle">使应用颜色与壁纸匹配</string>
+    <string name="sort_created_at_desc">最新优先</string>
+    <string name="sort_created_at_asc">最旧优先</string>
+    <string name="sort_updated_at_desc">最近更新</string>
+    <string name="sort_updated_at_asc">最久未更新</string>
+    <string name="trash">回收站</string>
+    <string name="trash_clear_all">清空回收站</string>
+    <string name="restore">恢复</string>
+    <string name="delete_permanently_title">永久删除？</string>
+    <string name="delete_permanently_message">此操作无法撤销。</string>
+    <string name="move_to_trash_title">删除笔记？</string>
+    <string name="move_to_trash_message">笔记将被移至回收站。</string>
+    <string name="trash_description">启用回收站以恢复已删除的笔记</string>
+    <string name="clear_trash_title">清空回收站？</string>
+    <string name="clear_trash_message">回收站中的所有笔记将被永久删除。</string>
+    <string name="created_at">创建日期</string>
+    <string name="updated_at">修改日期</string>
+    <string name="trashed_at">删除日期</string>
+    <string name="days_1">1天</string>
+    <string name="days_3">3天</string>
+    <string name="days_7">7天</string>
+    <string name="days_15">15天</string>
+    <string name="days_30">30天</string>
+    <string name="trash_retention_title">回收站保留期限</string>
+    <string name="info">信息</string>
 </resources>

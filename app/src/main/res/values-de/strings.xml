@@ -18,8 +18,6 @@
 <resources>
     <string name="cancel">Abbrechen</string>
     <string name="delete">Löschen</string>
-    <string name="delete_confirmation_title">Diese Notiz löschen?</string>
-    <string name="delete_confirmation_message">Die Notiz wird unwiderruflich gelöscht.</string>
     <string name="title">Titel</string>
     <string name="note">Notiz</string>
     <string name="system">System</string>
@@ -28,8 +26,6 @@
     <string name="language">Sprache</string>
     <string name="settings">Einstellungen</string>
     <string name="sort_title">Sortieren nach</string>
-    <string name="sort_date_desc">Neueste zuerst</string>
-    <string name="sort_date_asc">Älteste zuerst</string>
     <string name="sort_title_asc">Titel (A-Z)</string>
     <string name="sort_title_desc">Titel (Z-A)</string>
     <string name="back">Zurück</string>
@@ -55,7 +51,6 @@
     <string name="hide_password">Passwort ausblenden</string>
     <string name="show_password">Passwort anzeigen</string>
     <string name="confirm_password">Passwort bestätigen</string>
-    <string name="timeout">Timeout</string>
     <string name="never">Nie</string>
     <string name="immediately">Sofort</string>
     <string name="minute_1">1 Minute</string>
@@ -94,4 +89,28 @@
     <string name="export_no_notes">Keine Notizen zum Exportieren</string>
     <string name="dynamic_color_title">Dynamische Farben</string>
     <string name="dynamic_color_subtitle">Farben an Ihr Hintergrundbild anpassen</string>
+    <string name="sort_created_at_desc">Nach Erstellungsdatum (neueste zuerst)</string>
+    <string name="sort_created_at_asc">Nach Erstellungsdatum (älteste zuerst)</string>
+    <string name="sort_updated_at_desc">Nach Änderungsdatum (neueste zuerst)</string>
+    <string name="sort_updated_at_asc">Nach Änderungsdatum (älteste zuerst)</string>
+    <string name="trash">Papierkorb</string>
+    <string name="trash_clear_all">Papierkorb leeren</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="delete_permanently_title">Endgültig löschen?</string>
+    <string name="delete_permanently_message">Diese Aktion kann nicht rückgängig gemacht werden.</string>
+    <string name="move_to_trash_title">Notiz löschen?</string>
+    <string name="move_to_trash_message">Die Notiz wird in den Papierkorb verschoben.</string>
+    <string name="trash_description">Papierkorb aktivieren, um gelöschte Notizen wiederherzustellen</string>
+    <string name="clear_trash_title">Papierkorb leeren?</string>
+    <string name="clear_trash_message">Alle Notizen im Papierkorb werden endgültig gelöscht.</string>
+    <string name="created_at">Erstellt</string>
+    <string name="updated_at">Geändert</string>
+    <string name="trashed_at">Gelöscht</string>
+    <string name="days_1">1 Tag</string>
+    <string name="days_3">3 Tage</string>
+    <string name="days_7">7 Tage</string>
+    <string name="days_15">15 Tage</string>
+    <string name="days_30">30 Tage</string>
+    <string name="trash_retention_title">Aufbewahrungsdauer für den Papierkorb</string>
+    <string name="info">Info</string>
 </resources>

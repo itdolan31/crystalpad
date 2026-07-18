@@ -20,11 +20,14 @@ package com.git.itdolan31.crystalpad.features.app_lock
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.git.itdolan31.crystalpad.core.data.repository.SettingsRepository
+import com.git.itdolan31.crystalpad.core.domain.model.SettingsConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -34,6 +37,12 @@ class AppLockViewModel @Inject constructor(settingsRepository: SettingsRepositor
 
     private val password: StateFlow<String> = _password.asStateFlow()
     val isBiometryEnabled: StateFlow<Boolean?> = _isBiometryEnabled.asStateFlow()
+
+    val fontSize: StateFlow<Int> = settingsRepository.fontSizeFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_FONT_SIZE
+    )
 
     init {
         viewModelScope.launch {
