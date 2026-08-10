@@ -30,11 +30,11 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.git.itdolan31.crystalpad.features.home.HomeScreen
-import com.git.itdolan31.crystalpad.features.note_edit.NoteEditScreen
-import com.git.itdolan31.crystalpad.features.note_edit.NoteEditViewModel
-import com.git.itdolan31.crystalpad.features.settings.SettingsScreen
-import com.git.itdolan31.crystalpad.features.trash.TrashScreen
+import com.git.itdolan31.crystalpad.features.home.presentation.HomeScreen
+import com.git.itdolan31.crystalpad.features.note_edit.presentation.NoteEditScreen
+import com.git.itdolan31.crystalpad.features.note_edit.presentation.NoteEditViewModel
+import com.git.itdolan31.crystalpad.features.settings.presentation.SettingsScreen
+import com.git.itdolan31.crystalpad.features.trash.presentation.TrashScreen
 
 @Composable
 fun CrystalPadNavHost(backStack: NavBackStack<NavKey>) {

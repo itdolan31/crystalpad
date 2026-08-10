@@ -18,8 +18,8 @@
 package com.git.itdolan31.crystalpad.core.data.repository
 
 import com.git.itdolan31.crystalpad.core.data.local.room.dao.NoteDao
-import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
-import com.git.itdolan31.crystalpad.core.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.core.data.local.room.entity.NoteEntity
+import com.git.itdolan31.crystalpad.domain.model.NoteSortType
 import kotlinx.coroutines.flow.Flow
 
 class NoteRepository(private val noteDao: NoteDao) {
@@ -37,8 +37,8 @@ class NoteRepository(private val noteDao: NoteDao) {
         noteDao.restoreNoteFromTrash(noteId)
     }
 
-    suspend fun deleteExpiredTrashedNotes(cutoffTime: Long) {
-        noteDao.deleteExpiredTrashedNotes(cutoffTime)
+    suspend fun deleteExpiredTrashedNotes(trashRetention: Long) {
+        noteDao.deleteExpiredTrashedNotes(System.currentTimeMillis() - trashRetention)
     }
 
     suspend fun clearTrash() = noteDao.clearTrash()

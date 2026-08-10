@@ -18,10 +18,10 @@
 package com.git.itdolan31.crystalpad.core.data.repository
 
 import com.git.itdolan31.crystalpad.core.data.local.datastore.SettingsDataSource
-import com.git.itdolan31.crystalpad.core.domain.model.DatePatternType
-import com.git.itdolan31.crystalpad.core.domain.model.NoteSortType
-import com.git.itdolan31.crystalpad.core.domain.model.ThemeType
-import com.git.itdolan31.crystalpad.core.domain.model.TimePatternType
+import com.git.itdolan31.crystalpad.domain.model.DatePatternType
+import com.git.itdolan31.crystalpad.domain.model.NoteSortType
+import com.git.itdolan31.crystalpad.domain.model.ThemeType
+import com.git.itdolan31.crystalpad.domain.model.TimePatternType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

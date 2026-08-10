@@ -15,15 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.core.utils
+package com.git.itdolan31.crystalpad.core.data.local.room.entity
 
-import androidx.appcompat.app.AppCompatDelegate
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-fun formatDateTime(timestamp: Long, pattern: String): String {
-    return SimpleDateFormat(
-        pattern, AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
-    ).format(Date(timestamp))
-}
+@Entity("notes")
+data class NoteEntity(
+    @PrimaryKey(true) val id: Long = 0,
+    val title: String = "",
+    val content: String = "",
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updated_at") val updatedAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "is_trashed") val isTrashed: Boolean = false,
+    @ColumnInfo(name = "trashed_at") val trashedAt: Long? = null
+)

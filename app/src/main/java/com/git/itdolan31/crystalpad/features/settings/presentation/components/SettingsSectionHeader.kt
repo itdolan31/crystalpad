@@ -15,15 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.core.utils
+package com.git.itdolan31.crystalpad.features.settings.presentation.components
 
-import androidx.appcompat.app.AppCompatDelegate
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
-fun formatDateTime(timestamp: Long, pattern: String): String {
-    return SimpleDateFormat(
-        pattern, AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
-    ).format(Date(timestamp))
+@Composable
+fun SettingsSectionHeader(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
+    )
 }

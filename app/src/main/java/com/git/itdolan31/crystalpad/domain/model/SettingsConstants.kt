@@ -15,15 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.core.utils
+package com.git.itdolan31.crystalpad.domain.model
 
-import androidx.appcompat.app.AppCompatDelegate
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
-fun formatDateTime(timestamp: Long, pattern: String): String {
-    return SimpleDateFormat(
-        pattern, AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
-    ).format(Date(timestamp))
+object SettingsConstants {
+    val DEFAULT_THEME = ThemeType.DEFAULT
+    val DEFAULT_SORT_TYPE = NoteSortType.DEFAULT
+    const val DEFAULT_KEEP_SCREEN_ON = false
+    const val DEFAULT_BIOMETRY = false
+    const val DEFAULT_TIMEOUT = 0
+    val DEFAULT_DATE_PATTERN = DatePatternType.DEFAULT
+    val DEFAULT_TIME_PATTERN = TimePatternType.HH_MM
+    const val DEFAULT_FONT_SIZE = 16
+    const val DEFAULT_FLAG_SECURE = false
+    const val DEFAULT_DYNAMIC_COLOR = true
+    const val DEFAULT_TRASH = true
+    const val DEFAULT_TRASH_RETENTION = 2_592_000_000L
 }

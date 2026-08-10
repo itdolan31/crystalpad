@@ -22,7 +22,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.git.itdolan31.crystalpad.core.data.local.room.dao.NoteDao
-import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.data.local.room.entity.NoteEntity
 
 @Database(
     entities = [NoteEntity::class], version = 2

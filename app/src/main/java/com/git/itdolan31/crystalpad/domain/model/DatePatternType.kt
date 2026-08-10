@@ -15,15 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.core.utils
+package com.git.itdolan31.crystalpad.domain.model
 
-import androidx.appcompat.app.AppCompatDelegate
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+enum class DatePatternType(val pattern: String) {
+    DD_MM_YYYY_DOT("dd.MM.yyyy"),
+    DD_MM_YYYY_SLASH("dd/MM/yyyy"),
+    DD_MM_YYYY_DASH("dd-MM-yyyy"),
 
-fun formatDateTime(timestamp: Long, pattern: String): String {
-    return SimpleDateFormat(
-        pattern, AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
-    ).format(Date(timestamp))
+    YYYY_MM_DOT("yyyy.MM.dd"),
+    YYYY_MM_SLASH("yyyy/MM/dd"),
+    YYYY_MM_DASH("yyyy-MM-dd"),
+
+    MM_DD_YYYY_DOT("MM.dd.yyyy"),
+    MM_DD_YYYY_SLASH("MM/dd/yyyy"),
+    MM_DD_YYYY_DASH("MM-dd-yyyy");
+
+    companion object {
+        val DEFAULT = DD_MM_YYYY_DOT
+
+        fun fromName(name: String): DatePatternType {
+            return entries.find { it.name == name } ?: DEFAULT
+        }
+    }
 }

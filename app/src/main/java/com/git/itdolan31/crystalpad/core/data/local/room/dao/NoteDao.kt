@@ -22,7 +22,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.git.itdolan31.crystalpad.core.data.local.room.entities.NoteEntity
+import com.git.itdolan31.crystalpad.core.data.local.room.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -15,15 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.core.utils
+package com.git.itdolan31.crystalpad.features.note_edit.presentation
 
-import androidx.appcompat.app.AppCompatDelegate
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
-fun formatDateTime(timestamp: Long, pattern: String): String {
-    return SimpleDateFormat(
-        pattern, AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
-    ).format(Date(timestamp))
+data class NoteEditUiState(
+    val title: String = "",
+    val content: String = "",
+    val originalTitle: String = "",
+    val originalContent: String = "",
+    val isDeleted: Boolean = false,
+    val isNewNote: Boolean = false
+) {
+    fun canSave(): Boolean {
+        return (title != originalTitle || content != originalContent) && !isDeleted && !(isNewNote && title.isBlank() && content.isBlank())
+    }
 }

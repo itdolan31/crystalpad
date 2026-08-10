@@ -15,15 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.git.itdolan31.crystalpad.core.utils
+package com.git.itdolan31.crystalpad.domain.model
 
-import androidx.appcompat.app.AppCompatDelegate
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+enum class ThemeType {
+    LIGHT,
+    DARK,
+    OLED,
+    SYSTEM;
 
-fun formatDateTime(timestamp: Long, pattern: String): String {
-    return SimpleDateFormat(
-        pattern, AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
-    ).format(Date(timestamp))
+    companion object {
+        val DEFAULT = SYSTEM
+
+        fun fromName(name: String): ThemeType {
+            return entries.find { it.name == name } ?: DEFAULT
+        }
+    }
 }
