@@ -113,4 +113,8 @@
     <string name="days_30">30 jours</string>
     <string name="trash_retention_title">Période de conservation dans la corbeille</string>
     <string name="info">Infos</string>
+    <string name="undo">Annuler</string>
+    <string name="redo">Rétablir</string>
+    <string name="word_wrap_title">Retour à la ligne</string>
+    <string name="word_wrap_description">Coupe les lignes longues sur une nouvelle ligne</string>
 </resources>

@@ -113,4 +113,8 @@
     <string name="days_30">30 days</string>
     <string name="trash_retention_title">Trash retention period</string>
     <string name="info">Info</string>
+    <string name="redo">Redo</string>
+    <string name="undo">Undo</string>
+    <string name="word_wrap_title">Word wrap</string>
+    <string name="word_wrap_description">Wraps long lines to a new line</string>
 </resources>

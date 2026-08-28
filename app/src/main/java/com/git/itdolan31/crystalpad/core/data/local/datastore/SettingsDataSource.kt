@@ -50,6 +50,7 @@ class SettingsDataSource(private val context: Context) {
         private val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
         private val TRASH = booleanPreferencesKey("trash")
         private val TRASH_RETENTION = longPreferencesKey("trash_retention")
+        private val WORD_WRAP = booleanPreferencesKey("word_wrap")
     }
 
     private fun <T> preferenceFlow(
@@ -86,6 +87,7 @@ class SettingsDataSource(private val context: Context) {
     val trashFlow = preferenceFlow(TRASH, SettingsConstants.DEFAULT_TRASH)
     val trashRetentionFlow =
         preferenceFlow(TRASH_RETENTION, SettingsConstants.DEFAULT_TRASH_RETENTION)
+    val wordWrapFlow = preferenceFlow(WORD_WRAP, SettingsConstants.DEFAULT_WORD_WRAP)
 
     suspend fun saveTheme(theme: String) = savePreference(THEME, theme)
 
@@ -113,4 +115,5 @@ class SettingsDataSource(private val context: Context) {
     suspend fun saveTrash(enabled: Boolean) = savePreference(TRASH, enabled)
 
     suspend fun saveTrashRetention(millis: Long) = savePreference(TRASH_RETENTION, millis)
+    suspend fun saveWordWrap(enabled: Boolean) = savePreference(WORD_WRAP, enabled)
 }

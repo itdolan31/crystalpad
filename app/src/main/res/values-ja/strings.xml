@@ -113,4 +113,8 @@
     <string name="days_30">30日</string>
     <string name="trash_retention_title">ゴミ箱の保持期間</string>
     <string name="info">情報</string>
+    <string name="undo">元に戻す</string>
+    <string name="redo">やり直し</string>
+    <string name="word_wrap_title">折り返し</string>
+    <string name="word_wrap_description">長い行を新しい行に折り返します</string>
 </resources>

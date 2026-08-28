@@ -113,4 +113,8 @@
     <string name="days_30">30 дней</string>
     <string name="trash_retention_title">Срок хранения в корзине</string>
     <string name="info">Информация</string>
+    <string name="undo">Отменить</string>
+    <string name="redo">Вернуть</string>
+    <string name="word_wrap_title">Перенос по словам</string>
+    <string name="word_wrap_description">Переносит длинные строки на новую</string>
 </resources>

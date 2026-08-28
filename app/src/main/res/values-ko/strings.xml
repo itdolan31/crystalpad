@@ -113,4 +113,8 @@
     <string name="days_30">30일</string>
     <string name="trash_retention_title">휴지통 보관 기간</string>
     <string name="info">정보</string>
+    <string name="undo">실행 취소</string>
+    <string name="redo">다시 실행</string>
+    <string name="word_wrap_title">자동 줄 바꿈</string>
+    <string name="word_wrap_description">긴 줄을 새 줄로 바꿉니다</string>
 </resources>

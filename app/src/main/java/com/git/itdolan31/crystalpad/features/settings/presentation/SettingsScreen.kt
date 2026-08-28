@@ -35,12 +35,17 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextObfuscationMode
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -49,6 +54,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,14 +62,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -90,7 +97,6 @@ fun SettingsScreen(
     val configuration = LocalConfiguration.current
     val uriHandler = LocalUriHandler.current
 
-    val notes by viewModel.notes.collectAsStateWithLifecycle()
     val themeType by viewModel.themeType.collectAsStateWithLifecycle()
     val isKeepScreenOn by viewModel.isKeepScreenOn.collectAsStateWithLifecycle()
     val isPasswordSet by viewModel.isPasswordSet.collectAsStateWithLifecycle()
@@ -103,6 +109,8 @@ fun SettingsScreen(
     val isDynamicColorEnabled by viewModel.isDynamicColorEnabled.collectAsStateWithLifecycle()
     val isTrashEnabled by viewModel.isTrashEnabled.collectAsStateWithLifecycle()
     val trashRetention by viewModel.trashRetention.collectAsStateWithLifecycle()
+    val isWordWrapEnabled by viewModel.isWordWrapEnabled.collectAsStateWithLifecycle()
+    val notes by viewModel.notes.collectAsStateWithLifecycle()
 
     var showThemeDialog by rememberSaveable { mutableStateOf(false) }
     var showPasswordDialog by rememberSaveable { mutableStateOf(false) }
@@ -262,6 +270,14 @@ fun SettingsScreen(
                 checked = isKeepScreenOn,
                 onCheckedChange = { viewModel.setKeepScreenOn(it) })
 
+            SettingsSwitchItem(
+                onClick = { viewModel.setWordWrapEnabled(!isWordWrapEnabled) },
+                icon = painterResource(R.drawable.ic_wrap_text),
+                title = stringResource(R.string.word_wrap_title),
+                subtitle = stringResource(R.string.word_wrap_description),
+                checked = isWordWrapEnabled,
+                onCheckedChange = { viewModel.setWordWrapEnabled(it) })
+
             SettingsSectionHeader(stringResource(R.string.section_security))
 
             SettingsSwitchItem(
@@ -408,10 +424,16 @@ fun SettingsScreen(
             }
         })
     } else if (showPasswordDialog) {
-        var passwordInput by rememberSaveable { mutableStateOf("") }
-        var confirmPasswordInput by rememberSaveable { mutableStateOf("") }
+        val passwordState = rememberTextFieldState()
+        val confirmPasswordState = rememberTextFieldState()
+        val passwordFocusRequester = remember { FocusRequester() }
+        val confirmPasswordFocusRequester = remember { FocusRequester() }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
         var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
+
+        LaunchedEffect(Unit) {
+            passwordFocusRequester.requestFocus()
+        }
 
         AlertDialog(onDismissRequest = {
             showPasswordDialog = false
@@ -419,19 +441,19 @@ fun SettingsScreen(
             TextButton(
                 onClick = {
                     if (isPasswordSet) {
-                        val (isNotSuccess, resId) = viewModel.resetPassword(passwordInput)
+                        val (success, resId) = viewModel.resetPassword(passwordState.text.toString())
 
-                        showPasswordDialog = isNotSuccess
+                        showPasswordDialog = !success
 
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(context.getString(resId))
                         }
                     } else {
-                        val (isNotSuccess, resId) = viewModel.setNewPassword(
-                            passwordInput, confirmPasswordInput
+                        val (success, resId) = viewModel.setNewPassword(
+                            passwordState.text.toString(), confirmPasswordState.text.toString()
                         )
 
-                        showPasswordDialog = isNotSuccess
+                        showPasswordDialog = !success
 
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(context.getString(resId))
@@ -459,9 +481,9 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
-                OutlinedTextField(
-                    value = passwordInput,
-                    onValueChange = { passwordInput = it },
+                OutlinedSecureTextField(
+                    state = passwordState,
+                    modifier = Modifier.focusRequester(passwordFocusRequester),
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = fontSize.sp,
                         textDirection = TextDirection.Content,
@@ -481,15 +503,32 @@ fun SettingsScreen(
                             )
                         }
                     },
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    singleLine = true
+                    textObfuscationMode = if (passwordVisible) TextObfuscationMode.Visible else TextObfuscationMode.Hidden,
+                    keyboardOptions = KeyboardOptions(
+                        autoCorrectEnabled = false,
+                        keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Done
+                    ),
+                    onKeyboardAction = {
+                        if (isPasswordSet) {
+                            val (success, resId) = viewModel.resetPassword(passwordState.text.toString())
+
+                            showPasswordDialog = !success
+
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(context.getString(resId))
+                            }
+                        } else {
+                            confirmPasswordFocusRequester.requestFocus()
+                        }
+                    }
                 )
+
                 if (!isPasswordSet) {
                     Spacer(Modifier.height(16.dp))
-                    OutlinedTextField(
-                        value = confirmPasswordInput,
-                        onValueChange = { confirmPasswordInput = it },
+                    OutlinedSecureTextField(
+                        state = confirmPasswordState,
+                        modifier = Modifier.focusRequester(confirmPasswordFocusRequester),
                         textStyle = LocalTextStyle.current.copy(
                             fontSize = fontSize.sp,
                             textDirection = TextDirection.Content,
@@ -515,9 +554,23 @@ fun SettingsScreen(
                                 )
                             }
                         },
-                        visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        singleLine = true
+                        textObfuscationMode = if (confirmPasswordVisible) TextObfuscationMode.Visible else TextObfuscationMode.Hidden,
+                        keyboardOptions = KeyboardOptions(
+                            autoCorrectEnabled = false,
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done
+                        ),
+                        onKeyboardAction = {
+                            val (success, resId) = viewModel.setNewPassword(
+                                passwordState.text.toString(), confirmPasswordState.text.toString()
+                            )
+
+                            showPasswordDialog = !success
+
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(context.getString(resId))
+                            }
+                        }
                     )
                 }
             }
@@ -591,11 +644,16 @@ fun SettingsScreen(
                 }
             })
     } else if (showFontSizeDialog) {
-        var fontSizeInput by rememberSaveable { mutableStateOf(fontSize.toString()) }
+        val fontSizeState = rememberTextFieldState(fontSize.toString())
+        val fontSizeFocusRequester = remember { FocusRequester() }
+
+        LaunchedEffect(Unit) {
+            fontSizeFocusRequester.requestFocus()
+        }
 
         AlertDialog(onDismissRequest = { showFontSizeDialog = false }, confirmButton = {
             TextButton(onClick = {
-                val size = fontSizeInput.toIntOrNull()
+                val size = fontSizeState.text.toString().toIntOrNull()
 
                 if (size != null && size in 15..50) {
                     showFontSizeDialog = false
@@ -619,20 +677,36 @@ fun SettingsScreen(
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
-                    value = fontSizeInput,
-                    onValueChange = {
-                        if (it.isEmpty() || it.toIntOrNull() != null) {
-                            fontSizeInput = it
-                        }
-                    },
+                    state = fontSizeState,
+                    modifier = Modifier.focusRequester(fontSizeFocusRequester),
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = fontSize.sp,
                         textDirection = TextDirection.Content,
                         lineHeight = (fontSize * 1.5).sp
                     ),
                     label = { Text(stringResource(R.string.font_size)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    singleLine = true
+                    inputTransformation = InputTransformation {
+                        val digits = toString().filter { it.isDigit() }
+                        if (toString() != digits) {
+                            replace(0, length, digits)
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                    ),
+                    onKeyboardAction = {
+                        val size = fontSizeState.text.toString().toIntOrNull()
+
+                        if (size != null && size in 15..50) {
+                            showFontSizeDialog = false
+                            viewModel.setFontSize(size)
+                        } else {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(context.getString(R.string.font_size_error))
+                            }
+                        }
+                    },
+                    lineLimits = TextFieldLineLimits.SingleLine
                 )
             }
         })

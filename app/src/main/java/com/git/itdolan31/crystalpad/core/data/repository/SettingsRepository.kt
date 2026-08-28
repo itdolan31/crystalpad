@@ -49,6 +49,7 @@ class SettingsRepository(
     val dynamicColorFlow: Flow<Boolean> = settingsDataSource.dynamicColorFlow
     val trashFlow: Flow<Boolean> = settingsDataSource.trashFlow
     val trashRetentionFlow: Flow<Long> = settingsDataSource.trashRetentionFlow
+    val wordWrapFlow: Flow<Boolean> = settingsDataSource.wordWrapFlow
 
     suspend fun saveTheme(themeType: ThemeType) {
         settingsDataSource.saveTheme(themeType.name)
@@ -100,5 +101,9 @@ class SettingsRepository(
 
     suspend fun saveTrashRetention(millis: Long) {
         settingsDataSource.saveTrashRetention(millis)
+    }
+
+    suspend fun saveWordWrap(enabled: Boolean) {
+        settingsDataSource.saveWordWrap(enabled)
     }
 }

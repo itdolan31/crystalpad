@@ -113,4 +113,8 @@
     <string name="days_30">30 Tage</string>
     <string name="trash_retention_title">Aufbewahrungsdauer für den Papierkorb</string>
     <string name="info">Info</string>
+    <string name="undo">Rückgängig</string>
+    <string name="redo">Wiederholen</string>
+    <string name="word_wrap_title">Zeilenumbruch</string>
+    <string name="word_wrap_description">Lange Zeilen werden in eine neue Zeile umgebrochen</string>
 </resources>

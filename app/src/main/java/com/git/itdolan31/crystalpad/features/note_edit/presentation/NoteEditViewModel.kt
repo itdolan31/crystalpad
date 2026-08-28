@@ -17,6 +17,8 @@
  */
 package com.git.itdolan31.crystalpad.features.note_edit.presentation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.git.itdolan31.crystalpad.core.data.local.room.entity.NoteEntity
@@ -38,6 +40,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @HiltViewModel(assistedFactory = NoteEditViewModel.Factory::class)
 class NoteEditViewModel @AssistedInject constructor(
     private val noteRepository: NoteRepository,
@@ -88,6 +91,12 @@ class NoteEditViewModel @AssistedInject constructor(
         initialValue = SettingsConstants.DEFAULT_TRASH_RETENTION
     )
 
+    val isWordWrapEnabled: StateFlow<Boolean> = settingsRepository.wordWrapFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_WORD_WRAP
+    )
+
     var note: NoteEntity? = null
         private set
     private var saveJob: Job? = null
@@ -96,30 +105,21 @@ class NoteEditViewModel @AssistedInject constructor(
         loadNote()
     }
 
-    fun onTitleChange(title: String) {
-        _uiState.update {
-            it.copy(title = title)
-        }
-    }
-
-    fun onContentChange(content: String) {
-        _uiState.update {
-            it.copy(content = content)
-        }
-    }
-
     fun saveNote() {
         val state = _uiState.value
 
         if (!state.canSave()) return
 
+        val title = state.titleState.text.toString()
+        val content = state.contentState.text.toString()
+
         saveJob?.cancel()
         saveJob = viewModelScope.launch {
             val savedNote = note?.copy(
-                title = state.title, content = state.content, updatedAt = System.currentTimeMillis()
+                title = title, content = content, updatedAt = System.currentTimeMillis()
             ) ?: NoteEntity(
-                title = state.title,
-                content = state.content,
+                title = title,
+                content = content,
                 createdAt = System.currentTimeMillis(),
                 updatedAt = System.currentTimeMillis()
             )
@@ -134,7 +134,8 @@ class NoteEditViewModel @AssistedInject constructor(
 
             _uiState.update {
                 it.copy(
-                    originalTitle = savedNote.title, originalContent = savedNote.content
+                    originalTitle = savedNote.title, originalContent = savedNote.content,
+                    isNewNote = false
                 )
             }
         }
@@ -174,12 +175,15 @@ class NoteEditViewModel @AssistedInject constructor(
                 note = loadedNote
                 _uiState.update {
                     it.copy(
-                        title = loadedNote.title,
-                        content = loadedNote.content,
                         originalTitle = loadedNote.title,
                         originalContent = loadedNote.content
                     )
                 }
+                _uiState.value.titleState.setTextAndPlaceCursorAtEnd(loadedNote.title)
+                _uiState.value.contentState.setTextAndPlaceCursorAtEnd(loadedNote.content)
+
+                _uiState.value.titleState.undoState.clearHistory()
+                _uiState.value.contentState.undoState.clearHistory()
             }
         }
     }

@@ -29,14 +29,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextObfuscationMode
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -56,9 +57,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -81,7 +81,7 @@ fun AppLockScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     var hasBiometric by remember { mutableStateOf(false) }
-    var password by rememberSaveable { mutableStateOf("") }
+    val passwordState = rememberTextFieldState()
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val passwordFocusRequester = remember { FocusRequester() }
 
@@ -131,15 +131,13 @@ fun AppLockScreen(
         ) {
             Text(stringResource(R.string.welcome), style = MaterialTheme.typography.headlineLarge)
             Spacer(Modifier.height(16.dp))
-            OutlinedTextField(
-                value = password,
-                onValueChange = {
-                    password = it
-                },
+            OutlinedSecureTextField(
+                state = passwordState,
                 modifier = Modifier.focusRequester(passwordFocusRequester),
                 textStyle = LocalTextStyle.current.copy(
                     fontSize = fontSize.sp,
-                    textDirection = TextDirection.Content
+                    textDirection = TextDirection.Content,
+                    lineHeight = (fontSize * 1.5).sp
                 ),
                 label = { Text(stringResource(R.string.password)) },
                 trailingIcon = {
@@ -147,34 +145,35 @@ fun AppLockScreen(
                         Icon(
                             painter = if (passwordVisible) painterResource(R.drawable.ic_visibility_off) else painterResource(
                                 R.drawable.ic_visibility
-                            ), contentDescription = if (passwordVisible) {
-                                stringResource(R.string.hide_password)
-                            } else {
-                                stringResource(R.string.show_password)
-                            }
+                            ),
+                            contentDescription = if (passwordVisible) stringResource(R.string.hide_password) else stringResource(
+                                R.string.show_password
+                            )
                         )
                     }
                 },
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        if (viewModel.checkPassword(password)) {
-                            onUnlocked()
-                        } else {
-                            coroutineScope.launch {
-                                snackbarHostState.showSnackbar(
-                                    message = context.getString(R.string.wrong_password)
-                                )
-                            }
+                textObfuscationMode = if (passwordVisible) TextObfuscationMode.Visible else TextObfuscationMode.Hidden,
+                keyboardOptions = KeyboardOptions(
+                    autoCorrectEnabled = false,
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                onKeyboardAction = {
+                    if (viewModel.checkPassword(passwordState.text.toString())) {
+                        onUnlocked()
+                    } else {
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = context.getString(R.string.wrong_password)
+                            )
                         }
-                    }),
-                singleLine = true
+                    }
+                }
             )
             Spacer(Modifier.height(16.dp))
             Button(
                 onClick = {
-                    if (viewModel.checkPassword(password)) {
+                    if (viewModel.checkPassword(passwordState.text.toString())) {
                         onUnlocked()
                     } else {
                         coroutineScope.launch {

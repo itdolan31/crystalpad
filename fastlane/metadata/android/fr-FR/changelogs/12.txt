@@ -1,0 +1,3 @@
+• Ajout du paramètre de retour à la ligne
+• Ajout de la langue chinoise traditionnelle
+• Ajout des boutons Annuler et Rétablir

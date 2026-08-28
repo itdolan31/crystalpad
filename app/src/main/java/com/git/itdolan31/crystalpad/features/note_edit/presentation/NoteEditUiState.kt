@@ -17,15 +17,19 @@
  */
 package com.git.itdolan31.crystalpad.features.note_edit.presentation
 
+import androidx.compose.foundation.text.input.TextFieldState
+
 data class NoteEditUiState(
-    val title: String = "",
-    val content: String = "",
+    val titleState: TextFieldState = TextFieldState(),
+    val contentState: TextFieldState = TextFieldState(),
     val originalTitle: String = "",
     val originalContent: String = "",
     val isDeleted: Boolean = false,
     val isNewNote: Boolean = false
 ) {
     fun canSave(): Boolean {
+        val title = titleState.text.toString()
+        val content = contentState.text.toString()
         return (title != originalTitle || content != originalContent) && !isDeleted && !(isNewNote && title.isBlank() && content.isBlank())
     }
 }

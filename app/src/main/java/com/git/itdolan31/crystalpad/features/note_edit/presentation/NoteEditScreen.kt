@@ -17,6 +17,8 @@
  */
 package com.git.itdolan31.crystalpad.features.note_edit.presentation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +28,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -61,21 +64,22 @@ import com.git.itdolan31.crystalpad.core.ui.components.DeleteConfirmationDialog
 import com.git.itdolan31.crystalpad.core.ui.components.NoteInfoDialog
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 fun NoteEditScreen(
     viewModel: NoteEditViewModel, onBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var showMenu by rememberSaveable { mutableStateOf(false) }
-    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
-    var showInfoDialog by rememberSaveable { mutableStateOf(false) }
-
     val keepScreenOn by viewModel.keepScreenOn.collectAsStateWithLifecycle()
     val datePattern by viewModel.datePattern.collectAsStateWithLifecycle()
     val timePattern by viewModel.timePattern.collectAsStateWithLifecycle()
     val fontSize by viewModel.fontSize.collectAsStateWithLifecycle()
     val isTrashEnabled by viewModel.isTrashEnabled.collectAsStateWithLifecycle()
     val trashRetention by viewModel.trashRetention.collectAsStateWithLifecycle()
+    val isWordWrapEnabled by viewModel.isWordWrapEnabled.collectAsStateWithLifecycle()
+
+    var showMenu by rememberSaveable { mutableStateOf(false) }
+    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
+    var showInfoDialog by rememberSaveable { mutableStateOf(false) }
 
     LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) {
         viewModel.saveNote()
@@ -94,6 +98,24 @@ fun NoteEditScreen(
                     )
                 }
             }, title = {}, actions = {
+                IconButton(
+                    onClick = { uiState.contentState.undoState.undo() },
+                    enabled = uiState.contentState.undoState.canUndo
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_undo),
+                        contentDescription = stringResource(R.string.undo)
+                    )
+                }
+                IconButton(
+                    onClick = { uiState.contentState.undoState.redo() },
+                    enabled = uiState.contentState.undoState.canRedo
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_redo),
+                        contentDescription = stringResource(R.string.redo)
+                    )
+                }
                 IconButton(
                     onClick = {
                         viewModel.saveNote()
@@ -141,17 +163,16 @@ fun NoteEditScreen(
                                 )
                             })
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.info)) },
-                            onClick = {
+                            text = { Text(stringResource(R.string.info)) }, onClick = {
                                 showMenu = false
                                 showInfoDialog = true
-                            },
-                            leadingIcon = {
+                            }, leadingIcon = {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_info),
                                     contentDescription = null
                                 )
-                            })
+                            }, enabled = !uiState.isNewNote
+                        )
                     }
                 }
             })
@@ -164,8 +185,7 @@ fun NoteEditScreen(
                 .imePadding()
         ) {
             TextField(
-                value = uiState.title,
-                onValueChange = { viewModel.onTitleChange(it) },
+                state = uiState.titleState,
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = LocalTextStyle.current.copy(
                     fontSize = fontSize.sp,
@@ -174,13 +194,12 @@ fun NoteEditScreen(
                 ),
                 placeholder = {
                     Text(
-                        stringResource(R.string.title),
-                        style = LocalTextStyle.current.copy(
+                        stringResource(R.string.title), style = LocalTextStyle.current.copy(
                             fontSize = fontSize.sp, textDirection = TextDirection.Content
                         )
                     )
                 },
-                singleLine = true,
+                lineLimits = TextFieldLineLimits.SingleLine,
                 shape = RectangleShape,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -191,9 +210,14 @@ fun NoteEditScreen(
             )
             Spacer(Modifier.height(8.dp))
             TextField(
-                value = uiState.content,
-                onValueChange = { viewModel.onContentChange(it) },
-                modifier = Modifier.fillMaxWidth(),
+                state = uiState.contentState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(
+                        if (isWordWrapEnabled) Modifier else Modifier.horizontalScroll(
+                            rememberScrollState()
+                        )
+                    ),
                 textStyle = LocalTextStyle.current.copy(
                     fontSize = fontSize.sp,
                     textDirection = TextDirection.Content,
@@ -201,13 +225,12 @@ fun NoteEditScreen(
                 ),
                 placeholder = {
                     Text(
-                        stringResource(R.string.note),
-                        style = LocalTextStyle.current.copy(
+                        stringResource(R.string.note), style = LocalTextStyle.current.copy(
                             fontSize = fontSize.sp, textDirection = TextDirection.Content
                         )
                     )
                 },
-                minLines = 20,
+                lineLimits = TextFieldLineLimits.MultiLine(20),
                 shape = RectangleShape,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -228,14 +251,16 @@ fun NoteEditScreen(
                 onBack()
                 showDeleteDialog = false
             })
-    } else if (showInfoDialog && viewModel.note != null) {
-        NoteInfoDialog(
-            onClick = { showInfoDialog = false },
-            note = viewModel.note!!,
-            datePattern = datePattern,
-            timePattern = timePattern,
-            fontSize = fontSize,
-            trashRetention = trashRetention
-        )
+    } else if (showInfoDialog && !uiState.isNewNote) {
+        viewModel.note?.let {
+            NoteInfoDialog(
+                onClick = { showInfoDialog = false },
+                note = it,
+                datePattern = datePattern,
+                timePattern = timePattern,
+                fontSize = fontSize,
+                trashRetention = trashRetention
+            )
+        }
     }
 }

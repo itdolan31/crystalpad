@@ -20,5 +20,5 @@ package com.git.itdolan31.crystalpad.features.trash.presentation
 import com.git.itdolan31.crystalpad.core.data.local.room.entity.NoteEntity
 
 data class TrashUiState(
-    var selectedNote: NoteEntity? = null,
+    val selectedNote: NoteEntity? = null,
 )

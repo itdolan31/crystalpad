@@ -30,4 +30,5 @@ object SettingsConstants {
     const val DEFAULT_DYNAMIC_COLOR = true
     const val DEFAULT_TRASH = true
     const val DEFAULT_TRASH_RETENTION = 2_592_000_000L
+    const val DEFAULT_WORD_WRAP = true
 }

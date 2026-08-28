@@ -50,10 +50,6 @@ class TrashViewModel @Inject constructor(
         initialValue = SettingsConstants.DEFAULT_SORT_TYPE
     )
 
-    val notes: StateFlow<List<NoteEntity>> = sortType.flatMapLatest { selectedType ->
-        noteRepository.getTrashedNotes(selectedType)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
     val datePattern = settingsRepository.datePatternFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -77,6 +73,10 @@ class TrashViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = SettingsConstants.DEFAULT_TRASH_RETENTION
     )
+
+    val notes: StateFlow<List<NoteEntity>> = sortType.flatMapLatest { selectedType ->
+        noteRepository.getTrashedNotes(selectedType)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun setSelectedNote(note: NoteEntity?) {
         _uiState.update {

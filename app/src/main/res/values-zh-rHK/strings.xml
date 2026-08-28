@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Crystalpad
+  Copyright (C) 2026 itdolan31
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="cancel">取消</string>
+    <string name="delete">刪除</string>
+    <string name="title">標題</string>
+    <string name="note">備註</string>
+    <string name="system">系統</string>
+    <string name="dark">深色</string>
+    <string name="light">淺色</string>
+    <string name="language">語言</string>
+    <string name="settings">設定</string>
+    <string name="sort_title">排序方式</string>
+    <string name="sort_title_asc">標題（A-Z）</string>
+    <string name="sort_title_desc">標題（Z-A）</string>
+    <string name="back">返回</string>
+    <string name="more_options">更多選項</string>
+    <string name="section_interface">介面</string>
+    <string name="section_screen">螢幕</string>
+    <string name="section_about">關於</string>
+    <string name="source_code">原始碼</string>
+    <string name="source_code_description">本應用程式以 GPL 3 或更高版本授權發佈，原始碼可在 GitHub 上取得</string>
+    <string name="theme">主題</string>
+    <string name="keep_screen_on">保持螢幕開啟</string>
+    <string name="keep_screen_on_description">編輯筆記時螢幕不會關閉</string>
+    <string name="section_security">安全性</string>
+    <string name="biometric_confirm_title">確認身份</string>
+    <string name="password_title">密碼</string>
+    <string name="password_subtitle">設定登入密碼</string>
+    <string name="biometric_title">生物辨識</string>
+    <string name="biometric_subtitle">使用指紋或臉部登入</string>
+    <string name="auto_lock_title">自動鎖定</string>
+    <string name="reset_password">重設密碼</string>
+    <string name="set_password">設定密碼</string>
+    <string name="password">密碼</string>
+    <string name="hide_password">隱藏密碼</string>
+    <string name="show_password">顯示密碼</string>
+    <string name="confirm_password">確認密碼</string>
+    <string name="never">從不</string>
+    <string name="immediately">立即</string>
+    <string name="minute_1">1 分鐘</string>
+    <string name="minutes_5">5 分鐘</string>
+    <string name="minutes_15">15 分鐘</string>
+    <string name="minutes_30">30 分鐘</string>
+    <string name="hour_1">1 小時</string>
+    <string name="welcome">歡迎！</string>
+    <string name="unlock">解鎖</string>
+    <string name="unlock_with_biometrics">使用生物辨識解鎖</string>
+    <string name="save">儲存</string>
+    <string name="wrong_password">密碼錯誤</string>
+    <string name="password_min_length">最少 4 個字元</string>
+    <string name="password_mismatch">密碼不相符</string>
+    <string name="password_set_success">密碼已設定</string>
+    <string name="password_reset_success">密碼已重設</string>
+    <string name="password_incorrect">密碼不正確</string>
+    <string name="format_date_title">日期格式</string>
+    <string name="format_time_title">時間格式</string>
+    <string name="font_size">字型大小</string>
+    <string name="font_size_error">字型大小應在 15–50 之間</string>
+    <string name="flag_secure">封鎖螢幕截圖</string>
+    <string name="flag_secure_description">防止截圖並隱藏螢幕內容</string>
+    <string name="export_title">匯出筆記</string>
+    <string name="import_title">匯入筆記</string>
+    <string name="export_title_description">將筆記匯出為 ZIP 檔案</string>
+    <string name="import_title_description">從 ZIP 檔案匯入筆記</string>
+    <string name="export_successful">匯出成功</string>
+    <string name="import_successful">匯入成功</string>
+    <string name="error_file_not_found">找不到檔案 %s</string>
+    <string name="error_file_not_json">檔案 %s 不是 JSON 格式</string>
+    <string name="error_version_not_supported">不支援版本 %d</string>
+    <string name="error_folder_notes_empty">notes/ 資料夾為空</string>
+    <string name="error_zip_empty">ZIP 檔案為空</string>
+    <string name="section_data">資料</string>
+    <string name="export_no_notes">沒有可匯出的筆記</string>
+    <string name="dynamic_color_title">動態顏色</string>
+    <string name="dynamic_color_subtitle">讓應用程式顏色配合您的桌布</string>
+    <string name="sort_created_at_desc">按建立日期（最新優先）</string>
+    <string name="sort_created_at_asc">按建立日期（最舊優先）</string>
+    <string name="sort_updated_at_desc">按修改日期（最新優先）</string>
+    <string name="sort_updated_at_asc">按修改日期（最舊優先）</string>
+    <string name="trash">垃圾桶</string>
+    <string name="trash_clear_all">清空垃圾桶</string>
+    <string name="restore">還原</string>
+    <string name="delete_permanently_title">永久刪除？</string>
+    <string name="delete_permanently_message">此操作無法復原。</string>
+    <string name="move_to_trash_title">刪除筆記？</string>
+    <string name="move_to_trash_message">筆記將移至垃圾桶。</string>
+    <string name="trash_description">啟用垃圾桶以還原已刪除的筆記</string>
+    <string name="clear_trash_title">清空垃圾桶？</string>
+    <string name="clear_trash_message">垃圾桶內所有筆記將被永久刪除。</string>
+    <string name="created_at">建立於</string>
+    <string name="updated_at">修改於</string>
+    <string name="trashed_at">刪除於</string>
+    <string name="days_1">1 天</string>
+    <string name="days_3">3 天</string>
+    <string name="days_7">7 天</string>
+    <string name="days_15">15 天</string>
+    <string name="days_30">30 天</string>
+    <string name="trash_retention_title">垃圾桶保留期限</string>
+    <string name="info">資訊</string>
+    <string name="redo">重做</string>
+    <string name="undo">復原</string>
+    <string name="word_wrap_title">自動換行</string>
+    <string name="word_wrap_description">將長行換行到新行</string>
+</resources>

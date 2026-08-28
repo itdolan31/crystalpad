@@ -57,13 +57,6 @@ class SettingsViewModel @Inject constructor(
         scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = ""
     )
 
-    val notes: StateFlow<List<NoteEntity>> =
-        noteRepository.getNotes(SettingsConstants.DEFAULT_SORT_TYPE).stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
-
     val themeType: StateFlow<ThemeType> = settingsRepository.themeFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -133,6 +126,19 @@ class SettingsViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = SettingsConstants.DEFAULT_TRASH_RETENTION
     )
+
+    val isWordWrapEnabled: StateFlow<Boolean> = settingsRepository.wordWrapFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SettingsConstants.DEFAULT_WORD_WRAP
+    )
+
+    val notes: StateFlow<List<NoteEntity>> =
+        noteRepository.getNotes(SettingsConstants.DEFAULT_SORT_TYPE).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     fun getEffectiveLocaleDisplayName(): String {
         val locales = AppCompatDelegate.getApplicationLocales()
@@ -216,19 +222,25 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun setWordWrapEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.saveWordWrap(enabled)
+        }
+    }
+
     fun setNewPassword(newPassword: String, confirmPassword: String): Pair<Boolean, Int> {
         return when {
             newPassword.length < 4 -> {
-                true to R.string.password_min_length
+                false to R.string.password_min_length
             }
 
             newPassword != confirmPassword -> {
-                true to R.string.password_mismatch
+                false to R.string.password_mismatch
             }
 
             else -> {
                 setPassword(newPassword)
-                false to R.string.password_set_success
+                true to R.string.password_set_success
             }
         }
     }
@@ -236,9 +248,9 @@ class SettingsViewModel @Inject constructor(
     fun resetPassword(currentPassword: String): Pair<Boolean, Int> {
         return if (currentPassword == password.value) {
             setPassword("")
-            false to R.string.password_reset_success
+            true to R.string.password_reset_success
         } else {
-            true to R.string.password_incorrect
+            false to R.string.password_incorrect
         }
     }
 

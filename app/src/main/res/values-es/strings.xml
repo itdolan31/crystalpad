@@ -113,4 +113,8 @@
     <string name="days_30">30 días</string>
     <string name="trash_retention_title">Período de retención de la papelera</string>
     <string name="info">Información</string>
+    <string name="undo">Deshacer</string>
+    <string name="redo">Rehacer</string>
+    <string name="word_wrap_title">Ajuste de línea</string>
+    <string name="word_wrap_description">Ajusta las líneas largas a una nueva línea</string>
 </resources>

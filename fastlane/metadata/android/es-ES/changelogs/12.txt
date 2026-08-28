@@ -1,0 +1,3 @@
+• Añadida configuración de ajuste de texto
+• Añadido idioma chino tradicional
+• Añadidos botones de deshacer y rehacer

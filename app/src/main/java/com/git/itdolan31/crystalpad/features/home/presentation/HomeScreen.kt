@@ -62,17 +62,17 @@ fun HomeScreen(
     onNavigateToNoteEdit: (Long?) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var showSortMenu by rememberSaveable { mutableStateOf(false) }
-    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
-    var showInfoDialog by rememberSaveable { mutableStateOf(false) }
-
-    val notes by viewModel.notes.collectAsStateWithLifecycle()
     val sortType by viewModel.sortType.collectAsStateWithLifecycle()
     val datePattern by viewModel.datePattern.collectAsStateWithLifecycle()
     val timePattern by viewModel.timePattern.collectAsStateWithLifecycle()
     val fontSize by viewModel.fontSize.collectAsStateWithLifecycle()
     val isTrashEnabled by viewModel.isTrashEnabled.collectAsStateWithLifecycle()
     val trashRetention by viewModel.trashRetention.collectAsStateWithLifecycle()
+    val notes by viewModel.notes.collectAsStateWithLifecycle()
+
+    var showSortMenu by rememberSaveable { mutableStateOf(false) }
+    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
+    var showInfoDialog by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(topBar = {
         TopAppBar(title = { Text("Crystalpad") }, actions = {

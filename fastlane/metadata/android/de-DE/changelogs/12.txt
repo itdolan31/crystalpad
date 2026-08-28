@@ -1,0 +1,3 @@
+• Einstellung für Textumbruch hinzugefügt
+• Traditionelles Chinesisch hinzugefügt
+• Schaltflächen für Rückgängig und Wiederholen hinzugefügt
