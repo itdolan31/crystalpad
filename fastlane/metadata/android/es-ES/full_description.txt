@@ -5,7 +5,7 @@ Concéntrate en tus pensamientos sin distracciones. Está creado con Jetpack Com
 Características principales:
 
 • La privacidad es lo primero: sin recopilación de datos, sin seguimiento y sin necesidad de permisos de internet.
-• Almacenamiento local: todas tus notas se guardan de forma segura en tu dispositivo mediante la base de datos Room.
+• Almacenamiento local: todas tus notas se guardan en tu dispositivo mediante la base de datos Room.
 • Ligero: inicio rápido y bajo consumo de recursos.
 
 Un bloc de notas limpio y sencillo que respeta tu privacidad.

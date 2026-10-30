@@ -17,17 +17,27 @@
  */
 package com.git.itdolan31.crystalpad.core.data.repository
 
+import android.content.Context
 import com.git.itdolan31.crystalpad.core.data.local.room.dao.NoteDao
 import com.git.itdolan31.crystalpad.core.data.local.room.entity.NoteEntity
 import com.git.itdolan31.crystalpad.domain.model.NoteSortType
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import java.io.File
 
-class NoteRepository(private val noteDao: NoteDao) {
+class NoteRepository(
+    private val noteDao: NoteDao,
+    private val context: Context
+) {
     suspend fun insert(note: NoteEntity): Long = noteDao.insert(note)
 
     suspend fun update(note: NoteEntity) = noteDao.update(note)
 
-    suspend fun delete(note: NoteEntity) = noteDao.delete(note)
+    suspend fun delete(note: NoteEntity) = withContext(Dispatchers.IO) {
+        File(context.filesDir, "media/${note.id}").deleteRecursively()
+        noteDao.delete(note)
+    }
 
     suspend fun moveNoteToTrash(noteId: Long) {
         noteDao.moveNoteToTrash(noteId, System.currentTimeMillis())
@@ -37,35 +47,43 @@ class NoteRepository(private val noteDao: NoteDao) {
         noteDao.restoreNoteFromTrash(noteId)
     }
 
-    suspend fun deleteExpiredTrashedNotes(trashRetention: Long) {
-        noteDao.deleteExpiredTrashedNotes(System.currentTimeMillis() - trashRetention)
+    suspend fun deleteExpiredTrashedNotes(trashRetention: Long) = withContext(Dispatchers.IO) {
+        val cutoffTime = System.currentTimeMillis() - trashRetention
+
+        val expiredNoteIds = noteDao.getExpiredTrashedNoteIds(cutoffTime)
+
+        expiredNoteIds.forEach { id ->
+            File(context.filesDir, "media/$id").deleteRecursively()
+        }
+
+        noteDao.deleteExpiredTrashedNotes(cutoffTime)
     }
 
-    suspend fun clearTrash() = noteDao.clearTrash()
+    suspend fun clearTrash() = withContext(Dispatchers.IO) {
+        val trashedNoteIds = noteDao.getTrashedNoteIds()
+
+        trashedNoteIds.forEach { id ->
+            File(context.filesDir, "media/$id").deleteRecursively()
+        }
+
+        noteDao.clearTrash()
+    }
 
     suspend fun getNoteById(noteId: Long): NoteEntity? {
         return noteDao.getNoteById(noteId)
     }
 
-    fun getNotes(sortType: NoteSortType): Flow<List<NoteEntity>> {
+    fun getNotes(
+        sortType: NoteSortType = NoteSortType.DEFAULT,
+        isTrashed: Boolean = false
+    ): Flow<List<NoteEntity>> {
         return when (sortType) {
-            NoteSortType.CREATED_AT_DESC -> noteDao.getNotesByCreatedAtDesc()
-            NoteSortType.CREATED_AT_ASC -> noteDao.getNotesByCreatedAtAsc()
-            NoteSortType.UPDATED_AT_DESC -> noteDao.getNotesByUpdatedAtDesc()
-            NoteSortType.UPDATED_AT_ASC -> noteDao.getNotesByUpdatedAtAsc()
-            NoteSortType.TITLE_ASC -> noteDao.getNotesByTitleAsc()
-            NoteSortType.TITLE_DESC -> noteDao.getNotesByTitleDesc()
-        }
-    }
-
-    fun getTrashedNotes(sortType: NoteSortType): Flow<List<NoteEntity>> {
-        return when (sortType) {
-            NoteSortType.CREATED_AT_DESC -> noteDao.getTrashedNotesByCreatedAtDesc()
-            NoteSortType.CREATED_AT_ASC -> noteDao.getTrashedNotesByCreatedAtAsc()
-            NoteSortType.UPDATED_AT_DESC -> noteDao.getTrashedNotesByUpdatedAtDesc()
-            NoteSortType.UPDATED_AT_ASC -> noteDao.getTrashedNotesByUpdatedAtAsc()
-            NoteSortType.TITLE_ASC -> noteDao.getTrashedNotesByTitleAsc()
-            NoteSortType.TITLE_DESC -> noteDao.getTrashedNotesByTitleDesc()
+            NoteSortType.CREATED_AT_DESC -> noteDao.getNotesByCreatedAtDesc(isTrashed)
+            NoteSortType.CREATED_AT_ASC -> noteDao.getNotesByCreatedAtAsc(isTrashed)
+            NoteSortType.UPDATED_AT_DESC -> noteDao.getNotesByUpdatedAtDesc(isTrashed)
+            NoteSortType.UPDATED_AT_ASC -> noteDao.getNotesByUpdatedAtAsc(isTrashed)
+            NoteSortType.TITLE_DESC -> noteDao.getNotesByTitleDesc(isTrashed)
+            NoteSortType.TITLE_ASC -> noteDao.getNotesByTitleAsc(isTrashed)
         }
     }
 }

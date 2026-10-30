@@ -1,0 +1,13 @@
+Neu:
+• Markdown-Syntax-Unterstützung (CommonMark, Bildattribute, erweiterte Auto-Links, GFM-Durchstreichung, Einfügungen und Aufgabenlisten)
+• "Über"-Bildschirm und ein Abschnitt mit Lizenzinformationen
+• Neues Datumsformat: dd MMMM yyyy
+
+Änderungen:
+• Geringfügige UI-Anpassungen für OLED-Bildschirme
+• Verbesserte Leistung auf dem Sperrbildschirm
+• Die Navigationsleiste ist jetzt auf allen Bildschirmen transparent
+
+Fehlerbehebungen:
+• Beim dauerhaften Löschen einer Notiz aus der Bearbeitungsoberfläche (NoteEdit) wurde die Bezeichnung "In den Papierkorb verschieben" fälschlicherweise angezeigt
+• Verbesserte Zuverlässigkeit der Exportfunktion

@@ -34,7 +34,8 @@ import jakarta.inject.Singleton
 object RepositoryModule {
     @Provides
     @Singleton
-    fun provideNoteRepository(dao: NoteDao): NoteRepository = NoteRepository(dao)
+    fun provideNoteRepository(dao: NoteDao, @ApplicationContext context: Context): NoteRepository =
+        NoteRepository(dao, context)
 
     @Provides
     @Singleton

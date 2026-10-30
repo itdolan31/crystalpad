@@ -12,7 +12,7 @@ Focus on your thoughts without distractions. It is built with Jetpack Compose an
 ## Key Features:
 
 * **Privacy First:** No data collection, no tracking, and no internet permission required.
-* **Local Storage:** All your notes are stored securely on your device using Room database.
+* **Local Storage:** All your notes are stored on the device using the Room database.
 * **Lightweight:** Fast startup and low resource usage.
 
 A clean and simple notepad that respects your privacy.
@@ -23,7 +23,7 @@ A clean and simple notepad that respects your privacy.
 alt="Get it on GitHub"
 height="80">](https://github.com/itdolan31/crystalpad/releases)
 [<img src="https://f-droid.org/badge/get-it-on.png"
-alt="Get it on  F-Droid"
+alt="Get it on F-Droid"
 height="80">](https://f-droid.org/packages/com.git.itdolan31.crystalpad)
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
 alt="Get it on IzzyOnDroid"

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.aboutLibrariesAndroid)
 }
 
 android {
@@ -17,12 +18,15 @@ android {
         applicationId = "com.git.itdolan31.crystalpad"
         minSdk = 24
         targetSdk = 36
-        versionCode = 12
-        versionName = "1.7.0"
+        versionCode = 13
+        versionName = "1.8.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -54,9 +58,32 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+aboutLibraries {
+    export {
+        excludeFields.addAll(
+            "Library.artifactVersion",
+            "Library.description",
+            "Library.website",
+            "Library.developers",
+            "Library.organization",
+            "Scm.connection",
+            "Scm.developerConnection",
+            "Library.funding",
+            "Library.tag",
+            "Library.targets",
+            "License.url",
+            "License.year",
+            "License.content",
+            "License.internalHash",
+            "License.hash",
+            "License.spdxId"
+        )
+    }
+}
+
 kotlin {
     compilerOptions {
-        jvmTarget = JvmTarget.fromTarget("17")
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
@@ -92,6 +119,15 @@ dependencies {
     implementation(libs.google.android.material)
 
     implementation(libs.androidx.biometric.compose)
+
+    implementation(libs.commonmark)
+    implementation(libs.commonmark.ext.image.attributes)
+    implementation(libs.commonmark.ext.autolink)
+    implementation(libs.commonmark.ext.gfm.strikethrough)
+    implementation(libs.commonmark.ext.ins)
+    implementation(libs.commonmark.ext.task.list.items)
+    implementation(libs.coil.compose)
+    implementation(libs.aboutlibraries.compose.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

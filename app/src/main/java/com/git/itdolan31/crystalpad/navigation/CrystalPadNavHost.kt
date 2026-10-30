@@ -30,17 +30,23 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.git.itdolan31.crystalpad.features.home.presentation.HomeScreen
-import com.git.itdolan31.crystalpad.features.note_edit.presentation.NoteEditScreen
-import com.git.itdolan31.crystalpad.features.note_edit.presentation.NoteEditViewModel
-import com.git.itdolan31.crystalpad.features.settings.presentation.SettingsScreen
-import com.git.itdolan31.crystalpad.features.trash.presentation.TrashScreen
+import com.git.itdolan31.crystalpad.feature.home.HomeScreen
+import com.git.itdolan31.crystalpad.feature.note_edit.NoteEditScreen
+import com.git.itdolan31.crystalpad.feature.note_edit.NoteEditViewModel
+import com.git.itdolan31.crystalpad.feature.settings.SettingsScreen
+import com.git.itdolan31.crystalpad.feature.settings.about.AboutScreen
+import com.git.itdolan31.crystalpad.feature.settings.about.licenses.LicensesScreen
+import com.git.itdolan31.crystalpad.feature.trash.TrashScreen
 
 @Composable
 fun CrystalPadNavHost(backStack: NavBackStack<NavKey>) {
     NavDisplay(
         backStack = backStack,
-        onBack = { backStack.removeLastOrNull() },
+        onBack = {
+            if (backStack.size > 1) {
+                backStack.removeLastOrNull()
+            }
+        },
         entryDecorators = listOf(
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
@@ -66,7 +72,22 @@ fun CrystalPadNavHost(backStack: NavBackStack<NavKey>) {
 
             entry<Screen.Settings> {
                 SettingsScreen(
-                    onBack = { backStack.removeLastOrNull() })
+                    onBack = { backStack.removeLastOrNull() },
+                    onNavigateToAbout = { backStack.add(Screen.About) }
+                )
+            }
+
+            entry<Screen.About> {
+                AboutScreen(
+                    onBack = { backStack.removeLastOrNull() },
+                    onNavigateToLicenses = { backStack.add(Screen.Licenses) }
+                )
+            }
+
+            entry<Screen.Licenses> {
+                LicensesScreen(
+                    onBack = { backStack.removeLastOrNull() }
+                )
             }
 
             entry<Screen.NoteEdit> { entry ->

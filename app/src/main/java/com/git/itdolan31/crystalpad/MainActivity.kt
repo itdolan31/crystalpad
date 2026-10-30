@@ -1,3 +1,20 @@
+/*
+ * Crystalpad
+ * Copyright (C) 2026 itdolan31
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.git.itdolan31.crystalpad
 
 import android.os.Bundle
@@ -6,8 +23,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -17,10 +36,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.git.itdolan31.crystalpad.core.ui.theme.CrystalPadTheme
-import com.git.itdolan31.crystalpad.features.app_lock.presentation.AppLockScreen
+import com.git.itdolan31.crystalpad.feature.app_lock.AppLockScreen
 import com.git.itdolan31.crystalpad.navigation.CrystalPadNavHost
 import com.git.itdolan31.crystalpad.navigation.Screen
-import com.git.itdolan31.crystalpad.presentation.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -32,9 +50,7 @@ class MainActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        splashScreen.setKeepOnScreenCondition {
-            !(viewModel.isThemeLoaded && viewModel.isDynamicColorLoaded && viewModel.isPasswordLoaded)
-        }
+        splashScreen.setKeepOnScreenCondition { viewModel.isLoading }
 
         observeFlagSecure()
         enableEdgeToEdge()
@@ -42,19 +58,21 @@ class MainActivity : ComponentActivity() {
         setContent {
             val backStack = rememberNavBackStack(Screen.Home)
 
-            val themeType by viewModel.themeType.collectAsStateWithLifecycle()
+            val theme by viewModel.theme.collectAsStateWithLifecycle()
             val dynamicColorEnabled by viewModel.dynamicColorEnabled.collectAsStateWithLifecycle()
             val isLocked by viewModel.isLocked.collectAsStateWithLifecycle()
 
-            CrystalPadTheme(themeType = themeType, dynamicColor = dynamicColorEnabled) {
-                Surface(
-                    modifier = Modifier.fillMaxSize()
+            CrystalPadTheme(theme = theme, dynamicColor = dynamicColorEnabled) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
                 ) {
+                    CrystalPadNavHost(backStack)
+
                     if (isLocked) {
                         AppLockScreen(
                             onUnlocked = { viewModel.unlock() })
-                    } else {
-                        CrystalPadNavHost(backStack)
                     }
                 }
             }

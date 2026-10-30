@@ -31,28 +31,41 @@ class SettingsRepository(
     val themeFlow: Flow<ThemeType> = settingsDataSource.themeFlow.map { name ->
         ThemeType.fromName(name)
     }
+
     val sortTypeFlow: Flow<NoteSortType> = settingsDataSource.sortTypeFlow.map { name ->
         NoteSortType.fromName(name)
     }
+
     val keepScreenOnFlow: Flow<Boolean> = settingsDataSource.keepScreenOnFlow
+
     val passwordFlow: Flow<String> = settingsDataSource.passwordFlow
+
     val biometryFlow: Flow<Boolean> = settingsDataSource.biometryFlow
-    val timeoutFlow: Flow<Int> = settingsDataSource.timeoutFlow
+
+    val timeoutFlow: Flow<Long> = settingsDataSource.timeoutFlow
+
     val datePatternFlow: Flow<DatePatternType> = settingsDataSource.datePatternFlow.map { name ->
         DatePatternType.fromName(name)
     }
+
     val timePatternFlow: Flow<TimePatternType> = settingsDataSource.timePatternFlow.map { name ->
         TimePatternType.fromName(name)
     }
+
     val fontSizeFlow: Flow<Int> = settingsDataSource.fontSizeFlow
+
     val flagSecureFlow: Flow<Boolean> = settingsDataSource.flagSecureFlow
+
     val dynamicColorFlow: Flow<Boolean> = settingsDataSource.dynamicColorFlow
+
     val trashFlow: Flow<Boolean> = settingsDataSource.trashFlow
+
     val trashRetentionFlow: Flow<Long> = settingsDataSource.trashRetentionFlow
+
     val wordWrapFlow: Flow<Boolean> = settingsDataSource.wordWrapFlow
 
-    suspend fun saveTheme(themeType: ThemeType) {
-        settingsDataSource.saveTheme(themeType.name)
+    suspend fun saveTheme(theme: ThemeType) {
+        settingsDataSource.saveTheme(theme.name)
     }
 
     suspend fun saveSortType(sortType: NoteSortType) {
@@ -71,7 +84,7 @@ class SettingsRepository(
         settingsDataSource.saveBiometry(enabled)
     }
 
-    suspend fun saveTimeout(seconds: Int) {
+    suspend fun saveTimeout(seconds: Long) {
         settingsDataSource.saveTimeout(seconds)
     }
 
@@ -99,11 +112,15 @@ class SettingsRepository(
         settingsDataSource.saveTrash(enabled)
     }
 
-    suspend fun saveTrashRetention(millis: Long) {
-        settingsDataSource.saveTrashRetention(millis)
+    suspend fun saveTrashRetention(seconds: Long) {
+        settingsDataSource.saveTrashRetention(seconds)
     }
 
     suspend fun saveWordWrap(enabled: Boolean) {
         settingsDataSource.saveWordWrap(enabled)
+    }
+
+    suspend fun migrateTrashRetentionIfNeeded() {
+        settingsDataSource.migrateTrashRetentionIfNeeded()
     }
 }

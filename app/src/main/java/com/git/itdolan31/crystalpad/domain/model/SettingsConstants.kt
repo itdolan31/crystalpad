@@ -22,13 +22,13 @@ object SettingsConstants {
     val DEFAULT_SORT_TYPE = NoteSortType.DEFAULT
     const val DEFAULT_KEEP_SCREEN_ON = false
     const val DEFAULT_BIOMETRY = false
-    const val DEFAULT_TIMEOUT = 0
+    const val DEFAULT_TIMEOUT = 0L
     val DEFAULT_DATE_PATTERN = DatePatternType.DEFAULT
-    val DEFAULT_TIME_PATTERN = TimePatternType.HH_MM
+    val DEFAULT_TIME_PATTERN = TimePatternType.DEFAULT
     const val DEFAULT_FONT_SIZE = 16
     const val DEFAULT_FLAG_SECURE = false
     const val DEFAULT_DYNAMIC_COLOR = true
     const val DEFAULT_TRASH = true
-    const val DEFAULT_TRASH_RETENTION = 2_592_000_000L
+    const val DEFAULT_TRASH_RETENTION = 2_592_000L
     const val DEFAULT_WORD_WRAP = true
 }

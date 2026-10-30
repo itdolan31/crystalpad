@@ -69,7 +69,7 @@ private val lightScheme = lightColorScheme(
     surfaceContainerLow = surfaceContainerLowLight,
     surfaceContainer = surfaceContainerLight,
     surfaceContainerHigh = surfaceContainerHighLight,
-    surfaceContainerHighest = surfaceContainerHighestLight,
+    surfaceContainerHighest = surfaceContainerHighestLight
 )
 
 private val darkScheme = darkColorScheme(
@@ -107,84 +107,52 @@ private val darkScheme = darkColorScheme(
     surfaceContainerLow = surfaceContainerLowDark,
     surfaceContainer = surfaceContainerDark,
     surfaceContainerHigh = surfaceContainerHighDark,
-    surfaceContainerHighest = surfaceContainerHighestDark,
-)
-
-private val oledScheme = darkColorScheme(
-    primary = primaryDark,
-    onPrimary = onPrimaryDark,
-    primaryContainer = primaryContainerDark,
-    onPrimaryContainer = onPrimaryContainerDark,
-    secondary = secondaryDark,
-    onSecondary = onSecondaryDark,
-    secondaryContainer = secondaryContainerDark,
-    onSecondaryContainer = onSecondaryContainerDark,
-    tertiary = tertiaryDark,
-    onTertiary = onTertiaryDark,
-    tertiaryContainer = tertiaryContainerDark,
-    onTertiaryContainer = onTertiaryContainerDark,
-    error = errorDark,
-    onError = onErrorDark,
-    errorContainer = errorContainerDark,
-    onErrorContainer = onErrorContainerDark,
-    background = Color.Black,
-    onBackground = onBackgroundDark,
-    surface = Color.Black,
-    onSurface = onSurfaceDark,
-    surfaceVariant = Color.Black,
-    onSurfaceVariant = onSurfaceVariantDark,
-    outline = outlineDark,
-    outlineVariant = outlineVariantDark,
-    scrim = scrimDark,
-    inverseSurface = inverseSurfaceDark,
-    inverseOnSurface = inverseOnSurfaceDark,
-    inversePrimary = inversePrimaryDark,
-    surfaceDim = Color.Black,
-    surfaceBright = Color.Black,
-    surfaceContainerLowest = Color.Black,
-    surfaceContainerLow = Color.Black,
-    surfaceContainer = Color.Black,
-    surfaceContainerHigh = Color.Black,
-    surfaceContainerHighest = Color.Black,
+    surfaceContainerHighest = surfaceContainerHighestDark
 )
 
 @Composable
 fun CrystalPadTheme(
-    themeType: ThemeType = SettingsConstants.DEFAULT_THEME,
+    theme: ThemeType = SettingsConstants.DEFAULT_THEME,
     dynamicColor: Boolean = SettingsConstants.DEFAULT_DYNAMIC_COLOR,
     content: @Composable () -> Unit
 ) {
-    val darkTheme = when (themeType) {
-        ThemeType.LIGHT -> false
-        ThemeType.DARK, ThemeType.OLED -> true
-        ThemeType.SYSTEM -> isSystemInDarkTheme()
+    val context = LocalContext.current
+    val isSystemDark = isSystemInDarkTheme()
+    val isDark =
+        theme == ThemeType.DARK || theme == ThemeType.OLED || (theme == ThemeType.SYSTEM && isSystemDark)
+
+    val useDynamic = dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
+    val baseScheme = if (isDark) {
+        if (useDynamic) dynamicDarkColorScheme(context) else darkScheme
+    } else {
+        if (useDynamic) dynamicLightColorScheme(context) else lightScheme
     }
 
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && themeType != ThemeType.OLED -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        themeType == ThemeType.OLED -> oledScheme
-        darkTheme -> darkScheme
-        else -> lightScheme
+    val colorScheme = if (theme == ThemeType.OLED) {
+        baseScheme.copy(
+            background = Color.Black,
+            surface = Color.Black,
+            scrim = Color.Black,
+            surfaceDim = Color.Black,
+            surfaceContainerLowest = Color.Black
+        )
+    } else {
+        baseScheme
     }
 
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as ComponentActivity).window
-            WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = !darkTheme
-                isAppearanceLightNavigationBars = !darkTheme
-            }
+            WindowCompat.getInsetsController((view.context as ComponentActivity).window, view)
+                .apply {
+                    isAppearanceLightStatusBars = !isDark
+                    isAppearanceLightNavigationBars = !isDark
+                }
         }
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = CrystalPadTypography,
-        content = content
+        colorScheme = colorScheme, typography = CrystalPadTypography, content = content
     )
 }

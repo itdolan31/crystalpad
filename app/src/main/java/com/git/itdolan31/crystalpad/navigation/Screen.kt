@@ -29,6 +29,12 @@ sealed class Screen : NavKey {
     data object Settings : Screen()
 
     @Serializable
+    data object About : Screen()
+
+    @Serializable
+    data object Licenses : Screen()
+
+    @Serializable
     data class NoteEdit(val noteId: Long? = null) : Screen()
 
     @Serializable

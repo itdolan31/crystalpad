@@ -21,6 +21,7 @@
     <string name="title">Title</string>
     <string name="note">Note</string>
     <string name="system">System</string>
+    <string name="oled" translatable="false">OLED</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
     <string name="language">Language</string>
@@ -32,7 +33,7 @@
     <string name="more_options">More options</string>
     <string name="section_interface">Interface</string>
     <string name="section_screen">Screen</string>
-    <string name="section_about">About</string>
+    <string name="about_title">About</string>
     <string name="source_code">Source code</string>
     <string name="source_code_description">The application is distributed under the GPL 3 or later license. The source code is available on GitHub</string>
     <string name="theme">Theme</string>
@@ -83,7 +84,7 @@
     <string name="error_file_not_found">File %s not found</string>
     <string name="error_file_not_json">File %s is not in JSON format</string>
     <string name="error_version_not_supported">Version %d is not supported</string>
-    <string name="error_folder_notes_empty">Folder notes/ is empty</string>
+    <string name="error_no_notes_found">Folder notes/ is empty</string>
     <string name="error_zip_empty">Zip file is empty</string>
     <string name="section_data">Data</string>
     <string name="export_no_notes">No notes to export</string>
@@ -117,4 +118,17 @@
     <string name="undo">Undo</string>
     <string name="word_wrap_title">Word wrap</string>
     <string name="word_wrap_description">Wraps long lines to a new line</string>
+    <string name="editor">Editor</string>
+    <string name="preview">Preview</string>
+    <string name="licenses_title">Open source licenses</string>
+    <string name="version">Version %1$s</string>
+    <string name="error_note_not_found">Note not found</string>
+    <string name="error_empty_name">Enter a name</string>
+    <string name="error_name_contains_slash">Name cannot contain /</string>
+    <string name="error_name_dot">Name cannot start or end with a dot</string>
+    <string name="error_name_already_exists">A file with this name already exists</string>
+    <string name="error_name_too_long">Name is too long</string>
+    <string name="file_name">File name</string>
+    <string name="import_photo">Import photo</string>
+    <string name="hello">Hello :)</string>
 </resources>

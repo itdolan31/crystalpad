@@ -5,7 +5,7 @@ Concentrez-vous sur vos pensées sans distractions. Il est conçu avec Jetpack C
 Caractéristiques principales :
 
 • Priorité à la confidentialité : aucune collecte de données, aucun suivi et aucune autorisation internet requise.
-• Stockage local : toutes vos notes sont stockées en toute sécurité sur votre appareil via la base de données Room.
+• Stockage local : Toutes vos notes sont stockées sur votre appareil via la base de données Room.
 • Léger : démarrage rapide et faible utilisation des ressources.
 
 Un bloc-notes simple et épuré qui respecte votre vie privée.

@@ -42,7 +42,7 @@ class SettingsDataSource(private val context: Context) {
         private val KEEP_SCREEN_ON = booleanPreferencesKey("keep_screen_on")
         private val PASSWORD = stringPreferencesKey("password")
         private val BIOMETRY = booleanPreferencesKey("biometry")
-        private val TIMEOUT = intPreferencesKey("timeout")
+        private val TIMEOUT = longPreferencesKey("timeout")
         private val DATE_PATTERN = stringPreferencesKey("date_pattern")
         private val TIME_PATTERN = stringPreferencesKey("time_pattern")
         private val FONT_SIZE = intPreferencesKey("font_size")
@@ -74,19 +74,32 @@ class SettingsDataSource(private val context: Context) {
     }
 
     val themeFlow = preferenceFlow(THEME, SettingsConstants.DEFAULT_THEME.name)
+
     val sortTypeFlow = preferenceFlow(SORT_TYPE, SettingsConstants.DEFAULT_SORT_TYPE.name)
+
     val keepScreenOnFlow = preferenceFlow(KEEP_SCREEN_ON, SettingsConstants.DEFAULT_KEEP_SCREEN_ON)
+
     val passwordFlow = preferenceFlow(PASSWORD, "")
+
     val biometryFlow = preferenceFlow(BIOMETRY, SettingsConstants.DEFAULT_BIOMETRY)
+
     val timeoutFlow = preferenceFlow(TIMEOUT, SettingsConstants.DEFAULT_TIMEOUT)
+
     val datePatternFlow = preferenceFlow(DATE_PATTERN, SettingsConstants.DEFAULT_DATE_PATTERN.name)
+
     val timePatternFlow = preferenceFlow(TIME_PATTERN, SettingsConstants.DEFAULT_TIME_PATTERN.name)
+
     val fontSizeFlow = preferenceFlow(FONT_SIZE, SettingsConstants.DEFAULT_FONT_SIZE)
+
     val flagSecureFlow = preferenceFlow(FLAG_SECURE, SettingsConstants.DEFAULT_FLAG_SECURE)
+
     val dynamicColorFlow = preferenceFlow(DYNAMIC_COLOR, SettingsConstants.DEFAULT_DYNAMIC_COLOR)
+
     val trashFlow = preferenceFlow(TRASH, SettingsConstants.DEFAULT_TRASH)
+
     val trashRetentionFlow =
         preferenceFlow(TRASH_RETENTION, SettingsConstants.DEFAULT_TRASH_RETENTION)
+
     val wordWrapFlow = preferenceFlow(WORD_WRAP, SettingsConstants.DEFAULT_WORD_WRAP)
 
     suspend fun saveTheme(theme: String) = savePreference(THEME, theme)
@@ -100,7 +113,7 @@ class SettingsDataSource(private val context: Context) {
 
     suspend fun saveBiometry(enabled: Boolean) = savePreference(BIOMETRY, enabled)
 
-    suspend fun saveTimeout(seconds: Int) = savePreference(TIMEOUT, seconds)
+    suspend fun saveTimeout(seconds: Long) = savePreference(TIMEOUT, seconds)
 
     suspend fun saveDatePattern(pattern: String) = savePreference(DATE_PATTERN, pattern)
 
@@ -114,6 +127,16 @@ class SettingsDataSource(private val context: Context) {
 
     suspend fun saveTrash(enabled: Boolean) = savePreference(TRASH, enabled)
 
-    suspend fun saveTrashRetention(millis: Long) = savePreference(TRASH_RETENTION, millis)
+    suspend fun saveTrashRetention(seconds: Long) = savePreference(TRASH_RETENTION, seconds)
+
     suspend fun saveWordWrap(enabled: Boolean) = savePreference(WORD_WRAP, enabled)
+
+    suspend fun migrateTrashRetentionIfNeeded() {
+        context.dataStore.edit { preferences ->
+            val currentValue = preferences[TRASH_RETENTION]
+            if (currentValue != null && currentValue > 10_000_000L) {
+                preferences[TRASH_RETENTION] = currentValue / 1000L
+            }
+        }
+    }
 }

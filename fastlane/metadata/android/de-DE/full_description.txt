@@ -5,7 +5,7 @@ Konzentrieren Sie sich ohne Ablenkungen auf Ihre Gedanken. Die App wurde mit Jet
 Hauptmerkmale:
 
 • Datenschutz zuerst: Keine Datenerfassung, kein Tracking und keine Internetberechtigung erforderlich.
-• Lokale Speicherung: Alle Ihre Notizen werden sicher auf Ihrem Gerät in einer Room-Datenbank gespeichert.
+• Lokale Speicherung: Alle Ihre Notizen werden auf Ihrem Gerät in einer Room-Datenbank gespeichert.
 • Leichtgewicht: Schneller Start und geringer Ressourcenverbrauch.
 
 Ein sauberer und einfacher Notizblock, der Ihre Privatsphäre respektiert.

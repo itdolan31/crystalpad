@@ -22,11 +22,11 @@ enum class NoteSortType {
     CREATED_AT_ASC,
     UPDATED_AT_DESC,
     UPDATED_AT_ASC,
-    TITLE_ASC,
-    TITLE_DESC;
+    TITLE_DESC,
+    TITLE_ASC;
 
     companion object {
-        val DEFAULT = CREATED_AT_DESC
+        val DEFAULT = UPDATED_AT_DESC
 
         fun fromName(name: String): NoteSortType {
             return entries.find { it.name == name } ?: DEFAULT

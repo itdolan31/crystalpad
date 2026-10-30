@@ -1,0 +1,13 @@
+Nouveau :
+• Prise en charge de la syntaxe Markdown (CommonMark, attributs d'image, liens automatiques étendus, barré de style GFM, insertions et listes de tâches)
+• Écran « À propos » et une section contenant les informations de licence
+• Nouveau format de date : dd MMMM yyyy
+
+Modifications :
+• Ajustements mineurs de l'interface pour les écrans OLED
+• Amélioration des performances sur l'écran de verrouillage
+• La barre de navigation est désormais transparente sur tous les écrans
+
+Corrections :
+• Lors de la suppression définitive d'une note depuis l'interface d'édition (NoteEdit), le libellé « déplacer vers la corbeille » s'affichait incorrectement
+• Amélioration de la fiabilité de la fonction d'exportation

@@ -75,10 +75,7 @@ fun NoteItem(
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable { onClick() }) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-
-            ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             Column(
                 Modifier
                     .weight(1f)

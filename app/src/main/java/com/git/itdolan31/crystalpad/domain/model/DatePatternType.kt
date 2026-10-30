@@ -18,6 +18,8 @@
 package com.git.itdolan31.crystalpad.domain.model
 
 enum class DatePatternType(val pattern: String) {
+    DD_MMMM_YYYY("dd MMMM yyyy"),
+
     DD_MM_YYYY_DOT("dd.MM.yyyy"),
     DD_MM_YYYY_SLASH("dd/MM/yyyy"),
     DD_MM_YYYY_DASH("dd-MM-yyyy"),
@@ -31,7 +33,7 @@ enum class DatePatternType(val pattern: String) {
     MM_DD_YYYY_DASH("MM-dd-yyyy");
 
     companion object {
-        val DEFAULT = DD_MM_YYYY_DOT
+        val DEFAULT = DD_MMMM_YYYY
 
         fun fromName(name: String): DatePatternType {
             return entries.find { it.name == name } ?: DEFAULT
