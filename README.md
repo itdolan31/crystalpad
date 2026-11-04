@@ -28,6 +28,9 @@ height="80">](https://f-droid.org/packages/com.git.itdolan31.crystalpad)
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
 alt="Get it on IzzyOnDroid"
 height="80">](https://apt.izzysoft.de/packages/com.git.itdolan31.crystalpad)
+[<img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png"
+alt="Get it on Obtainium"
+height="80">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/itdolan31/crystalpad)
 
 ## Forks
 
