@@ -1,13 +1,12 @@
-Nuevo:
-• Compatibilidad con sintaxis Markdown (CommonMark, atributos de imagen, enlaces automáticos extendidos, tachado estilo GFM, inserciones y listas de tareas)
-• Pantalla "Acerca de" y una sección con información de licencia
+Novedades:
+• Compatibilidad con la sintaxis de Markdown
+• Pantalla «Acerca de» y una sección con información de licencia
 • Nuevo formato de fecha: dd MMMM yyyy
 
 Cambios:
-• Ajustes menores de la interfaz para pantallas OLED
-• Mejora del rendimiento en la pantalla de bloqueo
+• Pequeños ajustes de la interfaz para pantallas OLED
+• Rendimiento mejorado en la pantalla de bloqueo
 • La barra de navegación ahora es transparente en todas las pantallas
 
 Correcciones:
-• Al eliminar permanentemente una nota desde la interfaz de edición (NoteEdit), la etiqueta "mover a la papelera" se mostraba incorrectamente
-• Mejora de la fiabilidad de la función de exportación
+• Fiabilidad mejorada de la función de exportación

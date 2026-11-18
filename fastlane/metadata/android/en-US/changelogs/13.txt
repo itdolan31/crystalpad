@@ -1,6 +1,6 @@
 New:
-• Markdown syntax support (CommonMark, image attributes, extended auto-links, GFM-style strikethrough, insertions, and task lists)
-• "About" screen and a section containing license information
+• Markdown syntax support
+• About screen and a section containing license information
 • New date format: dd MMMM yyyy
 
 Changes:
@@ -9,5 +9,4 @@ Changes:
 • Navigation bar is now transparent across all screens
 
 Fixes:
-• When permanently deleting a note from the editing interface (NoteEdit), the label "move to trash" was incorrectly displayed
 • Improved reliability of the export feature
